@@ -9,6 +9,7 @@
     <meta property="og:title" content="Giới Thiệu Thầy Hà – Đào Tạo Lái Xe Chuyên Nghiệp">
     <meta property="og:description" content="Hơn 10 năm kinh nghiệm, hàng nghìn học viên đậu thi. Đăng ký ngay!">
 
+    
     <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <!-- Font Awesome -->
@@ -34,14 +35,14 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Be Vietnam Pro', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             color: var(--text);
             background: #fff;
             overflow-x: hidden;
         }
 
         h1, h2, h3, .display-font {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Times New Roman', Times, serif;
         }
 
         /* ── TOPBAR ── */
@@ -62,7 +63,7 @@
             top: 0;
             z-index: 999;
         }
-        .brand-name { font-family: 'Playfair Display', serif; color: var(--navy); font-size: 1.5rem; font-weight: 900; line-height: 1; }
+        .brand-name { font-family: 'Times New Roman', Times, serif; color: var(--navy); font-size: 1.5rem; font-weight: 900; line-height: 1; }
         .brand-sub  { font-size: 0.65rem; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
         .logo-ring  { width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid var(--accent); overflow: hidden; flex-shrink: 0; }
         .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
@@ -118,7 +119,7 @@
             pointer-events: none;
         }
         .hero-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 900;
             color: #fff;
@@ -162,7 +163,7 @@
             margin-bottom: 12px;
         }
         .section-title {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: clamp(1.6rem, 3vw, 2.4rem);
             color: var(--navy);
             font-weight: 900;
@@ -233,7 +234,7 @@
         }
         .stat-card:hover { transform: translateY(-5px); }
         .stat-number {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 2.8rem;
             font-weight: 900;
             color: var(--gold);
@@ -273,7 +274,7 @@
             font-size: 0.8rem;
             box-shadow: -4px 4px 16px rgba(244,120,42,.4);
         }
-        .teacher-exp-badge span { display: block; font-size: 1.8rem; font-family: 'Playfair Display', serif; line-height: 1; }
+        .teacher-exp-badge span { display: block; font-size: 1.8rem; font-family: 'Times New Roman', Times, serif; line-height: 1; }
         .cert-badge {
             display: inline-flex;
             align-items: center;
@@ -297,7 +298,7 @@
         }
         .quote-block::before {
             content: '"';
-            font-family: 'Playfair Display', serif;
+            font-family: 'Times New Roman', Times, serif;
             font-size: 5rem;
             color: rgba(244,120,42,.3);
             position: absolute;
@@ -484,16 +485,81 @@
             .teacher-img-col { min-height: 260px; }
             .stat-number { font-size: 2.2rem; }
         }
+
+        /*Nhấn mạnh để ảnh có màu */
+        /* Loại bỏ mọi bộ lọc màu có thể đang áp dụng lên ảnh */
+        .teacher-img-col img {
+            filter: none !important;
+            mix-blend-mode: normal !important;
+            opacity: 1 !important;
+        }
+
+        /* Nếu có lớp phủ màu giả lập phía trên ảnh, hãy ẩn nó đi */
+        .teacher-img-col::before, 
+        .teacher-img-col::after {
+            display: none !important;
+        }
+
+
+        /* Căn chỉnh các icon kích thước bằng nhau */
+        .float-icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff !important;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .float-icon-btn:hover {
+            transform: scale(1.1);
+            color: #fff;
+        }
+
+        /* Màu riêng cho từng nút */
+        .maps-btn {
+            background: #dc3545; /* Đỏ Google */
+            border: 3px solid #f8d7da;
+        }
+
+        .messenger-btn {
+            background: #0084ff; /* Xanh Messenger */
+            border: 3px solid #cce6ff;
+        }
+
+        /* Tùy chỉnh thêm cho cụm floats nếu cần */
+        .floats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1050;
+        }
     </style>
+
+
+
 </head>
 <body>
 
 <!-- ─── TOPBAR ─── -->
 <div class="topbar d-none d-md-block">
     <div class="container d-flex justify-content-between align-items-center">
-        <span><i class="fas fa-map-marker-alt icon-dot"></i> km18 Song Hành Xa Lộ Hà Nội, TP.HCM</span>
-        <span><i class="fas fa-phone-alt icon-dot"></i> Hotline: <a href="tel:0941822239">0941 822 239</a>
-            &nbsp;&nbsp;<i class="fas fa-envelope icon-dot ms-3"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></span>
+        <span style="color: white;"><i class="fas fa-map-marker-alt icon-dot"></i> 
+            <a href="https://maps.app.goo.gl/113NpjVjHekt318X9" target="_blank" style="color: white;">
+                km18 Song Hành Xa Lộ Hà Nội, TP.HCM
+            </a>
+        </span>
+        <span style="color: white;"><i class="fas fa-phone-alt icon-dot"></i> Hotline: <a href="tel:0941822239" style="color: white;">0941 822 239</a>
+            &nbsp;&nbsp;<i class="fas fa-envelope icon-dot ms-3" style="color: white;"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></span>
     </div>
 </div>
 
@@ -507,7 +573,7 @@
                 </div>
                 <div>
                     <div class="brand-name">Thầy Hà</div>
-                    <div class="brand-sub">Trung tâm ĐH An Ninh</div>
+                    <div class="brand-sub">Trung tâm sát hạch lái xe ĐH An Ninh</div>
                 </div>
             </a>
             <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
@@ -540,7 +606,7 @@
         </nav>
         <div class="hero-badge mb-3"><i class="fas fa-star fa-xs"></i> Đào tạo lái xe uy tín số 1 tại TP.HCM</div>
         <h1 class="hero-title mb-3">Về Thầy Hà<br><span style="color:var(--gold)">& Trung Tâm</span></h1>
-        <p class="hero-subtitle">Uy tín · Tận tâm · Trách nhiệm</p>
+        <p class="hero-subtitle">Uy tín - Tận tâm - Trách nhiệm</p>
     </div>
 </section>
 
@@ -569,7 +635,7 @@
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
                     <div class="stat-number">3</div>
-                    <div class="stat-label">Hạng bằng B1 · B2 · C</div>
+                    <div class="stat-label">Hạng bằng B1 - B2 - C</div>
                 </div>
             </div>
         </div>
@@ -652,7 +718,7 @@
         <div class="teacher-wrap" data-aos="fade-up" data-aos-delay="100">
             <div class="row g-0">
                 <div class="col-md-4 teacher-img-col">
-                    <img src="./assets/avatar.jpg" alt="Thầy Hà – Giảng viên lái xe"
+                    <img src="./assets/anhthayha.jpg" alt="Thầy Hà – Giảng viên lái xe"
                          onerror="this.src='https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=600&q=80'">
                     <div class="teacher-exp-badge">
                         <span>10+</span> năm<br>kinh nghiệm
@@ -895,7 +961,7 @@
                         <img src="./assets/avatar.jpg" alt="Thầy Hà" onerror="this.src='https://ui-avatars.com/api/?name=H&background=0b1f4a&color=f4782a&size=80'">
                     </div>
                     <div>
-                        <div style="font-family:'Playfair Display',serif; font-weight:900; color:#fff; font-size:1.3rem">Thầy Hà</div>
+                        <div style="font-family:'Times New Roman',Times,serif; font-weight:900; color:#fff; font-size:1.3rem">Thầy Hà</div>
                         <div style="font-size:.65rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.05em">Đào Tạo Lái Xe – ĐH An Ninh</div>
                     </div>
                 </div>
@@ -922,27 +988,41 @@
             <div class="col-lg-4">
                 <h6>Vị trí trung tâm</h6>
                 <div style="border-radius:12px; overflow:hidden; height:160px">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2230614629752!2d106.8055883!3d10.870631699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d914b59bec0b%3A0x995734e091b0b54f!2zVGjhuqd5IEjDoCAtIFRydW5nIHTDom0gxJHDoG8gdOG6oW8gc8OhdCBo4bqhY2ggbMOhaSB4ZSBBbiBOaW5o!5e0!3m2!1svi!2s!4v1777990864765!5m2!1svi!2s"
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2230614629752!2d106.8055883!3d10.870631699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d914b59bec0b%3A0x995734e091b0b54f!2zVGjhuqd5IEjDoCAtIFRydW5nIHTDom0gxJHDoG8gdOG6oW4gc8OhdCBo4bqhY2ggbMOhaSB4ZSBBbiBOaW5o!5e0!3m2!1svi!2s!4v1777990864765!5m2!1svi!2s"
                         width="100%" height="160" style="border:0" loading="lazy" title="Vị trí Trung tâm ĐH An Ninh"></iframe>
                 </div>
             </div>
         </div>
         <div class="footer-copy">
-            &copy; 2026 Website Đào Tạo Lái Xe Thầy Hà · Trung tâm ĐH An Ninh TP.HCM · Tất cả quyền được bảo lưu.
+            <p>&copy; 2026 Website Đào Tạo Lái Xe Thầy Hà - Trung tâm ĐH An Ninh TP.HCM. Tất cả quyền được bảo lưu.</p>
         </div>
     </div>
 </footer>
 
-<!-- ─── FLOATING BUTTONS ─── -->
+<!-- ─── FLOATING CONTACT BUTTONS ─── -->
 <div class="floats">
+    <!-- Google Maps -->
+    <a href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank" class="float-icon-btn maps-btn" title="Chỉ đường Google Maps">
+        <i class="fas fa-map-marker-alt"></i>
+    </a>
+
+    <!-- Messenger -->
+    <a href="https://www.facebook.com/profile.php?id=61559816161796&rdid=l9gHxLUsJ2to9jx6&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DtXYpawsQ%2F#" target="_blank" class="float-icon-btn messenger-btn" title="Chat Messenger">
+        <i class="fab fa-facebook-messenger"></i>
+    </a>
+
+    <!-- Zalo -->
     <a href="https://zalo.me/0941822239" target="_blank" class="zalo-btn" title="Chat Zalo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
     </a>
+
+    <!-- Phone -->
     <a href="tel:0941822239" class="phone-btn">
         <span>0941 822 239</span>
         <div class="phone-circle"><i class="fas fa-phone"></i></div>
     </a>
 </div>
+
 
 <!-- ─── SCRIPTS ─── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
