@@ -3,196 +3,1005 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giới thiệu - Đào Tạo Lái Xe Thầy Hà</title>
-    <meta name="description" content="Tìm hiểu về hành trình đào tạo lái xe của Thầy Hà tại Trung tâm ĐH An Ninh. Tầm nhìn, sứ mệnh và đội ngũ giảng viên tận tâm.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Giới Thiệu Thầy Hà – Đào Tạo Lái Xe ĐH An Ninh TP.HCM</title>
+    <meta name="description" content="Thầy Hà – Hơn 10 năm kinh nghiệm đào tạo lái xe ô tô tại Trường Đại học An Ninh TP.HCM. Bằng B1, B2, C – chuẩn Bộ GTVT, học phí minh bạch, tỷ lệ đậu cao.">
+    <meta name="keywords" content="học lái xe ô tô TPHCM, thầy Hà lái xe, đào tạo lái xe đại học an ninh, bằng lái xe B1 B2 TPHCM">
+    <meta property="og:title" content="Giới Thiệu Thầy Hà – Đào Tạo Lái Xe Chuyên Nghiệp">
+    <meta property="og:description" content="Hơn 10 năm kinh nghiệm, hàng nghìn học viên đậu thi. Đăng ký ngay!">
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        .intro-header {
-            background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.85)), url('https://images.unsplash.com/photo-1516515429572-1f9f3b859577?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
+        :root {
+            --navy:    #0b1f4a;
+            --navy-mid: #1a3570;
+            --accent:  #f4782a;
+            --accent-soft: #fff0e5;
+            --gold:    #e8b84b;
+            --light:   #f8f9fc;
+            --text:    #2c3e50;
+            --muted:   #6c7a8a;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            color: var(--text);
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .display-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ── TOPBAR ── */
+        .topbar {
+            background: var(--navy);
+            font-size: 0.8rem;
+            padding: 6px 0;
+        }
+        .topbar a { color: #cdd8ef; text-decoration: none; }
+        .topbar a:hover { color: var(--accent); }
+        .topbar .icon-dot { color: var(--accent); margin-right: 6px; }
+
+        /* ── NAVBAR ── */
+        .main-nav {
+            background: #fff;
+            box-shadow: 0 2px 20px rgba(11,31,74,.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .brand-name { font-family: 'Playfair Display', serif; color: var(--navy); font-size: 1.5rem; font-weight: 900; line-height: 1; }
+        .brand-sub  { font-size: 0.65rem; color: #c0392b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .logo-ring  { width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid var(--accent); overflow: hidden; flex-shrink: 0; }
+        .logo-ring img { width: 100%; height: 100%; object-fit: cover; }
+
+        .nav-link-custom {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text) !important;
+            padding: 6px 14px !important;
+            border-radius: 6px;
+            transition: color .2s, background .2s;
+        }
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: var(--accent) !important;
+            background: var(--accent-soft);
+        }
+        .btn-register {
+            background: var(--accent);
+            color: #fff !important;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 9px 22px;
+            transition: background .2s, transform .2s;
+            text-decoration: none;
+        }
+        .btn-register:hover { background: #d8621a; transform: translateY(-1px); }
+
+        /* ── HERO BANNER ── */
+        .hero {
+            background: linear-gradient(120deg, var(--navy) 55%, #163a80 100%);
+            min-height: 420px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-diagonal {
+            position: absolute;
+            right: -50px; top: 0; bottom: 0;
+            width: 55%;
+            background: rgba(255,255,255,.04);
+            transform: skewX(-8deg);
+            pointer-events: none;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.1;
+        }
+        .hero-subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 600;
+        }
+        .breadcrumb-hero { font-size: 0.8rem; }
+        .breadcrumb-hero a, .breadcrumb-hero span { color: rgba(255,255,255,.6); }
+        .breadcrumb-hero .active { color: var(--accent); }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(244,120,42,.15);
+            border: 1px solid rgba(244,120,42,.4);
+            color: var(--accent);
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── SECTION LABELS ── */
+        .section-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 4px 14px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: var(--navy);
+            font-weight: 900;
+            line-height: 1.2;
+        }
+        .divider-line {
+            width: 50px; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            border-radius: 2px;
+            margin: 14px 0 0;
+        }
+
+        /* ── HISTORY TIMELINE ── */
+        .timeline { position: relative; padding-left: 0; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--gold), transparent);
+        }
+        .tl-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .tl-dot {
+            flex-shrink: 0;
+            width: 42px; height: 42px;
+            background: var(--navy);
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        .tl-content { flex: 1; padding-top: 8px; }
+        .tl-year {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .tl-content h5 { font-weight: 700; color: var(--navy); margin: 4px 0 6px; font-size: 1rem; }
+        .tl-content p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin: 0; }
+
+        /* ── STAT CARDS ── */
+        .stat-card {
+            background: var(--navy);
+            border-radius: 16px;
+            padding: 28px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform .3s;
+        }
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .stat-unit { font-size: 1.2rem; color: var(--accent); }
+        .stat-label { font-size: 0.78rem; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; }
+
+        /* ── TEACHER CARD ── */
+        .teacher-wrap {
+            background: var(--light);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 16px 60px rgba(11,31,74,.1);
+        }
+        .teacher-img-col {
+            position: relative;
+            background: linear-gradient(160deg, var(--navy-mid), var(--navy));
+            min-height: 380px;
+            display: flex; align-items: flex-end;
+        }
+        .teacher-img-col img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            mix-blend-mode: luminosity;
+        }
+        .teacher-exp-badge {
+            position: absolute;
+            top: 20px; right: -14px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 12px 0 0 12px;
+            padding: 12px 20px 12px 16px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            box-shadow: -4px 4px 16px rgba(244,120,42,.4);
+        }
+        .teacher-exp-badge span { display: block; font-size: 1.8rem; font-family: 'Playfair Display', serif; line-height: 1; }
+        .cert-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            border: 1.5px solid #e8edf5;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .cert-badge:hover { border-color: var(--accent); box-shadow: 0 4px 14px rgba(244,120,42,.12); }
+        .cert-badge i { color: var(--accent); font-size: 1rem; }
+        .quote-block {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+        }
+        .quote-block::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            color: rgba(244,120,42,.3);
+            position: absolute;
+            top: -10px; left: 20px;
+            line-height: 1;
+        }
+        .quote-text { color: rgba(255,255,255,.9); font-style: italic; line-height: 1.7; font-size: 0.95rem; padding-top: 10px; }
+        .quote-author { color: var(--gold); font-weight: 700; font-size: 0.82rem; margin-top: 12px; }
+
+        /* ── VISION MISSION ── */
+        .vm-card {
+            border-radius: 20px;
+            padding: 32px 28px;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .vm-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(11,31,74,.14); }
+        .vm-card.navy { background: var(--navy); color: #fff; }
+        .vm-card.orange { background: var(--accent); color: #fff; }
+        .vm-card.white { background: #fff; border: 2px solid #e8edf5; }
+        .vm-icon {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .navy .vm-icon { background: rgba(255,255,255,.1); color: var(--gold); }
+        .orange .vm-icon { background: rgba(255,255,255,.2); color: #fff; }
+        .white .vm-icon { background: var(--accent-soft); color: var(--accent); }
+        .vm-card h4 { font-weight: 800; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+        .vm-card p { font-size: 0.88rem; line-height: 1.75; opacity: 0.88; margin: 0; }
+        .vm-card.white h4 { color: var(--navy); }
+        .vm-card.white p { color: var(--muted); }
+
+        /* ── WHY CHOOSE ── */
+        .why-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            padding: 22px 20px;
+            border-radius: 14px;
+            background: #fff;
+            border: 1.5px solid #e8edf5;
+            transition: border-color .25s, box-shadow .25s, transform .25s;
+        }
+        .why-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(244,120,42,.1);
+            transform: translateY(-3px);
+        }
+        .why-icon {
+            flex-shrink: 0;
+            width: 50px; height: 50px;
+            background: var(--accent-soft);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+        .why-item h6 { font-weight: 700; color: var(--navy); margin: 0 0 4px; font-size: 0.92rem; }
+        .why-item p { font-size: 0.82rem; color: var(--muted); margin: 0; line-height: 1.6; }
+
+        /* ── TESTIMONIALS ── */
+        .review-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 28px;
+            border: 1.5px solid #e8edf5;
+            box-shadow: 0 4px 20px rgba(11,31,74,.05);
+            height: 100%;
+            transition: box-shadow .25s;
+        }
+        .review-card:hover { box-shadow: 0 12px 40px rgba(11,31,74,.1); }
+        .star { color: var(--gold); font-size: 0.85rem; }
+        .reviewer-name { font-weight: 700; color: var(--navy); font-size: 0.92rem; }
+        .reviewer-meta { font-size: 0.75rem; color: var(--muted); }
+        .review-text { font-size: 0.87rem; color: var(--text); line-height: 1.7; font-style: italic; }
+        .reviewer-av {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: var(--navy);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ── CTA BAND ── */
+        .cta-band {
+            background: linear-gradient(120deg, var(--navy) 0%, #1a3a80 50%, #0e2558 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-band::before {
+            content: '';
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(244,120,42,.15) 0%, transparent 70%);
+            right: -100px; top: 50%;
+            transform: translateY(-50%);
+        }
+        .btn-cta-main {
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 14px 36px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background .2s, transform .2s;
+        }
+        .btn-cta-main:hover { background: #d8621a; color: #fff; transform: translateY(-2px); }
+        .btn-cta-outline {
+            border: 2px solid rgba(255,255,255,.35);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 12px 28px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background .2s, border-color .2s;
+        }
+        .btn-cta-outline:hover { background: rgba(255,255,255,.08); border-color: #fff; color: #fff; }
+
+        /* ── FOOTER ── */
+        footer { background: #07152e; color: rgba(255,255,255,.75); }
+        footer h6 { color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 10px; margin-bottom: 18px; }
+        footer a { color: rgba(255,255,255,.65); text-decoration: none; font-size: 0.85rem; display: block; margin-bottom: 9px; transition: color .2s; }
+        footer a:hover { color: var(--accent); }
+        footer .footer-info li { font-size: 0.85rem; margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
+        footer .footer-info i { color: var(--accent); margin-top: 2px; flex-shrink: 0; font-size: 0.9rem; }
+        .footer-copy { border-top: 1px solid rgba(255,255,255,.07); font-size: 0.78rem; color: rgba(255,255,255,.35); text-align: center; padding-top: 20px; margin-top: 40px; }
+
+        /* ── FLOATING ── */
+        .floats { position: fixed; bottom: 20px; right: 20px; z-index: 1050; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+        .zalo-btn { width: 48px; height: 48px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,.2); transition: transform .2s; }
+        .zalo-btn:hover { transform: scale(1.1); }
+        .zalo-btn img { width: 32px; border-radius: 50%; }
+        .phone-btn {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 30px;
+            padding: 6px 8px 6px 18px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(244,120,42,.45);
+            transition: background .2s;
+        }
+        .phone-btn:hover { background: #d8621a; color: #fff; }
+        .phone-btn .phone-circle { width: 36px; height: 36px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .phone-btn .phone-circle i { color: var(--accent); font-size: 0.9rem; animation: ring 1.5s infinite; }
+        @keyframes ring { 0%,100%{transform:rotate(0)} 15%{transform:rotate(15deg)} 30%{transform:rotate(-10deg)} 45%{transform:rotate(10deg)} 60%{transform:rotate(-5deg)} }
+
+        /* ── MISC ── */
+        section { padding-top: 80px; padding-bottom: 80px; }
+        .bg-light-custom { background: var(--light); }
+        .text-accent { color: var(--accent); }
+        .text-navy { color: var(--navy); }
+        .fw-800 { font-weight: 800; }
+
+        /* Mobile nav */
+        .navbar-toggler { border: 1.5px solid var(--navy); padding: 6px 10px; }
+        .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%230b1f4a' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"); }
+
+        @media (max-width: 767px) {
+            section { padding-top: 54px; padding-bottom: 54px; }
+            .timeline::before { left: 18px; }
+            .teacher-img-col { min-height: 260px; }
+            .stat-number { font-size: 2.2rem; }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+<body>
 
-    <!-- Header & Nav (Giữ nguyên từ trang chủ) -->
-    <header class="sticky top-0 z-[100] bg-white shadow-md">
-        <div class="bg-blue-900 text-white py-1.5 hidden md:block">
-            <div class="container mx-auto flex justify-between px-4 text-xs lg:text-sm">
-                <div><i class="fas fa-map-marker-alt mr-2 text-orange-400"></i> km18 Song Hành Xa Lộ Hà Nội, TP. HCM</div>
-                <div><i class="fas fa-phone-alt mr-2 text-orange-400"></i> Hotline: 0941 822 239</div>
-            </div>
-        </div>
-        
-        <nav class="container mx-auto flex justify-between items-center py-3 px-4">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-orange-500 shrink-0 shadow-sm">
-                    <img src="./assets/avatar.jpg" alt="avatar" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=H&background=f97316&color=fff'">
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-lg md:text-2xl font-bold text-blue-900 uppercase leading-none">Thầy Hà</span>
-                    <span class="text-[10px] md:text-xs font-bold text-red-600 uppercase mt-1 leading-tight">Trung tâm Đào tạo sát hạch lái xe ĐH An Ninh</span>
-                </div>
-            </div>
-
-            <ul class="hidden lg:flex space-x-6 font-bold text-gray-700 uppercase text-xs">
-                <li><a href="index.html" class="hover:text-orange-500 transition">Trang chủ</a></li>
-                <li><a href="introduce.html" class="text-orange-500">Giới thiệu</a></li>
-                <li><a href="#" class="hover:text-orange-500 transition">Khóa học</a></li>
-                <li><a href="#" class="hover:text-orange-500 transition">Liên hệ</a></li>
-            </ul>
-
-            <a href="tel:0941822239" class="bg-orange-500 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-bold hover:bg-orange-600 transition shadow-lg whitespace-nowrap">
-                ĐĂNG KÝ NGAY
-            </a>
-        </nav>
-    </header>
-
-    <!-- Page Title Section -->
-    <section class="intro-header py-16 md:py-24 text-center text-white">
-        <div class="container mx-auto px-4">
-            <h1 class="text-3xl md:text-5xl font-bold uppercase mb-4">Về Thầy Hà & Trung Tâm</h1>
-            <p class="text-orange-400 font-bold tracking-widest uppercase text-sm md:text-base">Tận tâm trong giảng dạy - Uy tín trong cam kết</p>
-        </div>
-    </section>
-
-    <!-- Main Content: Giới thiệu Thầy Hà -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="relative">
-                    <div class="rounded-3xl overflow-hidden shadow-2xl">
-                        <img src="./assets/avatar.jpg" alt="Thầy Hà đang giảng dạy" class="w-full h-auto object-cover" onerror="this.src='https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&q=80'">
-                    </div>
-                    <div class="absolute -bottom-6 -right-6 bg-orange-500 text-white p-6 rounded-2xl hidden md:block shadow-xl">
-                        <p class="text-3xl font-bold">10+</p>
-                        <p class="text-sm uppercase font-bold">Năm kinh nghiệm</p>
-                    </div>
-                </div>
-                <div class="space-y-6">
-                    <h2 class="text-3xl font-bold text-blue-900 uppercase">Người truyền lửa vô lăng</h2>
-                    <p class="text-gray-600 leading-relaxed">
-                        Với hơn 10 năm công tác trong lĩnh vực đào tạo lái xe tại <strong>Trung tâm Đào tạo sát hạch lái xe ĐH An Ninh</strong>, Thầy Hà đã đồng hành cùng hàng ngàn học viên từ những bước đầu bỡ ngỡ đến khi tự tin cầm lái trên mọi cung đường.
-                    </p>
-                    <p class="text-gray-600 leading-relaxed">
-                        Phương châm giảng dạy của Thầy không chỉ dừng lại ở việc giúp học viên lấy được tấm bằng, mà quan trọng hơn là truyền đạt <strong>đạo đức người lái xe</strong> và <strong>kỹ năng xử lý tình huống thực tế</strong> an toàn nhất.
-                    </p>
-                    <div class="grid grid-cols-2 gap-4 pt-4">
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-orange-500 text-xl"></i>
-                            <span class="font-bold text-sm">Dạy mẹo cực dễ hiểu</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-orange-500 text-xl"></i>
-                            <span class="font-bold text-sm">Không áp lực học viên</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-orange-500 text-xl"></i>
-                            <span class="font-bold text-sm">Hỗ trợ hồ sơ từ A-Z</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <i class="fas fa-check-circle text-orange-500 text-xl"></i>
-                            <span class="font-bold text-sm">Tỉ lệ đậu cao ngất ngưỡng</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tầm nhìn & Sứ mệnh -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-900">
-                    <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-eye text-2xl text-blue-900"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 uppercase text-blue-900">Tầm nhìn</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Trở thành địa chỉ đào tạo lái xe uy tín hàng đầu tại TP.HCM, nơi học viên gửi gắm niềm tin tuyệt đối về chất lượng và sự tận tâm.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-orange-500">
-                    <div class="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-bullseye text-2xl text-orange-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 uppercase text-orange-500">Sứ mệnh</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Đào tạo ra những thế hệ tài xế giỏi kỹ năng, vững tâm lý và luôn chấp hành nghiêm chỉnh luật giao thông đường bộ.</p>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-blue-900">
-                    <div class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6">
-                        <i class="fas fa-heart text-2xl text-blue-900"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-4 uppercase text-blue-900">Giá trị cốt lõi</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Trung thực trong học phí - Tận tụy trong giảng dạy - Trách nhiệm với sự an toàn của mỗi học viên sau khóa học.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <section class="py-16 bg-blue-900 text-white text-center">
-        <div class="container mx-auto px-4">
-            <h2 class="text-2xl md:text-4xl font-bold mb-6 uppercase">Sẵn sàng để bắt đầu hành trình mới?</h2>
-            <p class="mb-10 text-blue-200">Hãy để Thầy Hà đồng hành cùng bạn chinh phục tấm bằng lái xe một cách dễ dàng nhất.</p>
-            <div class="flex justify-center space-x-4">
-                <a href="tel:0941822239" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition shadow-xl">Gọi Ngay Cho Thầy</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer (Giữ nguyên từ trang chủ) -->
-    <footer class="bg-gray-900 text-white pt-16 pb-8">
-        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            <div>
-                <h5 class="text-xl font-bold mb-6 text-orange-500 uppercase border-b border-orange-500/30 pb-2">Liên hệ Thầy Hà</h5>
-                <ul class="space-y-5 text-gray-400 text-sm md:text-base">
-                    <li class="flex items-start">
-                        <i class="fas fa-map-marker-alt mt-1 mr-3 text-orange-500"></i>
-                        <span>km18 Song Hành Xa Lộ Hà Nội, TP. Hồ Chí Minh</span>
-                    </li>
-                    <li class="flex items-center"><i class="fas fa-phone-alt mr-3 text-orange-500"></i>0941 822 239</li>
-                    <li class="flex items-center"><i class="fas fa-envelope mr-3 text-orange-500"></i> thayhalaihcm@gmail.com</li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-xl font-bold mb-6 text-orange-500 uppercase border-b border-orange-500/30 pb-2">Khóa đào tạo</h5>
-                <ul class="space-y-4 text-gray-400 text-sm md:text-base">
-                    <li><a href="#" class="hover:text-orange-500 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-[10px]"></i> Hạng B1 (Số tự động)</a></li>
-                    <li><a href="#" class="hover:text-orange-500 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-[10px]"></i> Hạng B2 (Số sàn)</a></li>
-                    <li><a href="#" class="hover:text-orange-500 transition flex items-center"><i class="fas fa-chevron-right mr-2 text-[10px]"></i> Hạng C (Xe tải)</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="text-xl font-bold mb-6 text-orange-500 uppercase border-b border-orange-500/30 pb-2">Vị trí</h5>
-                <div class="h-40 bg-gray-800 rounded-xl overflow-hidden shadow-inner border border-gray-700">
-                    <!-- Map placeholder or iframe -->
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2230614629752!2d106.8055883!3d10.870631699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d914b59bec0b%3A0x995734e091b0b54f!2zVGjhuqd5IEjDoCAtIFRydW5nIHTDom0gxJHDoG8gdOG6oW8gc8OhdCBo4bqhY2ggbMOhaSB4ZSBBbiBOaW5o!5e0!3m2!1svi!2s!4v1777990864765!5m2!1svi!2s" 
-                        class="w-full h-full border-0" loading="lazy"></iframe>
-                </div>
-            </div>
-        </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-xs">
-            <p>&copy; 2026 Website Đào Tạo Lái Xe Thầy Hà. Tất cả quyền được bảo lưu.</p>
-        </div>
-    </footer>
-
-    <!-- Floating Buttons (Giữ nguyên từ trang chủ) -->
-    <div class="fixed bottom-4 right-4 flex flex-col items-end space-y-3 z-[1000] scale-90 md:scale-100">
-        <a href="https://zalo.me/0941822239" target="_blank" class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition duration-300 ring-4 ring-blue-50">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" class="w-8 h-8 rounded-full">
-        </a>
-        <a href="tel:0941822239" class="flex items-center bg-orange-600 text-white pl-5 pr-1 py-1 rounded-full shadow-2xl hover:scale-105 transition duration-300 ring-4 ring-orange-100 group">
-            <span class="font-bold mr-3 text-sm md:text-base">0941 822 239</span>
-            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-inner">
-                <i class="fas fa-phone text-orange-600 animate-pulse"></i>
-            </div>
-        </a>
+<!-- ─── TOPBAR ─── -->
+<div class="topbar d-none d-md-block">
+    <div class="container d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-map-marker-alt icon-dot"></i> km18 Song Hành Xa Lộ Hà Nội, TP.HCM</span>
+        <span><i class="fas fa-phone-alt icon-dot"></i> Hotline: <a href="tel:0941822239">0941 822 239</a>
+            &nbsp;&nbsp;<i class="fas fa-envelope icon-dot ms-3"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></span>
     </div>
+</div>
+
+<!-- ─── NAVBAR ─── -->
+<header class="main-nav">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg p-0 py-2">
+            <a class="navbar-brand d-flex align-items-center gap-2 me-4" href="index.html">
+                <div class="logo-ring">
+                    <img src="./assets/avatar.jpg" alt="Thầy Hà" onerror="this.src='https://ui-avatars.com/api/?name=H&background=0b1f4a&color=f4782a&size=80'">
+                </div>
+                <div>
+                    <div class="brand-name">Thầy Hà</div>
+                    <div class="brand-sub">Trung tâm ĐH An Ninh</div>
+                </div>
+            </a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-2 my-lg-0 me-3">
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="introduce.html">Giới thiệu</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Khóa học</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Liên hệ</a></li>
+                </ul>
+                <a href="tel:0941822239" class="btn-register d-none d-lg-inline-flex align-items-center gap-2">
+                    <i class="fas fa-phone-alt fa-sm"></i> Đăng Ký Ngay
+                </a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero py-0">
+    <div class="hero-diagonal"></div>
+    <div class="container py-5 position-relative" style="z-index:2">
+        <nav aria-label="breadcrumb" class="breadcrumb-hero mb-4">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                <li class="breadcrumb-item"><a href="index.html"><i class="fas fa-home fa-xs me-1"></i>Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Giới thiệu</li>
+            </ol>
+        </nav>
+        <div class="hero-badge mb-3"><i class="fas fa-star fa-xs"></i> Đào tạo lái xe uy tín số 1 tại TP.HCM</div>
+        <h1 class="hero-title mb-3">Về Thầy Hà<br><span style="color:var(--gold)">& Trung Tâm</span></h1>
+        <p class="hero-subtitle">Uy tín · Tận tâm · Trách nhiệm</p>
+    </div>
+</section>
+
+<!-- ─── STATS ─── -->
+<div class="bg-light-custom">
+    <div class="container py-5">
+        <div class="row g-4" data-aos="fade-up">
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">10<span class="stat-unit">+</span></div>
+                    <div class="stat-label">Năm kinh nghiệm</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">5000<span class="stat-unit">+</span></div>
+                    <div class="stat-label">Học viên đậu thi</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">97<span class="stat-unit">%</span></div>
+                    <div class="stat-label">Tỷ lệ đậu lần 1</div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Hạng bằng B1 · B2 · C</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── LỊCH SỬ HÌNH THÀNH ─── -->
+<section id="lich-su" class="bg-white">
+    <div class="container">
+        <div class="row gy-5">
+            <div class="col-lg-5" data-aos="fade-right">
+                <span class="section-label">Lịch Sử</span>
+                <h2 class="section-title">Hành trình<br>hơn một thập kỷ</h2>
+                <div class="divider-line mb-4"></div>
+                <p class="text-muted lh-lg" style="font-size:.9rem">
+                    Từ những ngày đầu bước vào nghề với niềm đam mê đào tạo lái xe an toàn, Thầy Hà đã xây dựng nên một thương hiệu cá nhân vững chắc tại <strong>Trung tâm Đào tạo sát hạch lái xe ĐH An Ninh</strong> – một trong những trung tâm uy tín hàng đầu tại TP.HCM.
+                </p>
+                <p class="text-muted lh-lg" style="font-size:.9rem">
+                    Mỗi học viên rời trường với tấm bằng lái trên tay không chỉ là một "khách hàng" – họ là sự tiếp nối của sứ mệnh: <em>an toàn giao thông bắt đầu từ ý thức người lái.</em>
+                </p>
+            </div>
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="timeline ps-4 ps-lg-5">
+                    <div class="tl-item">
+                        <div class="tl-dot"><i class="fas fa-flag-checkered fa-xs"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-year">2013 – Khởi đầu</div>
+                            <h5>Gia nhập Trung tâm ĐH An Ninh</h5>
+                            <p>Thầy Hà bắt đầu hành trình giảng dạy với vai trò giáo viên thực hành lái xe, tiếp xúc và hướng dẫn những khóa học viên đầu tiên.</p>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot"><i class="fas fa-graduation-cap fa-xs"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-year">2016 – Phát triển</div>
+                            <h5>Mở rộng hạng bằng B2 và C</h5>
+                            <p>Sau khi tích lũy kinh nghiệm, Thầy bắt đầu đào tạo đa dạng các hạng bằng, phục vụ nhu cầu ngày càng lớn của học viên tại TP.HCM.</p>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot"><i class="fas fa-award fa-xs"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-year">2019 – Ghi dấu ấn</div>
+                            <h5>Hơn 1.000 học viên đậu sát hạch</h5>
+                            <p>Cột mốc đáng tự hào với tỷ lệ đậu lần đầu liên tục trên 95%, Thầy Hà trở thành tên tuổi được truyền miệng trong cộng đồng học viên.</p>
+                        </div>
+                    </div>
+                    <div class="tl-item">
+                        <div class="tl-dot"><i class="fas fa-star fa-xs"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-year">2021 – Số hoá</div>
+                            <h5>Ra mắt kênh hỗ trợ online</h5>
+                            <p>Thầy triển khai hỗ trợ học viên qua Zalo, video hướng dẫn trực tuyến, giúp ôn lý thuyết mọi lúc mọi nơi, đặc biệt trong giai đoạn giãn cách.</p>
+                        </div>
+                    </div>
+                    <div class="tl-item mb-0">
+                        <div class="tl-dot"><i class="fas fa-rocket fa-xs"></i></div>
+                        <div class="tl-content">
+                            <div class="tl-year">2024 – Nay</div>
+                            <h5>Tiếp tục sứ mệnh an toàn giao thông</h5>
+                            <p>Với hơn 5.000 học viên đã tốt nghiệp, Thầy Hà tiếp tục cống hiến, không ngừng cải thiện phương pháp và chất lượng đào tạo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── GIẢNG VIÊN ─── -->
+<section id="giang-vien" class="bg-light-custom">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Đội Ngũ Giảng Viên</span>
+            <h2 class="section-title">Người truyền lửa vô lăng</h2>
+            <div class="divider-line mx-auto mb-3"></div>
+            <p class="text-muted" style="max-width:520px; margin:0 auto; font-size:.9rem">Không chỉ là giáo viên, Thầy Hà là người đồng hành giúp mỗi học viên tự tin làm chủ tay lái.</p>
+        </div>
+
+        <div class="teacher-wrap" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-0">
+                <div class="col-md-4 teacher-img-col">
+                    <img src="./assets/avatar.jpg" alt="Thầy Hà – Giảng viên lái xe"
+                         onerror="this.src='https://images.unsplash.com/photo-1580519542036-c47de6196ba5?auto=format&fit=crop&w=600&q=80'">
+                    <div class="teacher-exp-badge">
+                        <span>10+</span> năm<br>kinh nghiệm
+                    </div>
+                </div>
+                <div class="col-md-8 p-4 p-lg-5 d-flex flex-column justify-content-center">
+                    <div class="mb-1" style="font-size:.75rem; color:var(--accent); font-weight:700; text-transform:uppercase; letter-spacing:.12em">Giảng viên chính</div>
+                    <h3 class="section-title mb-1" style="font-size:2rem">Thầy Hà</h3>
+                    <p style="font-size:.82rem; color:var(--muted)">Trung tâm Đào tạo sát hạch lái xe – Trường ĐH An Ninh TP.HCM</p>
+
+                    <div class="quote-block my-4">
+                        <p class="quote-text">"Học lái xe không chỉ để lấy tấm bằng, mà là học cách bảo vệ an toàn cho chính mình và gia đình sau tay lái. Tôi dạy bằng cả trái tim, không chỉ bằng giáo án."</p>
+                        <div class="quote-author">— Thầy Hà</div>
+                    </div>
+
+                    <p class="text-muted lh-lg mb-4" style="font-size:.88rem">
+                        Với hơn 10 năm công tác, Thầy Hà đã trực tiếp hướng dẫn hàng nghìn học viên vượt qua kỳ thi sát hạch. Phương pháp <strong>"dạy mẹo dễ hiểu – thực hành thực tế"</strong> cùng sự kiên nhẫn và tận tụy đã trở thành thương hiệu cá nhân không thể nhầm lẫn.
+                    </p>
+
+                    <div class="row g-2">
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-id-card"></i> Giấy phép hành nghề</div>
+                        </div>
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-certificate"></i> Chứng chỉ Bộ GTVT</div>
+                        </div>
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-shield-alt"></i> Cam kết không phát sinh</div>
+                        </div>
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-star"></i> Đánh giá 5★ trên Zalo</div>
+                        </div>
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-car"></i> Xe đời mới, máy lạnh</div>
+                        </div>
+                        <div class="col-6 col-xl-4">
+                            <div class="cert-badge"><i class="fas fa-headset"></i> Hỗ trợ 24/7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TẦM NHÌN & SỨ MỆNH ─── -->
+<section id="tam-nhin" class="bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Kim Chỉ Nam</span>
+            <h2 class="section-title">Tầm nhìn & Sứ mệnh</h2>
+            <div class="divider-line mx-auto"></div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="vm-card navy">
+                    <div class="vm-icon"><i class="fas fa-eye"></i></div>
+                    <h4>Tầm nhìn</h4>
+                    <p>Trở thành biểu tượng của sự tin cậy trong lĩnh vực đào tạo lái xe tại TP.HCM – nơi mỗi học viên đều cảm thấy hài lòng và an tâm tuyệt đối từ ngày đầu đăng ký.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="120">
+                <div class="vm-card orange">
+                    <div class="vm-icon"><i class="fas fa-bullseye"></i></div>
+                    <h4>Sứ mệnh</h4>
+                    <p>Đào tạo ra những người lái xe giỏi kỹ năng, vững luật pháp và có trách nhiệm cao với cộng đồng, góp phần giảm thiểu tai nạn giao thông trên khắp cả nước.</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+                <div class="vm-card white">
+                    <div class="vm-icon"><i class="fas fa-gem"></i></div>
+                    <h4>Giá trị cốt lõi</h4>
+                    <p>Trung thực trong tài chính · Tận tụy trong hướng dẫn · Luôn lắng nghe và cải thiện dịch vụ dựa trên phản hồi thực tế của học viên.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TẠI SAO CHỌN CHÚNG TÔI ─── -->
+<section class="bg-light-custom">
+    <div class="container">
+        <div class="row gy-5 align-items-center">
+            <div class="col-lg-4" data-aos="fade-right">
+                <span class="section-label">Điểm Khác Biệt</span>
+                <h2 class="section-title">Tại sao chọn<br>Thầy Hà?</h2>
+                <div class="divider-line mb-4"></div>
+                <p class="text-muted" style="font-size:.9rem; line-height:1.8">
+                    Chúng tôi không chỉ dạy bạn "thi đậu" – chúng tôi đào tạo bạn trở thành người tài xế <strong>tự tin, an toàn</strong> trên mọi cung đường.
+                </p>
+                <a href="tel:0941822239" class="btn-register mt-3 d-inline-flex align-items-center gap-2">
+                    <i class="fas fa-phone-alt fa-sm"></i> Tư vấn miễn phí
+                </a>
+            </div>
+            <div class="col-lg-8" data-aos="fade-left">
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-car-side"></i></div>
+                            <div>
+                                <h6>Xe đời mới, máy lạnh</h6>
+                                <p>Học trên các dòng xe hiện đại, sạch sẽ, trang bị đầy đủ tiện nghi cho học viên.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-clock"></i></div>
+                            <div>
+                                <h6>Giờ học linh hoạt</h6>
+                                <p>Sắp xếp lịch học phù hợp, học cả T7 và Chủ nhật, không ảnh hưởng công việc.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-map-marked-alt"></i></div>
+                            <div>
+                                <h6>Sân tập đạt chuẩn</h6>
+                                <p>Hệ thống sân tập rộng rãi, hiện đại, chuẩn quy định của Bộ GTVT.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-headset"></i></div>
+                            <div>
+                                <h6>Hỗ trợ 24/7</h6>
+                                <p>Thầy Hà trực tiếp tư vấn, giải đáp mọi thắc mắc trước và sau khi đăng ký.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                            <div>
+                                <h6>Học phí minh bạch</h6>
+                                <p>Cam kết không phát sinh chi phí ngoài hợp đồng. Rõ ràng từ A đến Z.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="why-item">
+                            <div class="why-icon"><i class="fas fa-redo-alt"></i></div>
+                            <div>
+                                <h6>Thi lại miễn phí</h6>
+                                <p>Hỗ trợ ôn luyện và thi lại không giới hạn nếu học viên chưa đậu lần đầu.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="bg-white">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Học Viên Nói Gì</span>
+            <h2 class="section-title">Phản hồi từ cộng đồng</h2>
+            <div class="divider-line mx-auto"></div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                <div class="review-card">
+                    <div class="mb-3"><span class="star">★★★★★</span></div>
+                    <p class="review-text">"Thầy dạy rất kiên nhẫn, hướng dẫn từng chi tiết nhỏ. Mình là người chưa bao giờ lái xe nhưng chỉ sau 3 buổi đã cảm thấy tự tin hơn rất nhiều!"</p>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <div class="reviewer-av" style="background:#1a3570">L</div>
+                        <div>
+                            <div class="reviewer-name">Nguyễn Thị Lan</div>
+                            <div class="reviewer-meta">Học viên bằng B2 · Quận 9</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="120">
+                <div class="review-card">
+                    <div class="mb-3"><span class="star">★★★★★</span></div>
+                    <p class="review-text">"Đậu thực hành ngay lần đầu nhờ Thầy Hà hướng dẫn bí quyết sa hình. Chi phí hợp lý, không phát sinh. Giới thiệu cho cả gia đình đăng ký!"</p>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <div class="reviewer-av" style="background:#0e5c42">M</div>
+                        <div>
+                            <div class="reviewer-name">Trần Minh</div>
+                            <div class="reviewer-meta">Học viên bằng B1 · Bình Dương</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="240">
+                <div class="review-card">
+                    <div class="mb-3"><span class="star">★★★★★</span></div>
+                    <p class="review-text">"Thầy không chỉ dạy kỹ thuật mà còn dạy tư duy an toàn khi lái. Sau khóa học, mình lái xe trên đường thực sự an toàn và tự tin hơn hẳn."</p>
+                    <div class="d-flex align-items-center gap-3 mt-4">
+                        <div class="reviewer-av" style="background:#7b2d8b">P</div>
+                        <div>
+                            <div class="reviewer-name">Lê Hoàng Phúc</div>
+                            <div class="reviewer-meta">Học viên bằng C · TP.HCM</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-band py-5">
+    <div class="container position-relative" style="z-index:1">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-7" data-aos="fade-right">
+                <p style="color:var(--gold); font-size:.78rem; text-transform:uppercase; letter-spacing:.15em; font-weight:700; margin-bottom:8px">
+                    <i class="fas fa-fire me-2"></i>Đăng ký ngay hôm nay
+                </p>
+                <h2 class="section-title text-white mb-2" style="font-size:clamp(1.5rem,3vw,2.2rem)">Sẵn sàng cầm vô lăng<br>tự tin và an toàn?</h2>
+                <p style="color:rgba(255,255,255,.7); font-size:.88rem">Liên hệ Thầy Hà ngay để nhận tư vấn miễn phí và ưu đãi học phí mới nhất.</p>
+            </div>
+            <div class="col-lg-5 d-flex flex-wrap gap-3 justify-content-lg-end" data-aos="fade-left">
+                <a href="tel:0941822239" class="btn-cta-main">
+                    <i class="fas fa-phone-alt"></i> 0941 822 239
+                </a>
+                <a href="https://zalo.me/0941822239" target="_blank" class="btn-cta-outline">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" width="20" alt="Zalo"> Nhắn Zalo
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="pt-5 pb-3">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="logo-ring" style="border-color:var(--accent)">
+                        <img src="./assets/avatar.jpg" alt="Thầy Hà" onerror="this.src='https://ui-avatars.com/api/?name=H&background=0b1f4a&color=f4782a&size=80'">
+                    </div>
+                    <div>
+                        <div style="font-family:'Playfair Display',serif; font-weight:900; color:#fff; font-size:1.3rem">Thầy Hà</div>
+                        <div style="font-size:.65rem; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.05em">Đào Tạo Lái Xe – ĐH An Ninh</div>
+                    </div>
+                </div>
+                <ul class="list-unstyled footer-info">
+                    <li><i class="fas fa-map-marker-alt"></i><span>km18 Song Hành Xa Lộ Hà Nội, TP. Hồ Chí Minh</span></li>
+                    <li><i class="fas fa-phone-alt"></i><a href="tel:0941822239">0941 822 239</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6>Điều hướng</h6>
+                <a href="index.html"><i class="fas fa-chevron-right fa-xs me-1" style="color:var(--accent)"></i> Trang chủ</a>
+                <a href="introduce.html"><i class="fas fa-chevron-right fa-xs me-1" style="color:var(--accent)"></i> Giới thiệu</a>
+                <a href="#"><i class="fas fa-chevron-right fa-xs me-1" style="color:var(--accent)"></i> Khóa học</a>
+                <a href="#"><i class="fas fa-chevron-right fa-xs me-1" style="color:var(--accent)"></i> Liên hệ</a>
+            </div>
+            <div class="col-6 col-lg-2">
+                <h6>Khóa học</h6>
+                <a href="#">Bằng lái B1</a>
+                <a href="#">Bằng lái B2</a>
+                <a href="#">Bằng lái C</a>
+                <a href="#">Học lái xe nhanh</a>
+            </div>
+            <div class="col-lg-4">
+                <h6>Vị trí trung tâm</h6>
+                <div style="border-radius:12px; overflow:hidden; height:160px">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2230614629752!2d106.8055883!3d10.870631699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d914b59bec0b%3A0x995734e091b0b54f!2zVGjhuqd5IEjDoCAtIFRydW5nIHTDom0gxJHDoG8gdOG6oW8gc8OhdCBo4bqhY2ggbMOhaSB4ZSBBbiBOaW5o!5e0!3m2!1svi!2s!4v1777990864765!5m2!1svi!2s"
+                        width="100%" height="160" style="border:0" loading="lazy" title="Vị trí Trung tâm ĐH An Ninh"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copy">
+            &copy; 2026 Website Đào Tạo Lái Xe Thầy Hà · Trung tâm ĐH An Ninh TP.HCM · Tất cả quyền được bảo lưu.
+        </div>
+    </div>
+</footer>
+
+<!-- ─── FLOATING BUTTONS ─── -->
+<div class="floats">
+    <a href="https://zalo.me/0941822239" target="_blank" class="zalo-btn" title="Chat Zalo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo">
+    </a>
+    <a href="tel:0941822239" class="phone-btn">
+        <span>0941 822 239</span>
+        <div class="phone-circle"><i class="fas fa-phone"></i></div>
+    </a>
+</div>
+
+<!-- ─── SCRIPTS ─── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<script>
+$(function () {
+    // ── Init AOS
+    AOS.init({ duration: 700, once: true, offset: 60, easing: 'ease-out-cubic' });
+
+    // ── Animated counters
+    function animateCounter($el) {
+        var target   = parseInt($el.text().replace(/[^0-9]/g, ''));
+        var suffix   = $el.html().replace(/[0-9]/g, '').trim();
+        var duration = 1600;
+        var steps    = 50;
+        var step     = 0;
+        var timer = setInterval(function () {
+            step++;
+            var val = Math.round(target * (step / steps));
+            $el.html(val + '<span class="stat-unit">' + suffix + '</span>');
+            if (step >= steps) {
+                clearInterval(timer);
+                $el.html(target + '<span class="stat-unit">' + suffix + '</span>');
+            }
+        }, duration / steps);
+    }
+
+    var counterDone = false;
+    $(window).on('scroll.counter', function () {
+        if (counterDone) return;
+        var $sec = $('.stat-card').first();
+        if (!$sec.length) return;
+        if ($(window).scrollTop() + $(window).height() > $sec.offset().top + 40) {
+            counterDone = true;
+            $('.stat-number').each(function () { animateCounter($(this)); });
+        }
+    });
+
+    // ── Sticky nav shadow boost on scroll
+    $(window).on('scroll', function () {
+        if ($(this).scrollTop() > 10) {
+            $('.main-nav').addClass('shadow-sm');
+        } else {
+            $('.main-nav').removeClass('shadow-sm');
+        }
+    });
+
+    // ── Smooth scroll for anchor links
+    $('a[href^="#"]').on('click', function (e) {
+        var target = $(this.getAttribute('href'));
+        if (target.length) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: target.offset().top - 80 }, 500, 'swing');
+        }
+    });
+});
+</script>
 
 </body>
 </html>
