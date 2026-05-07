@@ -533,15 +533,127 @@
         }
 
         /* Tùy chỉnh thêm cho cụm floats nếu cần */
-        .floats {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 12px;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1050;
+       .floats {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+        position: fixed;
+        bottom: 20px;
+        right: 15px; /* Giảm một chút để an toàn trên màn hình nhỏ */
+        z-index: 9999; /* Đảm bảo luôn nằm trên cùng */
+        pointer-events: auto;
+    }
+
+/* Đảm bảo nút Phone không quá dài trên điện thoại cực nhỏ */
+        @media (max-width: 360px) {
+            .phone-btn span {
+                display: none; /* Chỉ hiện icon phone nếu màn hình quá bé */
+            }
+            .phone-btn {
+                padding: 8px;
+                width: 48px;
+                height: 48px;
+                justify-content: center;
+            }
+        }
+
+
+
+        /* ─── BỔ SUNG CHỨC NĂNG RESPONSIVE (PHONE - TABLET - PC) ─── */
+
+        /* 1. Tối ưu hình ảnh không bị vỡ/méo */
+        img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        /* Chống tràn tuyệt đối */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fix lỗi các phần tử có width 100% cộng thêm padding/margin */
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        /* Fix lỗi ảnh hoặc iframe bản đồ vượt quá màn hình */
+        img, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 2. Điều chỉnh cho màn hình lớn (PC/Laptop lớn) */
+        @media (min-width: 1400px) {
+            .container { max-width: 1320px; }
+            .hero-title { font-size: 4rem; }
+        }
+
+        /* 3. Điều chỉnh cho Laptop và Tablet (992px - 1199px) */
+        @media (max-width: 1199px) {
+            .nav-link-custom { padding: 6px 8px !important; font-size: 0.7rem; }
+            .teacher-img-col { min-height: 450px; }
+        }
+
+        /* 4. Điều chỉnh cho Tablet và điện thoại xoay ngang (768px - 991px) */
+        @media (max-width: 991px) {
+            .hero { min-height: 350px; text-align: center; }
+            .hero-diagonal { width: 0; } /* Ẩn vệt chéo để tránh đè chữ trên mobile */
+            .breadcrumb-hero { justify-content: center; display: flex; }
+            .teacher-img-col { min-height: 400px; }
+            .stat-card { padding: 20px 10px; }
+            .stat-number { font-size: 2rem; }
+            
+            /* Navbar Mobile */
+            .navbar-collapse {
+                background: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                margin-top: 10px;
+            }
+        }
+
+        /* 5. Điều chỉnh cho Điện thoại (Dưới 767px) */
+        @media (max-width: 767px) {
+            section { padding-top: 40px; padding-bottom: 40px; }
+            
+            /* Hero Mobile */
+            .hero-title { font-size: 1.8rem; }
+            .hero-badge { font-size: 0.7rem; padding: 4px 12px; }
+
+            /* Tránh vỡ Stats */
+            .stat-card { margin-bottom: 10px; }
+            .stat-number { font-size: 1.8rem; }
+            
+            /* Timeline Mobile */
+            .timeline::before { left: 15px; }
+            .tl-dot { width: 32px; height: 32px; font-size: 0.7rem; }
+            .tl-item { gap: 15px; }
+
+            /* Giảng viên & Quote */
+            .teacher-img-col { min-height: 300px; }
+            .quote-block { padding: 20px; }
+            .quote-text { font-size: 0.85rem; }
+
+            /* Floating Buttons Mobile */
+            .phone-btn span { display: none; } /* Chỉ hiện icon tròn trên mobile nhỏ */
+            .phone-btn { padding: 8px; border-radius: 50%; width: 48px; height: 48px; justify-content: center; }
+            .floats { right: 10px; bottom: 10px; gap: 8px; }
+            
+            /* Review Card */
+            .review-card { padding: 20px; }
+        }
+
+        /* 6. Tối ưu cho điện thoại siêu nhỏ (iPhone SE, etc.) */
+        @media (max-width: 375px) {
+            .brand-name { font-size: 1.2rem; }
+            .hero-title { font-size: 1.5rem; }
+            .btn-cta-main, .btn-cta-outline { width: 100%; justify-content: center; }
         }
     </style>
 
@@ -559,7 +671,7 @@
             </a>
         </span>
         <span style="color: white;"><i class="fas fa-phone-alt icon-dot"></i> Hotline: <a href="tel:0941822239" style="color: white;">0941 822 239</a>
-            &nbsp;&nbsp;<i class="fas fa-envelope icon-dot ms-3" style="color: white;"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></span>
+            &nbsp;&nbsp;<i class="fas fa-envelope icon-dot ms-3" style="color: white;"></i><a href="mailto:lexuanha280473@gmail.com">lexuanha280473@gmail.com</a></span>
     </div>
 </div>
 
@@ -628,7 +740,7 @@
             </div>
             <div class="col-6 col-lg-3">
                 <div class="stat-card">
-                    <div class="stat-number">97<span class="stat-unit">%</span></div>
+                    <div class="stat-number">100<span class="stat-unit">%</span></div>
                     <div class="stat-label">Tỷ lệ đậu lần 1</div>
                 </div>
             </div>
@@ -968,7 +1080,7 @@
                 <ul class="list-unstyled footer-info">
                     <li><i class="fas fa-map-marker-alt"></i><span>km18 Song Hành Xa Lộ Hà Nội, TP. Hồ Chí Minh</span></li>
                     <li><i class="fas fa-phone-alt"></i><a href="tel:0941822239">0941 822 239</a></li>
-                    <li><i class="fas fa-envelope"></i><a href="mailto:thayhalaihcm@gmail.com">thayhalaihcm@gmail.com</a></li>
+                    <li><i class="fas fa-envelope"></i><a href="mailto:lexuanha280473@gmail.com">lexuanha280473@gmail.com</a></li>
                 </ul>
             </div>
             <div class="col-6 col-lg-2">
