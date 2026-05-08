@@ -12,7 +12,7 @@
         body { font-family: 'Times New Roman', Times, serif; }
         
         .hero-detail {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./assets/anhxe4.png');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('./assets/banner3.png');
             background-size: cover;
             background-position: center;
         }
@@ -217,7 +217,7 @@
                             <div class="font-bold text-sm">Hạng B1 (Số tự động)</div>
                             <div class="text-[11px] text-gray-500 mt-0.5">Thực hành 1 thầy / 1 xe</div>
                         </a>
-                        <a href="#" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
+                        <a href="detailb2.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
                             <div class="font-bold text-sm">Hạng B2 (Số sàn)</div>
                             <div class="text-[11px] text-gray-500 mt-0.5">Phổ biến nhất · Tỉ lệ đậu 99%</div>
                         </a>
@@ -301,7 +301,7 @@
                         <span class="mobile-submenu-title">Hạng B1 (Số tự động)</span>
                         <span class="mobile-submenu-desc">Thực hành 1 thầy / 1 xe</span>
                     </a>
-                    <a href="#" class="mobile-submenu-item">
+                    <a href="detailb2.html" class="mobile-submenu-item">
                         <span class="mobile-submenu-title">Hạng B2 (Số sàn)</span>
                         <span class="mobile-submenu-desc">Phổ biến nhất · Tỉ lệ đậu 99%</span>
                     </a>
@@ -588,7 +588,7 @@
 
                     <!-- Image 2 -->
                     <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
-                        <img src="./assets/study1.png" alt="Thực hành B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="./assets/doccau2.png" alt="Thực hành B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300 flex items-center justify-center">
                             <i class="fas fa-search-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition"></i>
                         </div>
@@ -599,7 +599,7 @@
 
                     <!-- Image 3 -->
                     <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
-                        <img src="./assets/study2.png" alt="Sân tập B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="./assets/doccau3.png" alt="Sân tập B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300 flex items-center justify-center">
                             <i class="fas fa-search-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition"></i>
                         </div>
@@ -610,7 +610,7 @@
 
                     <!-- Image 4 -->
                     <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
-                        <img src="./assets/study3.png" alt="Khóa học B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <img src="./assets/quanhco.png" alt="Khóa học B1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition duration-300 flex items-center justify-center">
                             <i class="fas fa-search-plus text-white text-3xl opacity-0 group-hover:opacity-100 transition"></i>
                         </div>
@@ -653,6 +653,27 @@
                 </div>
 
                 <!-- Video Player -->
+                <div class="max-w-4xl mx-auto ">
+                    <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-xl" style="padding-bottom: 56.25%; ">
+                        <video 
+                            id="courseVideo"
+                            class="absolute top-0 left-0 w-full h-full"
+                            controls
+                            controlsList="nodownload"
+                            preload="metadata"
+                            poster="./assets/study1.png"
+                            style="background: #000;">
+                            <!-- MP4 Video (main format) -->
+                            <source src="./video/videob1.mp4" type="video/mp4">
+                            <!-- WebM Video (fallback) -->
+                            <source src="./video/videob1.webm" type="video/webm">
+                            <p>Trình duyệt của bạn không hỗ trợ video. Vui lòng cập nhật trình duyệt.</p>
+                        </video>
+                    </div>
+                </div>
+
+                <br><br>
+                 <!-- Video Cabin -->
                 <div class="max-w-4xl mx-auto">
                     <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-xl" style="padding-bottom: 56.25%;">
                         <video 
@@ -664,9 +685,30 @@
                             poster="./assets/anhxe4.png"
                             style="background: #000;">
                             <!-- MP4 Video (main format) -->
-                            <source src="./video/videob1.mp4" type="video/mp4">
+                            <source src="./video/cabin.mp4" type="video/mp4">
                             <!-- WebM Video (fallback) -->
-                            <source src="./video/videob1.webm" type="video/webm">
+                            <source src="./video/cabin.webm" type="video/webm">
+                            <p>Trình duyệt của bạn không hỗ trợ video. Vui lòng cập nhật trình duyệt.</p>
+                        </video>
+                    </div>
+                </div>
+
+                <br><br>
+                 <!-- Video AnhXe-->
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-xl" style="padding-bottom: 56.25%;">
+                        <video 
+                            id="courseVideo"
+                            class="absolute top-0 left-0 w-full h-full"
+                            controls
+                            controlsList="nodownload"
+                            preload="metadata"
+                            poster="./assets/doccau3.png"
+                            style="background: #000;">
+                            <!-- MP4 Video (main format) -->
+                            <source src="./video/videoanhxe.mp4" type="video/mp4">
+                            <!-- WebM Video (fallback) -->
+                            <source src="./video/videoanhxe.webm" type="video/webm">
                             <p>Trình duyệt của bạn không hỗ trợ video. Vui lòng cập nhật trình duyệt.</p>
                         </video>
                     </div>
@@ -780,16 +822,6 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-envelope"></i></span>
                             <input type="email" placeholder="Email (tùy chọn)" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" name="email">
                         </div>
-
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-graduation-cap"></i></span>
-                            <select required class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 text-gray-600 appearance-none" name="package">
-                                <option value="">Chọn gói học *</option>
-                                <option value="basic">Gói Cơ Bản (3,500,000₫)</option>
-                                <option value="premium">Gói Premium (4,200,000₫)</option>
-                            </select>
-                        </div>
-
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-calendar"></i></span>
                             <select class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 text-gray-600 appearance-none" name="schedule">
@@ -873,7 +905,7 @@
                     <h6 class="text-lg font-bold mb-6 text-white uppercase relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-orange-500">Khóa học</h6>
                     <ul class="space-y-3">
                         <li><a href="detailb1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B1 (Số tự động)</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B2 (Số sàn)</a></li>
+                        <li><a href="detailb2.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B2 (Số sàn)</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái C (Xe tải)</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-orange-500 transition text-sm block">Học lái xe bổ túc</a></li>
                     </ul>

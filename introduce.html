@@ -82,6 +82,22 @@
             color: var(--accent) !important;
             background: var(--accent-soft);
         }
+
+        /* Make header dropdown items use same accent as index */
+        .dropdown-menu .dropdown-item {
+            color: var(--text);
+            font-weight: 700;
+            text-transform: none;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            transition: background .15s, color .15s;
+            white-space: normal;
+        }
+        .dropdown-menu .dropdown-item:hover,
+        .dropdown-menu .dropdown-item:focus {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
         .btn-register {
             background: var(--accent);
             color: #fff !important;
@@ -688,16 +704,85 @@
                     <div class="brand-sub">Trung tâm sát hạch lái xe ĐH An Ninh</div>
                 </div>
             </a>
+
             <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-2 my-lg-0 me-3">
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="introduce.html">Giới thiệu</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Khóa học</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#">Liên hệ</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="index.html">Trang chủ</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom active" href="introduce.html">Giới thiệu</a>
+                    </li>
+
+                    <!-- Dropdown Khóa học -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Khóa học
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg">
+                            <li>
+                                <a class="dropdown-item" href="detailb1.html">
+                                    <div class="fw-bold">Hạng B1 (Số tự động)</div>
+                                    <div class="text-muted" style="font-size:.78rem">Thực hành 1 thầy / 1 xe</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="detailb2.html">
+                                    <div class="fw-bold">Hạng B2 (Số sàn)</div>
+                                    <div class="text-muted" style="font-size:.78rem">Phổ biến nhất · Tỉ lệ đậu 99%</div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <div class="fw-bold">Hạng C (Xe tải)</div>
+                                    <div class="text-muted" style="font-size:.78rem">Đào tạo bài bản 6 tháng</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Dropdown Liên hệ -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Liên hệ
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow-lg">
+                            <li>
+                                <a class="dropdown-item" href="tel:0941822239">
+                                    <i class="fas fa-phone text-orange-500 me-2"></i>
+                                    <div>
+                                        <div class="text-muted" style="font-size:.78rem">Hotline</div>
+                                        <div class="fw-bold">0941 822 239</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="mailto:lexuanha280473@gmail.com">
+                                    <i class="fas fa-envelope text-orange-500 me-2"></i>
+                                    <div>
+                                        <div class="text-muted" style="font-size:.78rem">Email</div>
+                                        <div class="fw-bold">lexuanha280473@gmail.com</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank">
+                                    <i class="fas fa-map-marker-alt text-orange-500 me-2"></i>
+                                    <div>
+                                        <div class="text-muted" style="font-size:.78rem">Địa chỉ</div>
+                                        <div class="fw-bold">km18 Song Hành, TP.HCM</div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
+
                 <a href="tel:0941822239" class="btn-register d-none d-lg-inline-flex align-items-center gap-2">
                     <i class="fas fa-phone-alt fa-sm"></i> Đăng Ký Ngay
                 </a>
@@ -716,9 +801,15 @@
                 <li class="breadcrumb-item active" aria-current="page">Giới thiệu</li>
             </ol>
         </nav>
-        <div class="hero-badge mb-3"><i class="fas fa-star fa-xs"></i> Đào tạo lái xe uy tín số 1 tại TP.HCM</div>
-        <h1 class="hero-title mb-3">Về Thầy Hà<br><span style="color:var(--gold)">& Trung Tâm</span></h1>
-        <p class="hero-subtitle">Uy tín - Tận tâm - Trách nhiệm</p>
+        <div class="hero-badge mb-3"><i class="fas fa-star fa-xs"></i> Chuyên đào tạo lái xe uy tín tại TP.HCM</div>
+        <h1 class="hero-title mb-3">Đào tạo lái xe chuyên nghiệp cùng Thầy Hà</h1>
+        <p class="hero-subtitle">Cam kết học phí trọn gói, không phát sinh · Tỉ lệ đậu cao · Xe đạp mát sạch sẽ</p>
+        <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+            <a href="tel:0941822239" class="btn-register" style="background:#1a3a80; padding:12px 26px; text-transform:none; letter-spacing:0; font-size:.9rem">
+                <i class="fas fa-phone-alt me-2"></i> Gọi: 0941 822 239
+            </a>
+            <a href="#form-dang-ky" class="btn btn-light" style="border-radius:30px; font-weight:800; padding:11px 22px;">Tư vấn miễn phí</a>
+        </div>
     </div>
 </section>
 
