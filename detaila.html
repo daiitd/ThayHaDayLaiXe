@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Khóa Học Hạng A (Xe Máy) - Thi Nhanh, Hỗ Trợ Full Bài Bản | Thầy Hạ</title>
+    <meta name="description" content="Khóa học hạng A (xe máy) tại Thầy Hạ. Lộ trình rõ ràng, thực hành nhiều, 1 thầy/1 xe, kèm video & hình ảnh thực tế. Tư vấn lộ trình thi & hỗ trợ đăng ký nhanh." />
+    <meta name="keywords" content="khóa học hạng A, học bằng lái xe hạng A, thi bằng lái hạng A tphcm, đào tạo hạng A xe máy, học lái xe hạng A nhanh, lộ trình thi hạng A" />
+    <meta name="author" content="Thầy Hạ - Đào Tạo Lái Xe" />
+
+    <meta property="og:title" content="Khóa Học Hạng A (Xe Máy) - Thầy Hạ" />
+    <meta property="og:description" content="Lộ trình bài bản, thực hành nhiều, kèm video/hình ảnh thực tế. Hỗ trợ tư vấn thi nhanh và đăng ký thuận tiện." />
+    <meta property="og:image" content="./assets/A.png" />
+    <meta property="og:url" content="https://daylaixethayha.com/detaila.html" />
+    <meta property="og:type" content="website" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Times New Roman', Times, serif; }
+
+        .hero-detail-a {
+            background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('./assets/bannera.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        img { max-width: 100%; height: auto; }
+
+        /* ── MOBILE MENU DROPDOWN ── */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .mobile-menu.active { max-height: 600px; }
+        .mobile-menu-item {
+            display: block;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu-item:hover { background: #fff0e5; color: #f4782a; }
+        .mobile-menu-item.active { background: #fff0e5; color: #f4782a; }
+
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #f8f9fa;
+        }
+        .mobile-submenu.active { max-height: 400px; }
+        .mobile-submenu-item {
+            display: block;
+            padding: 12px 16px 12px 40px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #6c7a8a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-submenu-item:hover { background: #f0f2f5; color: #f4782a; }
+
+        .mobile-submenu-title {
+            font-weight: 700;
+            color: #0b1f4a;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .mobile-submenu-desc {
+            font-size: 0.72rem;
+            color: #999;
+            display: block;
+        }
+
+        /* ── TOGGLE BUTTON ── */
+        .menu-toggle {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 12px;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #0b1f4a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translateY(10px); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translateY(-10px); }
+
+        /* Timeline styles */
+        .timeline-item {
+            position: relative;
+            padding-left: 50px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: #f4782a;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #f4782a;
+        }
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 20px;
+            bottom: -80px;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        /* Benefit cards */
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f4782a, #ff9e4d);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+
+    <!-- Header & Nav -->
+    <header class="sticky top-0 z-[100] bg-white shadow-md">
+        <div class="bg-blue-900 text-white py-1.5 hidden md:block">
+            <div class="container mx-auto flex justify-between px-4 text-xs lg:text-sm">
+                <div>
+                    <i class="fas fa-map-marker-alt mr-2 text-orange-400"></i>
+                    <a href="https://maps.app.goo.gl/7tVfBHfdtMutrfc38" target="_blank">
+                        km18 Song Hành Xa Lộ Hà Nội, TP. HCM
+                    </a>
+                </div>
+                <div><i class="fas fa-phone-alt mr-2 text-orange-400"></i> Hotline: 0941 822 239</div>
+            </div>
+        </div>
+
+        <nav class="container mx-auto flex justify-between items-center py-3 px-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 md:w-14 md:h-14 rounded-full overflow-hidden border-2 border-orange-500 shrink-0 shadow-sm">
+                    <img src="./assets/avatar.jpg" alt="avatar" class="w-full h-full object-cover">
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg md:text-2xl font-bold text-blue-900 uppercase leading-none">Thầy Hạ</span>
+                    <span class="text-[10px] md:text-xs font-bold text-red-600 uppercase mt-1 leading-tight">Trung tâm Đào tạo sát hạch lái xe ĐH An Ninh</span>
+                </div>
+            </div>
+
+            <!-- Menu Desktop -->
+            <ul class="hidden lg:flex space-x-6 font-bold text-gray-700 uppercase text-xs">
+                <li><a href="index.html" class="hover:text-orange-500 transition"><b style="font-size: medium;">Trang Chủ</b></a></li>
+                <li><a href="introduce.html" class="hover:text-orange-500 transition"><b style="font-size: medium;">Giới Thiệu</b></a></li>
+
+                <!-- Dropdown Khóa Học -->
+                <li class="relative group">
+                    <button class="hover:text-orange-600 transition flex items-center">
+                        <b style="font-size: large;">Khóa học</b>
+                        <i class="fas fa-chevron-down ml-1.5 text-[10px] group-hover:rotate-180 transition duration-300"></i>
+                    </button>
+                    <div class="absolute top-full left-0 mt-0 w-60 bg-white text-gray-800 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 overflow-hidden border border-gray-100">
+                        <a href="detailb1.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
+                            <div class="font-bold text-sm">Hạng B1 (Số tự động)</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">Thực hành 1 thầy / 1 xe</div>
+                        </a>
+                        <a href="detailb2.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
+                            <div class="font-bold text-sm">Hạng B2 (Số sàn)</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">Tỉ lệ đầu 99%</div>
+                        </a>
+                        <a href="detailb3.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition text-left">
+                            <div class="font-bold text-sm">Hạng C (Xe tải)</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">Đào tạo bãi bản 6 tháng</div>
+                        </a>
+                        <a href="detaila1.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition text-left">
+                            <div class="font-bold text-sm">Hạng A1 (Xe máy)</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">Thi nhanh, học phù hợp</div>
+                        </a>
+                        <a href="detaila.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition text-left bg-orange-50 text-orange-600">
+                            <div class="font-bold text-sm">Hạng A (Xe máy)</div>
+                            <div class="text-[11px] text-gray-500 mt-0.5">Luyện tay lái chuẩn & thi hiệu quả</div>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- Dropdown Liên Hệ -->
+                <li class="relative group">
+                    <button class="hover:text-orange-500 transition flex items-center">
+                        <b style="font-size: large;">Liên Hệ</b>
+                        <i class="fas fa-chevron-down ml-1.5 text-[10px] group-hover:rotate-180 transition duration-300"></i>
+                    </button>
+                    <div class="absolute top-full -right-20 mt-0 w-72 bg-white text-gray-800 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 overflow-hidden border border-gray-100">
+                        <div class="px-5 py-4 bg-gradient-to-r from-blue-900 to-blue-800 text-white">
+                            <h4 class="font-bold text-sm mb-4">Thông tin liên hệ</h4>
+                        </div>
+                        <div class="px-5 py-3.5 border-b border-gray-100">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-phone text-orange-500 mt-1 text-sm"></i>
+                                <div>
+                                    <p class="text-[11px] text-gray-500 uppercase tracking-wider">Hotline</p>
+                                    <a href="tel:0941822239" class="font-bold text-sm hover:text-orange-600 transition">0941 822 239</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-5 py-3.5 border-b border-gray-100">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-envelope text-orange-500 mt-1 text-sm"></i>
+                                <div>
+                                    <p class="text-[11px] text-gray-500 uppercase tracking-wider">Email</p>
+                                    <a href="mailto:lexuanha280473@gmail.com" class="font-bold text-sm hover:text-orange-600 transition">lexuanha280473@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-5 py-3.5">
+                            <div class="flex items-start gap-3">
+                                <i class="fas fa-map-marker-alt text-orange-500 mt-1 text-sm"></i>
+                                <div>
+                                    <p class="text-[11px] text-gray-500 uppercase tracking-wider">Địa chỉ</p>
+                                    <a href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank" class="font-bold text-sm hover:text-orange-600 transition">km18 Song Hành, TP.HCM</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="menu-toggle lg:hidden" id="menuToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+
+            <a href="tel:0941822239" class="bg-orange-500 text-white px-4 py-2 md:px-6 md:py-2.5 rounded-full text-xs md:text-sm font-bold hover:bg-orange-600 transition shadow-lg animate-pulse whitespace-nowrap">
+                ĐĂNG KÝ NGAY
+            </a>
+        </nav>
+
+        <!-- Mobile Dropdown Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-menu-item"><i class="fas fa-home mr-2"></i> Trang chủ</a>
+            <a href="introduce.html" class="mobile-menu-item"><i class="fas fa-info-circle mr-2"></i> Giới thiệu</a>
+
+            <div>
+                <button class="mobile-menu-item w-full text-left" id="khoaHocToggle">
+                    <i class="fas fa-book mr-2"></i> Khóa học
+                    <i class="fas fa-chevron-down ml-auto text-xs transition-transform" id="khoaHocChevron"></i>
+                </button>
+                <div class="mobile-submenu" id="khoaHocSubmenu">
+                    <a href="detailb1.html" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title">Hạng B1 (Số tự động)</span>
+                        <span class="mobile-submenu-desc">Thực hành 1 thầy / 1 xe</span>
+                    </a>
+                    <a href="detailb2.html" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title">Hạng B2 (Số sàn)</span>
+                        <span class="mobile-submenu-desc">Tỉ lệ đầu 99%</span>
+                    </a>
+                    <a href="detailb3.html" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title">Hạng C (Xe tải)</span>
+                        <span class="mobile-submenu-desc">Đào tạo bài bản 6 tháng</span>
+                    </a>
+                    <a href="detaila1.html" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title">Hạng A1 (Xe máy)</span>
+                        <span class="mobile-submenu-desc">Thi nhanh & thực hành nhiều</span>
+                    </a>
+                    <a href="detaila.html" class="mobile-submenu-item bg-orange-50 text-orange-600">
+                        <span class="mobile-submenu-title">Hạng A (Xe máy)</span>
+                        <span class="mobile-submenu-desc">Luyện tay lái chuẩn & thi hiệu quả</span>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button class="mobile-menu-item w-full text-left" id="lienHeToggle">
+                    <i class="fas fa-phone-alt mr-2"></i> Liên hệ
+                    <i class="fas fa-chevron-down ml-auto text-xs transition-transform" id="lienHeChevron"></i>
+                </button>
+                <div class="mobile-submenu" id="lienHeSubmenu">
+                    <a href="tel:0941822239" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title"><i class="fas fa-phone text-orange-500 mr-1"></i> Hotline</span>
+                        <span class="mobile-submenu-desc">0941 822 239</span>
+                    </a>
+                    <a href="mailto:lexuanha280473@gmail.com" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title"><i class="fas fa-envelope text-orange-500 mr-1"></i> Email</span>
+                        <span class="mobile-submenu-desc">lexuanha280473@gmail.com</span>
+                    </a>
+                    <a href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank" class="mobile-submenu-item">
+                        <span class="mobile-submenu-title"><i class="fas fa-map-marker-alt text-orange-500 mr-1"></i> Địa chỉ</span>
+                        <span class="mobile-submenu-desc">km18 Song Hành, TP.HCM</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section - A Detail -->
+    <section class="hero-detail-a min-h-[400px] md:h-[500px] flex items-center text-white px-4 py-12">
+        <div class="container mx-auto">
+            <div class="max-w-3xl">
+                <div class="mb-4">
+                    <span class="inline-block bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">KHÓA HỌC HẠNG A (XE MÁY)</span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-bold mb-4 uppercase leading-tight">Bằng Lái Xe Máy Hạng A - Luyện Chuẩn, Thi Hiệu Quả, Tiến Độ Rõ Ràng</h1>
+                <p class="text-base md:text-lg mb-8 text-gray-100">
+                    Khóa học hạng A tại Thầy Hạ giúp bạn nắm vững kỹ năng điều khiển xe máy, thực hành nhiều trên bài
+                    thi, có 1 thầy/1 xe kèm sát theo từng lỗi. Tư vấn lộ trình thi & hỗ trợ đăng ký nhanh gọn.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#form-dang-ky" class="bg-orange-500 text-center py-3.5 px-8 rounded-lg font-bold text-lg hover:bg-orange-600 transition shadow-xl">
+                        <i class="fas fa-heart mr-2"></i> Đăng Ký Ngay
+                    </a>
+                    <a href="#gallery-video" class="bg-white text-blue-900 text-center py-3.5 px-8 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg">
+                        <i class="fas fa-images mr-2"></i> Xem Hình & Video
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Overview -->
+    <section class="py-12 md:py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-6 uppercase">Tại sao bạn nên chọn khóa A của Thầy Hạ?</h2>
+                    <div class="space-y-4">
+                        <div class="flex gap-4 items-start">
+                            <div class="benefit-icon"><i class="fas fa-user"></i></div>
+                            <div>
+                                <h3 class="font-bold text-blue-900 mb-1">1 Thầy - 1 Học Viên (Kèm Sát Lỗi)</h3>
+                                <p class="text-gray-600 text-sm">Lộ trình rõ theo từng kỹ năng: vào số/điều khiển, xử lý tình huống bài thi, sửa ngay để bạn tiến bộ nhanh.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="benefit-icon"><i class="fas fa-motorcycle"></i></div>
+                            <div>
+                                <h3 class="font-bold text-blue-900 mb-1">Xe Máy Dạy Chuẩn - Thực Hành Đúng Bài</h3>
+                                <p class="text-gray-600 text-sm">Thực hành nhiều lượt trên sân sát thực tế, giúp bạn nhớ bài và tự tin khi thi.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="benefit-icon"><i class="fas fa-calendar-alt"></i></div>
+                            <div>
+                                <h3 class="font-bold text-blue-900 mb-1">Lịch Học Linh Hoạt Theo Thời Gian Của Bạn</h3>
+                                <p class="text-gray-600 text-sm">Sắp xếp buổi học phù hợp, đảm bảo đủ bài tập và thời gian luyện thi.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div class="benefit-icon"><i class="fas fa-graduation-cap"></i></div>
+                            <div>
+                                <h3 class="font-bold text-blue-900 mb-1">Ôn Thi & Hỗ Trợ Trước - Trong - Sau Khi Thi</h3>
+                                <p class="text-gray-600 text-sm">Tư vấn cách giữ tâm lý, hướng dẫn thao tác đúng chuẩn để tăng khả năng qua bài.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rounded-2xl overflow-hidden shadow-xl">
+                    <img src="./assets/anhxethia.png" alt="Xe máy hạng A" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='./assets/banner3.png'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Learning Process -->
+    <section class="py-12 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-bold uppercase text-blue-900 inline-block relative pb-4">
+                    Quy Trình Đào Tạo Hạng A
+                    <span class="absolute bottom-0 left-1/4 right-1/4 h-1 bg-orange-500 rounded"></span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="bg-white p-8 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-bold text-blue-900 mb-8">🧭 Lộ trình học theo giai đoạn</h3>
+                    <div class="space-y-0 relative before:absolute before:left-7 before:top-0 before:bottom-0 before:w-0.5 before:bg-gradient-to-b before:from-orange-500 before:to-transparent">
+
+                        <div class="timeline-item">
+                            <div>
+                                <h4 class="font-bold text-blue-900">Giai đoạn 1: Làm quen xe & an toàn cơ bản</h4>
+                                <p class="text-gray-600 text-sm mt-2">Cách ngồi đúng tư thế, thao tác tay lái - chân phanh - ga, kiểm tra an toàn trước khi vào bài và nắm quy định.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div>
+                                <h4 class="font-bold text-blue-900">Giai đoạn 2: Luyện kỹ năng nền (đi đúng hướng)</h4>
+                                <p class="text-gray-600 text-sm mt-2">Luyện tăng/giảm tốc phù hợp, giữ thăng bằng, vào/ra vị trí bài thi mượt mà để hạn chế trừ điểm.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div>
+                                <h4 class="font-bold text-blue-900">Giai đoạn 3: Thực hành phần thi - tăng độ chính xác</h4>
+                                <p class="text-gray-600 text-sm mt-2">Luyện theo trình tự bài thi, sửa lỗi thường gặp (lạc đường, chỉnh lái chưa chuẩn, xử lý chậm/giật).</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div>
+                                <h4 class="font-bold text-blue-900">Giai đoạn 4: Ôn thi & mô phỏng bãi thi</h4>
+                                <p class="text-gray-600 text-sm mt-2">Chạy thử theo kịch bản sát thực tế, hướng dẫn mẹo vào bài đúng chuẩn và cách giữ bình tĩnh.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div>
+                                <h4 class="font-bold text-blue-900">Giai đoạn 5: Lần thi thực tế</h4>
+                                <p class="text-gray-600 text-sm mt-2">Hỗ trợ nhắc lại lộ trình, động viên trước khi thi và đồng hành xử lý nếu phát sinh tình huống.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-md">
+                    <h3 class="text-xl font-bold text-blue-900 mb-8">✅ Chi tiết khóa học Hạng A</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-orange-500 pl-4 py-2">
+                            <p class="text-sm text-gray-600"><strong>Thời gian:</strong> 2 - 5 tuần (tùy trình độ, có thể rút ngắn theo lịch)</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4 py-2">
+                            <p class="text-sm text-gray-600"><strong>Giờ học lý thuyết:</strong> Tập trung quy định & cách làm bài thi đúng chuẩn</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4 py-2">
+                            <p class="text-sm text-gray-600"><strong>Giờ học thực hành:</strong> Nhiều buổi luyện thao tác theo từng kỹ năng</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4 py-2">
+                            <p class="text-sm text-gray-600"><strong>Chương trình ôn thi:</strong> Mô phỏng bãi thi & sửa lỗi trực tiếp tại chỗ</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4 py-2">
+                            <p class="text-sm text-gray-600"><strong>Cam kết:</strong> Hỗ trợ tư vấn trong - sau khi thi, đồng hành đến khi bạn đạt</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Details -->
+    <section class="py-12 md:py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-bold uppercase text-blue-900 inline-block relative pb-4">
+                    Chương Trình Đào Tạo Chi Tiết Hạng A
+                    <span class="absolute bottom-0 left-1/4 right-1/4 h-1 bg-orange-500 rounded"></span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-md border-2 border-blue-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-900">Phần Lý Thuyết Hạng A</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Luật giao thông đường bộ & quy định khi tham gia sát hạch</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Kỹ năng an toàn: quan sát, khoảng cách, cách xử lý tình huống cơ bản</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Cấu tạo xe máy & nguyên tắc điều khiển đúng thao tác để không bị trừ điểm</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Quy tắc làm bài thi & cách chuẩn bị trước khi vào phần thi thực hành</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Ôn luyện mẹo đi đúng line, đúng tốc độ, giảm lỗi phổ biến</span></li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-orange-50 to-white p-8 rounded-2xl shadow-md border-2 border-orange-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fas fa-steering-wheel"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-900">Phần Thực Hành Hạng A</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Luyện vào bài: ngồi đúng tư thế, đánh lái & giữ thăng bằng ổn định</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Luyện tốc độ/nhịp ga hợp lý để chạy mượt, hạn chế giật cục</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Thực hành theo trình tự bài thi: chạy đúng điểm xuất phát - hướng di chuyển</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>Mô phỏng bãi thi & sửa lỗi tại chỗ ngay trong buổi học</span></li>
+                        <li class="flex items-start gap-3 text-gray-700"><i class="fas fa-check-circle text-green-500 mt-1 flex-shrink-0"></i><span>1 thầy kèm sát: hướng dẫn cầm tay chỉ việc, tăng độ chính xác đến khi bạn tự tin</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery & Video -->
+    <section id="gallery-video" class="py-12 md:py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <!-- Image Gallery -->
+            <div class="mb-16">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-4xl font-bold uppercase text-blue-900 inline-block relative pb-4">
+                        Hình Ảnh Khóa Học Hạng A
+                        <span class="absolute bottom-0 left-1/4 right-1/4 h-1 bg-orange-500 rounded"></span>
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/anhxea1.png" alt="Hạng A - Thi nhanh" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">Quen Tay & Chạy Mượt</p>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/anhxea2.png" alt="Thực hành hạng A" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">Thực Hành Nhiều Lượt</p>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/anhxea3.png" alt="Ôn thi hạng A" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">Ôn Thi Sát Thực Tế</p>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/anhxea4.png" alt="Giáo viên hướng dẫn hạng A" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">1 Thầy Kèm Sát Lỗi</p>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/bannera.png" alt="Hỗ trợ thi & tư vấn" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">Tư Vấn Trước & Sau Thi</p>
+                        </div>
+                    </div>
+
+                    <div class="group relative overflow-hidden rounded-2xl shadow-lg h-64 cursor-pointer">
+                        <img src="./assets/anhxethia.png" alt="Thực hành hạng A" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='./assets/A.png'">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300 flex items-center justify-center"></div>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4 translate-y-full group-hover:translate-y-0 transition duration-300">
+                            <p class="text-white font-bold text-sm">Chuẩn Hóa Kỹ Năng</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Video Section -->
+            <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl md:text-4xl font-bold uppercase text-blue-900 inline-block relative pb-4">
+                        Video Giới Thiệu Khóa A
+                        <span class="absolute bottom-0 left-1/4 right-1/4 h-1 bg-orange-500 rounded"></span>
+                    </h2>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-xl" style="padding-bottom: 56.25%;">
+                        <video
+                            id="courseVideo"
+                            class="absolute top-0 left-0 w-full h-full"
+                            controls
+                            controlsList="nodownload"
+                            preload="metadata"
+                            poster="./assets/anhxea2.png"
+                            style="background: #000;">
+                            <source src="./video/hanga.mp4" type="video/mp4">
+                            <source src="./video/hanga.webm" type="video/webm">
+                            <p>Trình duyệt của bạn không hỗ trợ video. Vui lòng cập nhật trình duyệt.</p>
+                        </video>
+                    </div>
+                </div>
+                <br><br>
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative w-full bg-black rounded-2xl overflow-hidden shadow-xl" style="padding-bottom: 56.25%;">
+                        <video
+                            id="courseVideo"
+                            class="absolute top-0 left-0 w-full h-full"
+                            controls
+                            controlsList="nodownload"
+                            preload="metadata"
+                            poster="./assets/A.png"
+                            style="background: #000;">
+                            <source src="./video/videothixea.mp4" type="video/mp4">
+                            <source src="./video/videothixea.mp4" type="video/webm">
+                            <p>Trình duyệt của bạn không hỗ trợ video. Vui lòng cập nhật trình duyệt.</p>
+                        </video>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-4 rounded-lg bg-blue-50">
+                        <i class="fas fa-clock text-orange-500 text-3xl mb-2"></i>
+                        <p class="text-gray-700 text-sm"><strong>Thời lượng:</strong> Video giới thiệu chi tiết khóa A</p>
+                    </div>
+                    <div class="text-center p-4 rounded-lg bg-orange-50">
+                        <i class="fas fa-volume-up text-orange-500 text-3xl mb-2"></i>
+                        <p class="text-gray-700 text-sm"><strong>Có âm thanh:</strong> Hướng dẫn dễ hiểu, bám sát bài thi</p>
+                    </div>
+                    <div class="text-center p-4 rounded-lg bg-green-50">
+                        <i class="fas fa-play-circle text-orange-500 text-3xl mb-2"></i>
+                        <p class="text-gray-700 text-sm"><strong>Chất lượng:</strong> HD 1080p, xem rõ thao tác điều khiển</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-gray-50 rounded-xl border-l-4 border-orange-500">
+                    <h3 class="font-bold text-blue-900 mb-3">📹 Video Giới Thiệu Bao Gồm:</h3>
+                    <ul class="text-gray-700 text-sm space-y-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Tổng quan khóa học Hạng A</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Lộ trình học theo từng kỹ năng</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Giới thiệu xe & thao tác điều khiển</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Ôn luyện phần thi & sửa lỗi</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Mẹo đi vào bài đúng chuẩn</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Tư vấn đăng ký & lịch học phù hợp</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Reviews -->
+    <section class="py-12 md:py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-4xl font-bold uppercase text-blue-900 inline-block relative pb-4">
+                    Cảm Nhận Học Viên Khóa A
+                    <span class="absolute bottom-0 left-1/4 right-1/4 h-1 bg-orange-500 rounded"></span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-md italic border-l-8 border-orange-500 relative">
+                    <i class="fas fa-quote-left absolute -top-4 -left-2 text-3xl text-orange-200"></i>
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    "Thi nhanh nhờ thầy sửa lỗi trực tiếp. Mình vào bài tự tin hơn vì được luyện đúng trình tự và hướng dẫn chi tiết." 
+                    <p class="mt-4 font-bold not-italic text-blue-900 text-sm">— Anh Minh (Quận 2)</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md italic border-l-8 border-orange-500 relative">
+                    <i class="fas fa-quote-left absolute -top-4 -left-2 text-3xl text-orange-200"></i>
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    "Luyện nhiều lượt nên mình quen tay rất nhanh. Thầy luôn nhắc mình xử lý nhịp ga - giữ hướng ổn định, hạn chế trừ điểm." 
+                    <p class="mt-4 font-bold not-italic text-blue-900 text-sm">— Chị Lan (Bình Thạnh)</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md italic border-l-8 border-orange-500 relative">
+                    <i class="fas fa-quote-left absolute -top-4 -left-2 text-3xl text-orange-200"></i>
+                    <div class="flex gap-1 mb-4">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    "Tư vấn đăng ký và lịch học rõ ràng. Trong và sau thi đều được hỗ trợ. Mình thấy an tâm vì có lộ trình cụ thể." 
+                    <p class="mt-4 font-bold not-italic text-blue-900 text-sm">— Anh Hùng (Quận 7)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Form Section -->
+    <section id="form-dang-ky" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border border-gray-100">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center text-blue-900 uppercase">Đăng Ký Khóa Hạng A</h2>
+                    <p class="text-center text-gray-500 mb-8 text-sm md:text-base">Điền thông tin để Thầy Hạ tư vấn lộ trình học & hỗ trợ đăng ký thi Hạng A nhanh nhất!</p>
+
+                    <form class="space-y-5" id="registrationForm">
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-user"></i></span>
+                            <input type="text" placeholder="Họ và tên *" required class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" name="fullname">
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-phone"></i></span>
+                            <input type="tel" placeholder="Số điện thoại *" required class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" name="phone">
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-envelope"></i></span>
+                            <input type="email" placeholder="Email (tùy chọn)" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" name="email">
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-calendar"></i></span>
+                            <select class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 text-gray-600 appearance-none" name="schedule">
+                                <option value="">Thời gian học ưa thích (tùy chọn)</option>
+                                <option value="morning">Buổi sáng (6h - 12h)</option>
+                                <option value="afternoon">Buổi chiều (13h - 18h)</option>
+                                <option value="evening">Buổi tối (18h - 21h)</option>
+                                <option value="flexible">Linh hoạt - tùy tiện</option>
+                            </select>
+                        </div>
+
+                        <textarea placeholder="Ghi chú (VD: khu vực muốn học, đã biết lái chưa, thời gian rảnh...)" rows="3" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" name="note"></textarea>
+
+                        <div class="flex items-start gap-3 text-sm text-gray-600">
+                            <input type="checkbox" required id="agree" class="mt-1 cursor-pointer">
+                            <label for="agree" class="cursor-pointer">Tôi đồng ý để Thầy Hạ liên hệ tư vấn về khóa học Hạng A</label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-700 shadow-xl transition transform active:scale-95 uppercase tracking-wide">
+                            <i class="fas fa-paper-plane mr-2"></i> Gửi Yêu Cầu Ngay
+                        </button>
+                    </form>
+
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <p class="text-center text-gray-600 text-sm">
+                            📞 Hoặc liên hệ trực tiếp:
+                            <a href="tel:0941822239" class="text-orange-600 font-bold hover:underline">0941 822 239</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8 border-t-4 border-orange-500">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+
+                <!-- Cột 1: Thông tin thương hiệu -->
+                <div class="lg:col-span-4">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-orange-500 shrink-0">
+                            <img src="./assets/avatar.jpg" alt="Thầy Hạ" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=H&background=0b1f4a&color=f4782a&size=80'">
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-white tracking-wide uppercase" style="font-family: 'Times New Roman', Times, serif;">Thầy Hạ</div>
+                            <div class="text-[10px] text-gray-400 uppercase tracking-widest leading-tight">Đào Tạo Lái Xe – ĐH An Ninh</div>
+                        </div>
+                    </div>
+                    <ul class="space-y-4 text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-orange-500 mt-1"></i>
+                            <span class="text-sm"><a href="https://maps.app.goo.gl/113NpjVjHekt318X9" target="_blank">km18 Song Hành Xa Lộ Hà Nội, TP. Hồ Chí Minh</a></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone-alt text-orange-500"></i>
+                            <a href="tel:0941822239" class="text-sm hover:text-white transition">0941 822 239</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-orange-500"></i>
+                            <a href="mailto:lexuanha280473@gmail.com" class="text-sm hover:text-white transition">lexuanha280473@gmail.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cột 2: Điều hướng -->
+                <div class="lg:col-span-2 col-6">
+                    <h6 class="text-lg font-bold mb-6 text-white uppercase relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-orange-500">Điều hướng</h6>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-400 hover:text-orange-500 transition text-sm flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i>Trang chủ</a></li>
+                        <li><a href="introduce.html" class="text-gray-400 hover:text-orange-500 transition text-sm flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i>Giới thiệu</a></li>
+                        <li><a href="index.html" class="text-gray-400 hover:text-orange-500 transition text-sm flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i>Khóa học</a></li>
+                        <li><a href="#form-dang-ky" class="text-gray-400 hover:text-orange-500 transition text-sm flex items-center"><i class="fas fa-chevron-right text-[10px] mr-2"></i>Đăng ký</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Khóa học -->
+                <div class="lg:col-span-2 col-6">
+                    <h6 class="text-lg font-bold mb-6 text-white uppercase relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-orange-500">Khóa học</h6>
+                    <ul class="space-y-3">
+                        <li><a href="detaila.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái A (Xe máy)</a></li>
+                        <li><a href="detaila1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái A1 (Xe máy)</a></li>
+                        <li><a href="detailb1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B1 (Số tự động)</a></li>
+                        <li><a href="detailb2.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B2 (Số sàn)</a></li>
+                        <li><a href="detailb3.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái C (Xe tải)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Bản đồ -->
+                <div class="lg:col-span-4">
+                    <h6 class="text-lg font-bold mb-6 text-white uppercase relative pb-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-10 after:h-0.5 after:bg-orange-500">Vị trí trung tâm</h6>
+                    <div class="rounded-xl overflow-hidden h-40 shadow-2xl border border-gray-700 group relative">
+                        <a href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank" class="absolute inset-0 z-10 bg-black/20 group-hover:bg-black/0 transition-all"></a>
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2230614629752!2d106.8055883!3d10.870631699999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d914b59bec0b%3A0x995734e091b0b54f!2zVGjhuqd5IEjDoCAtIFRydW5nIHTDom0gxJHDoG8gdOG6oW4gc8OhdCBo4bqhY2ggbMOaaSB4ZSBBbiBOaW5o!5e0!3m2!1svi!2s!4v1777990864765!5m2!1svi!2s"
+                            width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-gray-800 text-center text-gray-500 text-xs md:text-sm">
+                <p>&copy; 2026 Website Đào Tạo Lái Xe Thầy Hạ - Khóa học Hạng A. Tất cả quyển được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Floating Buttons -->
+    <div class="fixed bottom-4 right-4 flex flex-col items-end space-y-3 z-[1000] scale-90 md:scale-100">
+        <a href="https://maps.app.goo.gl/1jv7RAPZLG4K3D9U9" target="_blank" class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 transition duration-300 ring-4 ring-red-100">
+            <i class="fas fa-map-marker-alt text-xl"></i>
+        </a>
+
+        <a href="https://www.facebook.com/61559816161796" onclick="openFacebook(event)" target="_blank" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-xl hover:scale-110 transition duration-300 ring-4 ring-blue-100">
+            <i class="fab fa-facebook-messenger text-2xl"></i>
+        </a>
+
+        <a href="https://zalo.me/0941822239" target="_blank" rel="noopener noreferrer" class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition duration-300 ring-4 ring-blue-50">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" class="w-8 h-8 rounded-full">
+        </a>
+
+        <a href="tel:0941822239" class="flex items-center bg-orange-600 text-white pl-5 pr-1 py-1 rounded-full shadow-2xl hover:scale-105 transition duration-300 ring-4 ring-orange-100 group">
+            <span class="font-bold mr-3 text-sm md:text-base">0941 822 239</span>
+            <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-inner">
+                <i class="fas fa-phone text-orange-600 animate-pulse"></i>
+            </div>
+        </a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const khoaHocToggle = document.getElementById('khoaHocToggle');
+        const khoaHocSubmenu = document.getElementById('khoaHocSubmenu');
+        const khoaHocChevron = document.getElementById('khoaHocChevron');
+        const lienHeToggle = document.getElementById('lienHeToggle');
+        const lienHeSubmenu = document.getElementById('lienHeSubmenu');
+        const lienHeChevron = document.getElementById('lienHeChevron');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+
+        khoaHocToggle.addEventListener('click', () => {
+            khoaHocSubmenu.classList.toggle('active');
+            khoaHocChevron.style.transform = khoaHocSubmenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+
+        lienHeToggle.addEventListener('click', () => {
+            lienHeSubmenu.classList.toggle('active');
+            lienHeChevron.style.transform = lienHeSubmenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item, .mobile-submenu-item');
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.href) {
+                    mobileMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                }
+            });
+        });
+
+        // Facebook Link Handler
+        function openFacebook(e) {
+            e.preventDefault();
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            const fbProfileId = "61559816161796";
+            const fbAppUrl = "fb://profile/" + fbProfileId;
+            const fbWebUrl = "https://www.facebook.com/" + fbProfileId;
+
+            if (isMobile) {
+                const start = Date.now();
+                window.location.href = fbAppUrl;
+                setTimeout(function() {
+                    if (Date.now() - start < 2500) {
+                        window.open(fbWebUrl, '_blank');
+                    }
+                }, 2500);
+            } else {
+                window.open(fbWebUrl, '_blank');
+            }
+        }
+
+        // Form Submission Handler
+        const registrationForm = document.getElementById('registrationForm');
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = {
+                fullname: document.querySelector('input[name="fullname"]').value,
+                phone: document.querySelector('input[name="phone"]').value,
+                email: document.querySelector('input[name="email"]').value,
+                schedule: document.querySelector('select[name="schedule"]').value,
+                note: document.querySelector('textarea[name="note"]').value
+            };
+
+            console.log('Form Submitted:', formData);
+            alert('Cảm ơn! Thầy Hạ sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
+            registrationForm.reset();
+        });
+    </script>
+
+</body>
+</html>
+
