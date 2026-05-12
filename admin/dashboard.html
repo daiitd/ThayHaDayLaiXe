@@ -223,7 +223,7 @@
         </div>
 
         <!-- ===== Cards Summary ===== -->
-        <section id="tong-quan" class="mt-8" aria-labelledby="tong-quan-title">
+                <section id="tong-quan" class="mt-8" aria-labelledby="tong-quan-title">
           <h2 id="tong-quan-title" class="sr-only">Tổng quan</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -236,7 +236,7 @@
               </div>
               <div class="mt-3">
                 <p class="text-sm font-bold text-gray-600 uppercase">Học viên</p>
-                <p class="text-2xl font-extrabold text-blue-900 mt-1">1,248</p>
+                <p id="stat_reg_new" class="text-2xl font-extrabold text-blue-900 mt-1">1,248</p>
                 <p class="text-xs text-gray-500 mt-1">Theo dõi tiến độ & trạng thái đăng ký.</p>
               </div>
             </article>
@@ -250,7 +250,7 @@
               </div>
               <div class="mt-3">
                 <p class="text-sm font-bold text-gray-600 uppercase">Đang mở</p>
-                <p class="text-2xl font-extrabold text-blue-900 mt-1">12</p>
+                <p id="stat_classes_open" class="text-2xl font-extrabold text-blue-900 mt-1">12</p>
                 <p class="text-xs text-gray-500 mt-1">Cập nhật lịch học & lớp học.</p>
               </div>
             </article>
@@ -264,7 +264,7 @@
               </div>
               <div class="mt-3">
                 <p class="text-sm font-bold text-gray-600 uppercase">Lịch học</p>
-                <p class="text-2xl font-extrabold text-blue-900 mt-1">38</p>
+                <p id="stat_reg_in_progress" class="text-2xl font-extrabold text-blue-900 mt-1">38</p>
                 <p class="text-xs text-gray-500 mt-1">Kiểm tra lịch theo từng ca.</p>
               </div>
             </article>
@@ -278,7 +278,7 @@
               </div>
               <div class="mt-3">
                 <p class="text-sm font-bold text-gray-600 uppercase">Bài đăng</p>
-                <p class="text-2xl font-extrabold text-blue-900 mt-1">27</p>
+                <p id="stat_con_new" class="text-2xl font-extrabold text-blue-900 mt-1">27</p>
                 <p class="text-xs text-gray-500 mt-1">Tối ưu SEO và thông tin lớp.</p>
               </div>
             </article>
@@ -795,7 +795,43 @@
       // Smooth scroll with offset for sections
       // Keep it simple and safe: just default scroll behavior.
       // If you later need exact offset, we can enhance.
+    async function loadDashboardOverview() {
+      const token = localStorage.getItem('admin_token');
+      if (!token) {
+        window.location.href = '../login.html';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://localhost:3000/api/admin/dashboard/overview', {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data?.ok) {
+          localStorage.removeItem('admin_token');
+          window.location.href = '../login.html';
+          return;
+        }
+
+        const overview = data.overview || {};
+        const elRegNew = document.getElementById('stat_reg_new');
+        const elClassesOpen = document.getElementById('stat_classes_open');
+        const elRegInProgress = document.getElementById('stat_reg_in_progress');
+        const elConNew = document.getElementById('stat_con_new');
+
+        if (elRegNew) elRegNew.textContent = String(overview.registrations_new ?? 0);
+        if (elClassesOpen) elClassesOpen.textContent = String(overview.classes_open ?? 0);
+        if (elRegInProgress) elRegInProgress.textContent = String(overview.registrations_in_progress ?? 0);
+        if (elConNew) elConNew.textContent = String(overview.consultations_new ?? 0);
+      } catch (e) {
+        console.error('loadDashboardOverview error:', e);
+      }
+    }
+
+    // kick off
+    loadDashboardOverview();
     })();
   </script>
 </body>
-</html>
