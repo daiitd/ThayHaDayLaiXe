@@ -106,7 +106,7 @@
           <span class="font-bold text-sm text-gray-700">Tổng quan</span>
         </a>
 
-        <a href="#hoc-vien"
+        <a href="hocvien.html"
            class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
            data-route="hoc-vien">
           <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
@@ -115,7 +115,7 @@
           <span class="font-bold text-sm text-gray-700">Học viên</span>
         </a>
 
-        <a href="#khoa-hoc"
+        <a href="#"
            class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
            data-route="khoa-hoc">
           <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
@@ -830,8 +830,72 @@
       }
     }
 
+    async function loadCustomersTable() {
+      const token = localStorage.getItem('admin_token');
+      if (!token) return;
+
+      const panel = document.getElementById('panel-hoc-vien');
+      const table = panel?.querySelector('table');
+      const tbody = table?.querySelector('tbody');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('http://localhost:3000/api/admin/customers', {
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data?.ok) {
+          console.error('loadCustomersTable error:', data);
+          return;
+        }
+
+        const customers = Array.isArray(data.customers) ? data.customers : [];
+        tbody.innerHTML = '';
+
+        if (customers.length === 0) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="py-3 px-2 text-gray-700" colspan="4">Không có dữ liệu học viên.</td>
+          `;
+          tbody.appendChild(tr);
+          return;
+        }
+
+        customers.forEach((c) => {
+          const fullName = c?.full_name ?? '';
+          const phone = c?.phone ?? '';
+          const statusText = c?.email ?? '';
+
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-gray-50 hover:bg-orange-50/30';
+
+          tr.innerHTML = `
+            <td class="py-3 px-2 font-bold text-gray-800">${fullName}</td>
+            <td class="py-3 px-2 text-gray-700">${phone}</td>
+            <td class="py-3 px-2">
+              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
+                <i class="fas fa-circle-check text-[10px]"></i> ${statusText || '—'}
+              </span>
+            </td>
+            <td class="py-3 px-2">
+              <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                <i class="fas fa-pen-to-square text-orange-500"></i> Sửa
+              </button>
+            </td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+      } catch (e) {
+        console.error('loadCustomersTable error:', e);
+      }
+    }
+
     // kick off
     loadDashboardOverview();
+    loadCustomersTable();
     })();
   </script>
 </body>

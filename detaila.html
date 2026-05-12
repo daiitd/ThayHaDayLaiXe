@@ -195,11 +195,11 @@
                     </button>
                     <div class="absolute top-full left-0 mt-0 w-60 bg-white text-gray-800 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition duration-300 z-50 overflow-hidden border border-gray-100">
                         <a href="detailb1.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
-                            <div class="font-bold text-sm">Hạng B1 (Số tự động)</div>
+                            <div class="font-bold text-sm">Hạng B (Số tự động)</div>
                             <div class="text-[11px] text-gray-500 mt-0.5">Thực hành 1 thầy / 1 xe</div>
                         </a>
                         <a href="detailb2.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition border-b border-gray-100 text-left">
-                            <div class="font-bold text-sm">Hạng B2 (Số sàn)</div>
+                            <div class="font-bold text-sm">Hạng B (Số sàn)</div>
                             <div class="text-[11px] text-gray-500 mt-0.5">Tỉ lệ đầu 99%</div>
                         </a>
                         <a href="detailb3.html" class="block px-5 py-3.5 hover:bg-orange-50 hover:text-orange-600 transition text-left">
@@ -281,11 +281,11 @@
                 </button>
                 <div class="mobile-submenu" id="khoaHocSubmenu">
                     <a href="detailb1.html" class="mobile-submenu-item">
-                        <span class="mobile-submenu-title">Hạng B1 (Số tự động)</span>
+                        <span class="mobile-submenu-title">Hạng B (Số tự động)</span>
                         <span class="mobile-submenu-desc">Thực hành 1 thầy / 1 xe</span>
                     </a>
                     <a href="detailb2.html" class="mobile-submenu-item">
-                        <span class="mobile-submenu-title">Hạng B2 (Số sàn)</span>
+                        <span class="mobile-submenu-title">Hạng B (Số sàn)</span>
                         <span class="mobile-submenu-desc">Tỉ lệ đầu 99%</span>
                     </a>
                     <a href="detailb3.html" class="mobile-submenu-item">
@@ -820,8 +820,8 @@
                     <ul class="space-y-3">
                         <li><a href="detaila.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái A (Xe máy)</a></li>
                         <li><a href="detaila1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái A1 (Xe máy)</a></li>
-                        <li><a href="detailb1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B1 (Số tự động)</a></li>
-                        <li><a href="detailb2.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B2 (Số sàn)</a></li>
+                        <li><a href="detailb1.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B (Số tự động)</a></li>
+                        <li><a href="detailb2.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái B (Số sàn)</a></li>
                         <li><a href="detailb3.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bằng lái C (Xe tải)</a></li>
                         <li><a href="botuc.html" class="text-gray-400 hover:text-orange-500 transition text-sm block">Bổ túc tay lái</a></li>
                     </ul>
@@ -929,23 +929,119 @@
 
         // Form Submission Handler
         const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', function(e) {
+        registrationForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const formData = {
-                fullname: document.querySelector('input[name="fullname"]').value,
-                phone: document.querySelector('input[name="phone"]').value,
-                email: document.querySelector('input[name="email"]').value,
-                schedule: document.querySelector('select[name="schedule"]').value,
-                note: document.querySelector('textarea[name="note"]').value
+            const fullname = document.querySelector('input[name="fullname"]').value.trim();
+            const phone = document.querySelector('input[name="phone"]').value.trim();
+            const email = document.querySelector('input[name="email"]').value.trim();
+            const schedule = document.querySelector('select[name="schedule"]').value;
+            const note = document.querySelector('textarea[name="note"]').value.trim();
+
+            const payload = {
+                full_name: fullname,
+                phone,
+                email: email || null,
+                source: 'website',
+                course_class_id: null,
+                course_id: null,
+                note: note || ''
             };
 
-            console.log('Form Submitted:', formData);
-            alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
-            registrationForm.reset();
+            try {
+                // 1) lấy course_id theo course_code='A'
+                const coursesRes = await fetch('http://localhost:3000/api/courses');
+                const coursesData = await coursesRes.json().catch(() => ({}));
+                if (!coursesRes.ok || !coursesData?.ok === false) {
+                    // backend /api/courses trả ok:true theo code server.js
+                }
+
+                const courses = coursesData?.courses || [];
+                const course = courses.find(c => c.course_code === 'A');
+                if (!course?.id) {
+                    throw new Error('Không tìm thấy course_id cho course_code=A trong /api/courses');
+                }
+
+                payload.course_id = course.id;
+
+                // 2) submit registration
+                const res = await fetch('http://localhost:3000/api/customers/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...payload,
+                        note: `[HẠNG A] ${payload.note}`
+                    })
+                });
+
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok || !data.ok) throw new Error(data?.message || 'Đăng ký thất bại');
+
+                alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
+                registrationForm.reset();
+            } catch (err) {
+                alert('Có lỗi khi gửi đăng ký. Vui lòng thử lại.');
+                console.error(err);
+            }
         });
     </script>
 
+<script>
+  (function () {
+    const API_BASE = 'http://localhost:3000';
+
+    const registrationForm = document.getElementById('registrationForm');
+    if (!registrationForm) return;
+
+    registrationForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const fullname = document.querySelector('input[name="fullname"]').value.trim();
+      const phone = document.querySelector('input[name="phone"]').value.trim();
+      const email = document.querySelector('input[name="email"]').value.trim();
+      const schedule = document.querySelector('select[name="schedule"]').value;
+      const note = document.querySelector('textarea[name="note"]').value.trim();
+
+      // course_code của trang detaila.html
+      const course_code = 'A';
+
+      try {
+        // lấy course_id theo course_code
+        const coursesRes = await fetch(API_BASE + '/api/courses', { method: 'GET' });
+        const coursesData = await coursesRes.json().catch(() => ({}));
+        if (!coursesRes.ok || !coursesData?.ok) throw new Error('Không tải được danh sách khóa học');
+
+        const courses = coursesData.courses || [];
+        const course = courses.find(c => String(c.course_code) === course_code);
+        if (!course?.id) throw new Error('Không tìm thấy course_id cho course_code=' + course_code);
+
+        const payload = {
+          full_name: fullname,
+          phone,
+          email: email || null,
+          source: 'website',
+          course_class_id: null,
+          course_id: course.id,
+          note: `[${course_code}] ${note || ''}`
+        };
+
+        const res = await fetch(API_BASE + '/api/customers/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data?.message || 'Đăng ký thất bại');
+
+        alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
+        registrationForm.reset();
+      } catch (err) {
+        alert('Có lỗi khi gửi đăng ký. Vui lòng thử lại.');
+        console.error(err);
+      }
+    });
+  })();
+</script>
 </body>
 </html>
-

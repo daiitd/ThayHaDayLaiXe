@@ -228,6 +228,75 @@ app.post('/api/customers/consult', async (req, res) => {
   }
 });
 
+// ---- Public API (customer info) ----
+
+/**
+ * GET /api/customers/info?customer_id=X or ?phone=XXX
+ * Lấy thông tin học viên (dùng cho trang hocvien.html)
+ */
+app.get('/api/customers/info', async (req, res) => {
+  try {
+    const customerId = req.query.customer_id ? Number(req.query.customer_id) : null;
+    const phone = req.query.phone ? String(req.query.phone) : null;
+
+    if (!customerId && !phone) {
+      return sendError(res, 400, 'Missing customer_id or phone');
+    }
+
+    const sql = customerId
+      ? 'SELECT id, full_name, phone, email, source, created_at, updated_at FROM customers WHERE id = :id LIMIT 1'
+      : 'SELECT id, full_name, phone, email, source, created_at, updated_at FROM customers WHERE phone = :phone LIMIT 1';
+
+    const params = customerId ? { id: customerId } : { phone };
+    const [rows] = await db.query(sql, params);
+
+    if (!rows.length) {
+      return sendError(res, 404, 'Customer not found');
+    }
+
+    res.json({ ok: true, customer: rows[0] });
+  } catch (e) {
+    console.error(e);
+    sendError(res, 500, 'Server error');
+  }
+});
+
+/**
+ * GET /api/customers/:id/registrations
+ * Lấy danh sách khóa học đã đăng ký của học viên
+ */
+app.get('/api/customers/:id/registrations', async (req, res) => {
+  try {
+    const customerId = Number(req.params.id);
+    if (!customerId) {
+      return sendError(res, 400, 'Invalid customer_id');
+    }
+
+    const [rows] = await db.query(
+      `SELECT
+        r.id,
+        r.customer_id,
+        r.course_id,
+        r.course_class_id,
+        r.registration_type,
+        r.note,
+        r.admin_status,
+        r.admin_note,
+        r.created_at,
+        r.updated_at
+      FROM registrations r
+      WHERE r.customer_id = :customer_id
+      ORDER BY r.created_at DESC`,
+      { customer_id: customerId }
+    );
+
+    res.json({ ok: true, registrations: rows });
+  } catch (e) {
+    console.error(e);
+    sendError(res, 500, 'Server error');
+  }
+});
+
 // ---- Public API (read courses/classes for frontend) ----
 
 app.get('/api/courses', async (req, res) => {
@@ -261,6 +330,33 @@ app.get('/api/course-classes', async (req, res) => {
 });
 
 // ---- Admin APIs ----
+
+/**
+ * GET /api/admin/customers
+ * Trả về danh sách học viên từ bảng customers
+ */
+app.get('/api/admin/customers', authMiddleware, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT
+        id,
+        full_name,
+        phone,
+        email,
+        source,
+        created_at,
+        updated_at
+      FROM customers
+      ORDER BY created_at DESC
+      LIMIT 1000`
+    );
+
+    res.json({ ok: true, customers: rows });
+  } catch (e) {
+    console.error(e);
+    sendError(res, 500, 'Server error');
+  }
+});
 
 /**
  * POST /api/admin/login
@@ -363,6 +459,39 @@ app.get('/api/admin/registrations', authMiddleware, async (req, res) => {
       ORDER BY r.created_at DESC
       LIMIT 200`,
       { status }
+    );
+
+    res.json({ ok: true, registrations: rows });
+  } catch (e) {
+    console.error(e);
+    sendError(res, 500, 'Server error');
+  }
+});
+
+/**
+ * GET /api/admin/students/registrations
+ * Trả về toàn bộ học viên đã đăng ký (registrations) kèm thông tin từ customers
+ */
+app.get('/api/admin/students/registrations', authMiddleware, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT
+        r.id AS registration_id,
+        r.created_at,
+        r.admin_status,
+        r.note,
+        r.admin_note,
+        c.id AS customer_id,
+        c.full_name,
+        c.phone,
+        c.email,
+        c.source AS customer_source,
+        r.course_id,
+        r.course_class_id
+      FROM registrations r
+      JOIN customers c ON c.id = r.customer_id
+      ORDER BY r.created_at DESC
+      LIMIT 1000`
     );
 
     res.json({ ok: true, registrations: rows });
