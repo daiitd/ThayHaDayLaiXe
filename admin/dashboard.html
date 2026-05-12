@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Admin Dashboard | Thầy Hà - Đào tạo lái xe ĐH An Ninh</title>
+  <meta name="description" content="Trang quản trị Admin Dashboard của Thầy Hà: tổng quan học viên, khóa học, lịch học và quản lý nội dung. Giao diện tối ưu cho PC, laptop và điện thoại." />
+  <meta name="keywords" content="admin dashboard thầy hà, quản trị học viên, quản lý khóa học, lịch học, đào tạo lái xe" />
+  <meta name="author" content="Thầy Hà - Đào tạo lái xe" />
+
+  <meta property="og:title" content="Admin Dashboard | Thầy Hà" />
+  <meta property="og:description" content="Tổng quan quản trị học viên, khóa học, lịch học và nội dung." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://daylaixethayha.com/admin/dashboard.html" />
+
+  <link rel="canonical" href="https://daylaixethayha.com/admin/dashboard.html" />
+
+  <!-- Tailwind + Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
+    /* Sidebar active/hover */
+    .nav-item:hover { background: rgba(248, 113, 113, 0.08); }
+    /* Small brutal rounding to match the site look */
+    .chip-shadow { box-shadow: 0 10px 22px rgba(15,23,42,0.08); }
+    /* Mobile drawer open */
+    .sidebar-overlay { background: rgba(0,0,0,0.35); }
+  </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 overflow-x-hidden">
+  <!-- ===== Header / Topbar ===== -->
+  <header class="sticky top-0 z-[60] bg-white border-b border-gray-100">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between py-3">
+        <div class="flex items-center gap-3">
+          <!-- Mobile: hamburger -->
+          <button id="openSidebarBtn"
+                  class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-orange-200 text-orange-600 hover:bg-orange-50 transition"
+                  aria-label="Mở menu quản trị">
+            <i class="fas fa-bars text-lg"></i>
+          </button>
+
+          <a href="dashboard.html" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border-2 border-orange-500 bg-white shadow-sm shrink-0">
+              <img src="../assets/avatar.jpg" alt="Thầy Hà" class="w-full h-full object-cover">
+            </div>
+            <div class="leading-tight">
+              <div class="text-lg font-extrabold text-blue-900 uppercase">Admin Thầy Hà</div>
+              <div class="text-[11px] font-bold text-red-600 uppercase">Quản trị khóa học & học viên</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Search (visual only; can be wired later) -->
+          <div class="hidden md:block relative">
+            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              <i class="fas fa-magnifying-glass"></i>
+            </span>
+            <input type="search" id="searchInput" placeholder="Tìm nhanh..." class="w-[340px] pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white" />
+          </div>
+
+          <button id="themeBtn"
+                  class="inline-flex items-center justify-center w-11 h-11 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+                  aria-label="Chuyển chế độ">
+            <i id="themeIcon" class="fas fa-sun"></i>
+          </button>
+
+          <a href="../login.html"
+             class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl border-2 border-orange-500 text-orange-600 font-bold uppercase text-[12px] hover:bg-orange-50 transition whitespace-nowrap">
+            <i class="fas fa-right-from-bracket mr-2"></i> Đăng xuất
+          </a>
+
+          <button id="logoutBtn"
+                  class="sm:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border-2 border-orange-500 text-orange-600 font-bold hover:bg-orange-50 transition"
+                  aria-label="Đăng xuất">
+            <i class="fas fa-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Layout ===== -->
+  <div class="flex">
+    <!-- ===== Sidebar (desktop) ===== -->
+    <aside id="sidebar"
+           class="hidden lg:flex lg:flex-col lg:w-72 bg-white border-r border-gray-100 min-h-[calc(100vh-64px)]">
+      <div class="p-4">
+        <h2 class="text-sm font-extrabold uppercase text-blue-900">Điều hướng</h2>
+        <p class="text-xs text-gray-500 mt-1">Quản lý nhanh các mục quan trọng</p>
+      </div>
+
+      <nav class="px-3 pb-5">
+        <a href="#tong-quan"
+           class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
+           data-route="tong-quan">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+            <i class="fas fa-gauge-high"></i>
+          </span>
+          <span class="font-bold text-sm text-gray-700">Tổng quan</span>
+        </a>
+
+        <a href="#hoc-vien"
+           class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
+           data-route="hoc-vien">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+            <i class="fas fa-user-graduate"></i>
+          </span>
+          <span class="font-bold text-sm text-gray-700">Học viên</span>
+        </a>
+
+        <a href="#khoa-hoc"
+           class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
+           data-route="khoa-hoc">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+            <i class="fas fa-graduation-cap"></i>
+          </span>
+          <span class="font-bold text-sm text-gray-700">Khóa học</span>
+        </a>
+
+        <a href="#lich-hoc"
+           class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
+           data-route="lich-hoc">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+            <i class="fas fa-calendar-check"></i>
+          </span>
+          <span class="font-bold text-sm text-gray-700">Lịch học</span>
+        </a>
+
+        <a href="#quan-ly-noi-dung"
+           class="nav-item group flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition"
+           data-route="quan-ly-noi-dung">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+            <i class="fas fa-file-lines"></i>
+          </span>
+          <span class="font-bold text-sm text-gray-700">Quản lý nội dung</span>
+        </a>
+
+        <div class="mt-4 px-2">
+          <div class="p-4 rounded-2xl bg-blue-900 text-white">
+            <div class="flex items-start gap-3">
+              <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+                <i class="fas fa-shield-halved text-orange-400"></i>
+              </div>
+              <div>
+                <h3 class="font-extrabold uppercase text-sm">Bảo mật</h3>
+                <p class="text-xs text-white/80 mt-1">Chỉ người có quyền mới truy cập.</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-[11px] text-gray-500 mt-3">
+            Gợi ý: Nối các link này với hệ thống backend/CRUD ở bước sau.
+          </p>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- ===== Mobile Sidebar Drawer ===== -->
+    <div id="sidebarOverlay"
+         class="fixed inset-0 z-[55] hidden lg:hidden sidebar-overlay"></div>
+
+    <aside id="sidebarMobile"
+           class="fixed top-[64px] left-0 z-[56] w-80 max-w-[85vw] bg-white border-r border-gray-100 min-h-[calc(100vh-64px)] shadow-2xl -translate-x-full transition-transform duration-300 lg:hidden">
+      <div class="p-4 flex items-center justify-between border-b border-gray-100">
+        <h2 class="text-sm font-extrabold uppercase text-blue-900">Admin</h2>
+        <button id="closeSidebarBtn" class="w-10 h-10 rounded-xl border border-gray-200 hover:bg-gray-50 transition" aria-label="Đóng menu">
+          <i class="fas fa-xmark"></i>
+        </button>
+      </div>
+      <nav class="px-3 pb-5 mt-3">
+        <a href="#tong-quan" class="nav-item flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition" data-route="tong-quan">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow"><i class="fas fa-gauge-high"></i></span>
+          <span class="font-bold text-sm text-gray-700">Tổng quan</span>
+        </a>
+        <a href="#hoc-vien" class="nav-item flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition" data-route="hoc-vien">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow"><i class="fas fa-user-graduate"></i></span>
+          <span class="font-bold text-sm text-gray-700">Học viên</span>
+        </a>
+        <a href="#khoa-hoc" class="nav-item flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition" data-route="khoa-hoc">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow"><i class="fas fa-graduation-cap"></i></span>
+          <span class="font-bold text-sm text-gray-700">Khóa học</span>
+        </a>
+        <a href="#lich-hoc" class="nav-item flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition" data-route="lich-hoc">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow"><i class="fas fa-calendar-check"></i></span>
+          <span class="font-bold text-sm text-gray-700">Lịch học</span>
+        </a>
+        <a href="#quan-ly-noi-dung" class="nav-item flex items-center gap-3 px-3 py-3 rounded-xl mb-2 border border-transparent hover:border-orange-100 transition" data-route="quan-ly-noi-dung">
+          <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow"><i class="fas fa-file-lines"></i></span>
+          <span class="font-bold text-sm text-gray-700">Quản lý nội dung</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="flex-1">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-blue-900 uppercase">
+              Admin Dashboard
+            </h1>
+            <p class="text-sm text-gray-600 mt-1">
+              Tổng quan và quản lý hệ thống đào tạo lái xe Thầy Hà.
+            </p>
+          </div>
+
+          <div class="flex gap-3">
+            <a href="#tao-moi"
+               class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-orange-600 text-white font-bold hover:bg-orange-700 transition shadow-lg">
+              <i class="fas fa-plus mr-2"></i> Tạo mới
+            </a>
+            <a href="#bao-cao"
+               class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-white border border-gray-200 text-gray-700 font-bold hover:bg-gray-50 transition">
+              <i class="fas fa-chart-pie mr-2"></i> Báo cáo
+            </a>
+          </div>
+        </div>
+
+        <!-- ===== Cards Summary ===== -->
+        <section id="tong-quan" class="mt-8" aria-labelledby="tong-quan-title">
+          <h2 id="tong-quan-title" class="sr-only">Tổng quan</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+            <article class="rounded-2xl border border-gray-100 bg-white p-5">
+              <div class="flex items-start justify-between">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                  <i class="fas fa-user-graduate text-xl"></i>
+                </div>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">Hôm nay</span>
+              </div>
+              <div class="mt-3">
+                <p class="text-sm font-bold text-gray-600 uppercase">Học viên</p>
+                <p class="text-2xl font-extrabold text-blue-900 mt-1">1,248</p>
+                <p class="text-xs text-gray-500 mt-1">Theo dõi tiến độ & trạng thái đăng ký.</p>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-gray-100 bg-white p-5">
+              <div class="flex items-start justify-between">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                  <i class="fas fa-graduation-cap text-xl"></i>
+                </div>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">Khóa học</span>
+              </div>
+              <div class="mt-3">
+                <p class="text-sm font-bold text-gray-600 uppercase">Đang mở</p>
+                <p class="text-2xl font-extrabold text-blue-900 mt-1">12</p>
+                <p class="text-xs text-gray-500 mt-1">Cập nhật lịch học & lớp học.</p>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-gray-100 bg-white p-5">
+              <div class="flex items-start justify-between">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                  <i class="fas fa-calendar-check text-xl"></i>
+                </div>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">Sắp tới</span>
+              </div>
+              <div class="mt-3">
+                <p class="text-sm font-bold text-gray-600 uppercase">Lịch học</p>
+                <p class="text-2xl font-extrabold text-blue-900 mt-1">38</p>
+                <p class="text-xs text-gray-500 mt-1">Kiểm tra lịch theo từng ca.</p>
+              </div>
+            </article>
+
+            <article class="rounded-2xl border border-gray-100 bg-white p-5">
+              <div class="flex items-start justify-between">
+                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                  <i class="fas fa-file-lines text-xl"></i>
+                </div>
+                <span class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded-full border border-orange-100">Nội dung</span>
+              </div>
+              <div class="mt-3">
+                <p class="text-sm font-bold text-gray-600 uppercase">Bài đăng</p>
+                <p class="text-2xl font-extrabold text-blue-900 mt-1">27</p>
+                <p class="text-xs text-gray-500 mt-1">Tối ưu SEO và thông tin lớp.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ===== Content Grid with Tabs ===== -->
+        <section class="mt-8 grid grid-cols-1 xl:grid-cols-12 gap-4">
+          <!-- Left: Tabs -->
+          <div class="xl:col-span-5">
+            <div class="rounded-2xl border border-gray-100 bg-white p-4">
+              <h2 class="text-lg font-extrabold text-blue-900 uppercase">Truy cập nhanh</h2>
+              <p class="text-sm text-gray-600 mt-1">Chọn mục để xem nội dung mẫu.</p>
+
+              <div class="mt-4 grid grid-cols-2 gap-3">
+                <button data-panel="panel-hoc-vien" class="tab-btn rounded-xl border border-gray-200 p-3 text-left hover:bg-orange-50 transition">
+                  <div class="flex items-start gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                      <i class="fas fa-user-graduate"></i>
+                    </span>
+                    <div>
+                      <div class="font-extrabold text-blue-900 text-sm">Học viên</div>
+                      <div class="text-xs text-gray-500 mt-1">Danh sách & tiến độ</div>
+                    </div>
+                  </div>
+                </button>
+
+                <button data-panel="panel-khoa-hoc" class="tab-btn rounded-xl border border-gray-200 p-3 text-left hover:bg-orange-50 transition">
+                  <div class="flex items-start gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                      <i class="fas fa-graduation-cap"></i>
+                    </span>
+                    <div>
+                      <div class="font-extrabold text-blue-900 text-sm">Khóa học</div>
+                      <div class="text-xs text-gray-500 mt-1">Tạo lớp & phân ca</div>
+                    </div>
+                  </div>
+                </button>
+
+                <button data-panel="panel-lich-hoc" class="tab-btn rounded-xl border border-gray-200 p-3 text-left hover:bg-orange-50 transition">
+                  <div class="flex items-start gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                      <i class="fas fa-calendar-check"></i>
+                    </span>
+                    <div>
+                      <div class="font-extrabold text-blue-900 text-sm">Lịch học</div>
+                      <div class="text-xs text-gray-500 mt-1">Theo thời gian</div>
+                    </div>
+                  </div>
+                </button>
+
+                <button data-panel="panel-noi-dung" class="tab-btn rounded-xl border border-gray-200 p-3 text-left hover:bg-orange-50 transition">
+                  <div class="flex items-start gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                      <i class="fas fa-file-lines"></i>
+                    </span>
+                    <div>
+                      <div class="font-extrabold text-blue-900 text-sm">Nội dung</div>
+                      <div class="text-xs text-gray-500 mt-1">SEO & thông báo</div>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              <div class="mt-4 rounded-xl bg-blue-900 text-white p-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center">
+                    <i class="fas fa-bolt text-orange-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-extrabold uppercase text-sm">Gợi ý thao tác</h3>
+                    <ul class="text-xs text-white/80 mt-2 space-y-1">
+                      <li><i class="fas fa-check mr-2 text-orange-400"></i> Dùng tab để chuyển nội dung nhanh.</li>
+                      <li><i class="fas fa-check mr-2 text-orange-400"></i> Nút “Tạo mới” để đăng ký dữ liệu.</li>
+                      <li><i class="fas fa-check mr-2 text-orange-400"></i> Báo cáo giúp theo dõi tiến độ tổng quan.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Panels -->
+          <div class="xl:col-span-7">
+            <div class="rounded-2xl border border-gray-100 bg-white p-4">
+              <div id="panel-hoc-vien" class="panel tab-panel">
+                <h3 class="text-xl font-extrabold text-blue-900 uppercase" id="hoc-vien">Học viên</h3>
+                <p class="text-sm text-gray-600 mt-1">Bảng dữ liệu mẫu (demo). Khi nối backend sẽ thay bằng dữ liệu thật.</p>
+
+                <div class="mt-4 overflow-x-auto">
+                  <table class="w-full min-w-[520px] text-left">
+                    <thead>
+                      <tr class="text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
+                        <th class="py-3 px-2">Tên</th>
+                        <th class="py-3 px-2">Khóa</th>
+                        <th class="py-3 px-2">Trạng thái</th>
+                        <th class="py-3 px-2">Thao tác</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b border-gray-50 hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">Nguyễn Văn A</td>
+                        <td class="py-3 px-2 text-gray-700">B2</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100"><i class="fas fa-circle-check text-[10px]"></i> Đang học</span></td>
+                        <td class="py-3 px-2">
+                          <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                            <i class="fas fa-pen-to-square text-orange-500"></i> Sửa
+                          </button>
+                        </td>
+                      </tr>
+
+                      <tr class="border-b border-gray-50 hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">Trần Thị B</td>
+                        <td class="py-3 px-2 text-gray-700">B1</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100"><i class="fas fa-clock text-[10px]"></i> Chờ lịch</span></td>
+                        <td class="py-3 px-2">
+                          <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                            <i class="fas fa-pen-to-square text-orange-500"></i> Sửa
+                          </button>
+                        </td>
+                      </tr>
+
+                      <tr class="hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">Lê Văn C</td>
+                        <td class="py-3 px-2 text-gray-700">A1</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100"><i class="fas fa-list-check text-[10px]"></i> Hoàn thành</span></td>
+                        <td class="py-3 px-2">
+                          <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                            <i class="fas fa-pen-to-square text-orange-500"></i> Xem
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="panel-khoa-hoc" class="panel tab-panel hidden">
+                <h3 class="text-xl font-extrabold text-blue-900 uppercase">Khóa học</h3>
+                <p class="text-sm text-gray-600 mt-1">Danh sách khóa học mẫu để quản lý lớp.</p>
+
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div class="rounded-2xl border border-gray-100 p-4 hover:bg-orange-50/30 transition">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <div class="text-sm font-bold text-gray-700 uppercase">Hạng B2</div>
+                        <div class="text-2xl font-extrabold text-blue-900 mt-1">Số sàn</div>
+                        <div class="text-xs text-gray-500 mt-1">Tỉ lệ đậu cao · Phổ biến</div>
+                      </div>
+                      <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                        <i class="fas fa-car"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-plus text-orange-500"></i> Thêm lớp
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="rounded-2xl border border-gray-100 p-4 hover:bg-orange-50/30 transition">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <div class="text-sm font-bold text-gray-700 uppercase">Hạng A1</div>
+                        <div class="text-2xl font-extrabold text-blue-900 mt-1">Xe mô tô</div>
+                        <div class="text-xs text-gray-500 mt-1">Thi nhanh · Học hiệu quả</div>
+                      </div>
+                      <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                        <i class="fas fa-motorcycle"></i>
+                      </div>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-plus text-orange-500"></i> Thêm lớp
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="panel-lich-hoc" class="panel tab-panel hidden">
+                <h3 class="text-xl font-extrabold text-blue-900 uppercase">Lịch học</h3>
+                <p class="text-sm text-gray-600 mt-1">Theo dõi lịch học mẫu theo ca.</p>
+
+                <div class="mt-4 overflow-x-auto">
+                  <table class="w-full min-w-[520px] text-left">
+                    <thead>
+                      <tr class="text-xs uppercase tracking-wider text-gray-500 border-b border-gray-100">
+                        <th class="py-3 px-2">Ngày</th>
+                        <th class="py-3 px-2">Ca học</th>
+                        <th class="py-3 px-2">Khóa</th>
+                        <th class="py-3 px-2">Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="border-b border-gray-50 hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">12/05/2026</td>
+                        <td class="py-3 px-2 text-gray-700">Sáng</td>
+                        <td class="py-3 px-2 text-gray-700">B2</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100"><i class="fas fa-circle-check text-[10px]"></i> Đã xác nhận</span></td>
+                      </tr>
+                      <tr class="border-b border-gray-50 hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">13/05/2026</td>
+                        <td class="py-3 px-2 text-gray-700">Chiều</td>
+                        <td class="py-3 px-2 text-gray-700">A1</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100"><i class="fas fa-clock text-[10px]"></i> Chờ duyệt</span></td>
+                      </tr>
+                      <tr class="hover:bg-orange-50/30">
+                        <td class="py-3 px-2 font-bold text-gray-800">14/05/2026</td>
+                        <td class="py-3 px-2 text-gray-700">Tối</td>
+                        <td class="py-3 px-2 text-gray-700">B1</td>
+                        <td class="py-3 px-2"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100"><i class="fas fa-list-check text-[10px]"></i> Đang diễn ra</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div id="panel-noi-dung" class="panel tab-panel hidden">
+                <h3 class="text-xl font-extrabold text-blue-900 uppercase">Quản lý nội dung</h3>
+                <p class="text-sm text-gray-600 mt-1">Cập nhật tin tức, thông báo và nội dung SEO cho website.</p>
+
+                <div class="mt-4 space-y-3">
+                  <article class="rounded-2xl border border-gray-100 p-4 hover:bg-orange-50/30 transition">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h4 class="font-extrabold text-gray-800">Thông báo lịch khai giảng tháng 5</h4>
+                        <p class="text-sm text-gray-600 mt-1">Cập nhật thông tin lớp học mới, chỉ tiêu & thời gian.</p>
+                      </div>
+                      <span class="text-xs font-bold bg-orange-50 text-orange-700 border border-orange-100 px-2 py-1 rounded-full">SEO</span>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-pen-to-square text-orange-500"></i> Sửa bài
+                      </button>
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-rotate text-orange-500"></i> Đăng lại
+                      </button>
+                    </div>
+                  </article>
+
+                  <article class="rounded-2xl border border-gray-100 p-4 hover:bg-orange-50/30 transition">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h4 class="font-extrabold text-gray-800">Bài viết: Mẹo ôn thi sát hạch</h4>
+                        <p class="text-sm text-gray-600 mt-1">Tối ưu từ khóa, meta description và cấu trúc heading.</p>
+                      </div>
+                      <span class="text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded-full">Tối ưu</span>
+                    </div>
+                    <div class="mt-3 flex gap-2">
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-pen-to-square text-orange-500"></i> Chỉnh sửa
+                      </button>
+                      <button class="btn-action inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition text-sm font-bold">
+                        <i class="fas fa-check text-orange-500"></i> Duyệt
+                      </button>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== Create new / Reports sections (SEO-friendly headings) ===== -->
+        <section id="tao-moi" class="mt-8">
+          <div class="rounded-2xl border border-gray-100 bg-white p-5">
+            <h2 class="text-xl font-extrabold text-blue-900 uppercase">Tạo mới dữ liệu</h2>
+            <p class="text-sm text-gray-600 mt-1">Form mẫu demo: khi có backend, bạn nối endpoint để lưu dữ liệu thật.</p>
+
+            <form class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Loại</label>
+                <select class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white font-bold">
+                  <option>Học viên</option>
+                  <option>Khóa học</option>
+                  <option>Lịch học</option>
+                  <option>Nội dung</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Tiêu đề</label>
+                <input type="text" placeholder="Ví dụ: Nguyễn Văn D" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white font-bold" />
+              </div>
+
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Mô tả ngắn</label>
+                <input type="text" placeholder="Ví dụ: Đang chờ lịch học" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white font-bold" />
+              </div>
+
+              <div class="md:col-span-3 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between mt-2">
+                <p class="text-xs text-gray-500">
+                  * Đây là giao diện mẫu để bạn tích hợp CRUD sau.
+                </p>
+                <button type="button" id="createDemoBtn"
+                        class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-orange-600 text-white font-extrabold hover:bg-orange-700 transition shadow-lg">
+                  <i class="fas fa-floppy-disk mr-2"></i> Tạo (demo)
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section id="bao-cao" class="mt-8">
+          <div class="rounded-2xl border border-gray-100 bg-white p-5">
+            <h2 class="text-xl font-extrabold text-blue-900 uppercase">Báo cáo nhanh</h2>
+            <p class="text-sm text-gray-600 mt-1">Khu vực báo cáo tổng quan. Có thể thay bằng biểu đồ khi nối dữ liệu thật.</p>
+
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="rounded-2xl border border-gray-100 p-4 bg-white">
+                <div class="flex items-start gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                    <i class="fas fa-arrow-trend-up"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-gray-700 uppercase">Tăng trưởng</div>
+                    <div class="text-2xl font-extrabold text-blue-900 mt-1">+18%</div>
+                    <div class="text-xs text-gray-500 mt-1">So với tuần trước</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-gray-100 p-4 bg-white">
+                <div class="flex items-start gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                    <i class="fas fa-layer-group"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-gray-700 uppercase">Tỉ lệ hoàn thành</div>
+                    <div class="text-2xl font-extrabold text-blue-900 mt-1">92%</div>
+                    <div class="text-xs text-gray-500 mt-1">Theo dữ liệu mẫu</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rounded-2xl border border-gray-100 p-4 bg-white">
+                <div class="flex items-start gap-3">
+                  <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 chip-shadow">
+                    <i class="fas fa-triangle-exclamation"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-gray-700 uppercase">Cảnh báo</div>
+                    <div class="text-2xl font-extrabold text-blue-900 mt-1">3</div>
+                    <div class="text-xs text-gray-500 mt-1">Mục cần kiểm tra</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ===== Footer ===== -->
+      <footer class="bg-gray-900 text-white mt-10 pt-14 pb-10 border-t-4 border-orange-500">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-orange-500">
+                  <img src="../assets/avatar.jpg" alt="Thầy Hà" class="w-full h-full object-cover">
+                </div>
+                <div>
+                  <div class="text-2xl font-extrabold tracking-wide uppercase">Thầy Hà</div>
+                  <div class="text-xs text-gray-400 uppercase mt-1">Đào Tạo Lái Xe – ĐH An Ninh</div>
+                </div>
+              </div>
+              <p class="text-sm text-gray-300">
+                Admin Dashboard giúp quản lý khóa học, học viên và lịch học nhanh chóng trên mọi thiết bị.
+              </p>
+
+              <ul class="mt-4 space-y-2 text-sm text-gray-300">
+                <li class="flex items-center gap-3">
+                  <i class="fas fa-map-marker-alt text-orange-400"></i>
+                  <span>km18 Song Hành, TP.HCM</span>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fas fa-phone-alt text-orange-400"></i>
+                  <a href="tel:0941822239" class="hover:text-orange-300 font-bold">0941 822 239</a>
+                </li>
+                <li class="flex items-center gap-3">
+                  <i class="fas fa-envelope text-orange-400"></i>
+                  <a href="mailto:lexuanha280473@gmail.com" class="hover:text-orange-300 font-bold">lexuanha280473@gmail.com</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lg:col-span-7">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <h3 class="font-extrabold uppercase text-white text-sm mb-3 relative after:content-[''] after:block after:w-10 after:h-1 after:bg-orange-500 after:mt-2">
+                    Điều hướng
+                  </h3>
+                  <ul class="space-y-2">
+                    <li><a class="text-gray-300 hover:text-orange-300 transition font-bold" href="#tong-quan"><i class="fas fa-chevron-right mr-2 text-[10px]"></i>Tổng quan</a></li>
+                    <li><a class="text-gray-300 hover:text-orange-300 transition font-bold" href="#hoc-vien"><i class="fas fa-chevron-right mr-2 text-[10px]"></i>Học viên</a></li>
+                    <li><a class="text-gray-300 hover:text-orange-300 transition font-bold" href="#khoa-hoc"><i class="fas fa-chevron-right mr-2 text-[10px]"></i>Khóa học</a></li>
+                    <li><a class="text-gray-300 hover:text-orange-300 transition font-bold" href="#lich-hoc"><i class="fas fa-chevron-right mr-2 text-[10px]"></i>Lịch học</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-extrabold uppercase text-white text-sm mb-3 relative after:content-[''] after:block after:w-10 after:h-1 after:bg-orange-500 after:mt-2">
+                    Gợi ý SEO
+                  </h3>
+                  <ul class="space-y-2 text-gray-300 text-sm">
+                    <li><i class="fas fa-check mr-2 text-orange-400"></i> Heading rõ ràng H1/H2.</li>
+                    <li><i class="fas fa-check mr-2 text-orange-400"></i> Meta description và OG.</li>
+                    <li><i class="fas fa-check mr-2 text-orange-400"></i> Nội dung mẫu có cấu trúc.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-gray-800 text-center text-xs text-gray-400">
+            <p>&copy; 2026 Website Đào Tạo Sát Hạch Lái Xe Thầy Hà - Trung tâm đào tạo sát hạch lái xe ĐH An Ninh TP.HCM. Tất cả quyền được bảo lưu.</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ===== JS dependencies (jQuery optional; use to match request) ===== -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script>
+    (function () {
+      const openSidebarBtn = document.getElementById('openSidebarBtn');
+      const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+      const sidebarMobile = document.getElementById('sidebarMobile');
+      const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+      function openSidebar() {
+        if (!sidebarMobile) return;
+        sidebarOverlay && sidebarOverlay.classList.remove('hidden');
+        sidebarMobile.classList.remove('-translate-x-full');
+      }
+
+      function closeSidebar() {
+        if (!sidebarMobile) return;
+        sidebarOverlay && sidebarOverlay.classList.add('hidden');
+        sidebarMobile.classList.add('-translate-x-full');
+      }
+
+      openSidebarBtn && openSidebarBtn.addEventListener('click', openSidebar);
+      closeSidebarBtn && closeSidebarBtn.addEventListener('click', closeSidebar);
+      sidebarOverlay && sidebarOverlay.addEventListener('click', closeSidebar);
+
+      // Toggle panels by tabs
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const panels = document.querySelectorAll('.tab-panel');
+
+      function showPanel(panelId) {
+        panels.forEach(p => {
+          if (p.id === panelId) p.classList.remove('hidden');
+          else p.classList.add('hidden');
+        });
+
+        tabButtons.forEach(b => {
+          const active = b.getAttribute('data-panel') === panelId;
+          b.classList.toggle('border-orange-200', active);
+          b.classList.toggle('bg-orange-50/30', active);
+        });
+      }
+
+      // Default panel
+      showPanel('panel-hoc-vien');
+
+      tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panelId = btn.getAttribute('data-panel');
+          showPanel(panelId);
+        });
+      });
+
+      // Close sidebar when mobile link clicked
+      $(document).on('click', '#sidebarMobile a', function () {
+        closeSidebar();
+      });
+
+      // Dummy actions
+      const createDemoBtn = document.getElementById('createDemoBtn');
+      createDemoBtn && createDemoBtn.addEventListener('click', function () {
+        alert('Đây là form demo. Bạn cần nối backend để tạo dữ liệu thật.');
+      });
+
+      // Theme toggle (simple demo)
+      const themeBtn = document.getElementById('themeBtn');
+      const themeIcon = document.getElementById('themeIcon');
+      let isDark = false;
+      themeBtn && themeBtn.addEventListener('click', function () {
+        isDark = !isDark;
+        document.body.classList.toggle('bg-gray-900', isDark);
+        document.body.classList.toggle('text-white', isDark);
+        document.body.classList.toggle('bg-gray-50', !isDark);
+        document.body.classList.toggle('text-gray-900', !isDark);
+        if (themeIcon) themeIcon.className = isDark ? 'fas fa-moon' : 'fas fa-sun';
+      });
+
+      // Search visual only (demo)
+      const searchInput = document.getElementById('searchInput');
+      searchInput && searchInput.addEventListener('input', function () {
+        // Placeholder for real search: no backend yet.
+      });
+
+      // Logout demo
+      const logoutBtn = document.getElementById('logoutBtn');
+      logoutBtn && logoutBtn.addEventListener('click', function () {
+        alert('Demo: Bạn cần nối xử lý đăng xuất thực tế.');
+      });
+
+      // Smooth scroll with offset for sections
+      // Keep it simple and safe: just default scroll behavior.
+      // If you later need exact offset, we can enhance.
+    })();
+  </script>
+</body>
+</html>
