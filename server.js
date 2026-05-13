@@ -487,9 +487,18 @@ app.get('/api/admin/students/registrations', authMiddleware, async (req, res) =>
         c.email,
         c.source AS customer_source,
         r.course_id,
-        r.course_class_id
+        r.course_class_id,
+
+        -- Resolve a human readable course label for dashboard badge
+        CASE
+          WHEN r.course_id IS NOT NULL THEN CONCAT('Hạng ', co.course_code)
+          WHEN r.course_class_id IS NOT NULL THEN CONCAT('Lớp ', cc.class_name)
+          ELSE 'N/A'
+        END AS course_name
       FROM registrations r
       JOIN customers c ON c.id = r.customer_id
+      LEFT JOIN courses co ON co.id = r.course_id
+      LEFT JOIN course_classes cc ON cc.id = r.course_class_id
       ORDER BY r.created_at DESC
       LIMIT 1000`
     );
