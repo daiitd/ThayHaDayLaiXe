@@ -960,63 +960,6 @@
             }
         }
 
-        // Form Submission Handler
-        const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const fullname = document.querySelector('input[name="fullname"]').value.trim();
-            const phone = document.querySelector('input[name="phone"]').value.trim();
-            const email = document.querySelector('input[name="email"]').value.trim();
-            const schedule = document.querySelector('select[name="schedule"]').value;
-            const note = document.querySelector('textarea[name="note"]').value.trim();
-
-            const payload = {
-                full_name: fullname,
-                phone,
-                email: email || null,
-                source: 'website',
-                course_class_id: null,
-                course_id: null,
-                note: note || ''
-            };
-
-            try {
-                // 1) lấy course_id theo course_code='A'
-                const coursesRes = await fetch('http://localhost:3000/api/courses');
-                const coursesData = await coursesRes.json().catch(() => ({}));
-                if (!coursesRes.ok || !coursesData?.ok === false) {
-                    // backend /api/courses trả ok:true theo code server.js
-                }
-
-                const courses = coursesData?.courses || [];
-                const course = courses.find(c => c.course_code === 'A');
-                if (!course?.id) {
-                    throw new Error('Không tìm thấy course_id cho course_code=A trong /api/courses');
-                }
-
-                payload.course_id = course.id;
-
-                // 2) submit registration
-                const res = await fetch('http://localhost:3000/api/customers/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        ...payload,
-                        note: `[HẠNG A] ${payload.note}`
-                    })
-                });
-
-                const data = await res.json().catch(() => ({}));
-                if (!res.ok || !data.ok) throw new Error(data?.message || 'Đăng ký thất bại');
-
-                alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
-                registrationForm.reset();
-            } catch (err) {
-                alert('Có lỗi khi gửi đăng ký. Vui lòng thử lại.');
-                console.error(err);
-            }
-        });
     </script>
 
 <script>
@@ -1070,7 +1013,6 @@
         alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
         registrationForm.reset();
       } catch (err) {
-        alert('Có lỗi khi gửi đăng ký. Vui lòng thử lại.');
         console.error(err);
       }
     });

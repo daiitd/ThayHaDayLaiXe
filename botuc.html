@@ -841,20 +841,75 @@
     }
 
     const registrationForm = document.getElementById('registrationForm');
-    registrationForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = {
-        fullname: document.querySelector('input[name="fullname"]').value,
-        phone: document.querySelector('input[name="phone"]').value,
-        email: document.querySelector('input[name="email"]').value,
-        carType: document.querySelector('select[name="carType"]').value,
-        schedule: document.querySelector('select[name="schedule"]').value,
-        note: document.querySelector('textarea[name="note"]').value
-      };
-      console.log('Form Submitted:', formData);
-      alert('Cảm ơn! Thầy Hà sẽ liên hệ bạn trong 24 giờ.\nHotline: 0941 822 239');
-      registrationForm.reset();
-    });
+
+    // Submit registration -> save to DB -> admin dashboard will show it
+    (function () {
+      const API_BASE = 'http://localhost:3000';
+      if (!registrationForm) return;
+
+      const course_code = 'Bổ Túc Tay Lái';
+
+      async function resolveCourseId() {
+        const res = await fetch(API_BASE + '/api/courses', { method: 'GET' });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data?.ok) throw new Error('Không tải được courses');
+
+        const courses = data.courses || [];
+        const course = courses.find(c => String(c.course_code) === course_code);
+        if (!course?.id) throw new Error('Không tìm thấy course_id cho course_code=' + course_code);
+
+        return course.id;
+      }
+
+      registrationForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const fullname = (document.querySelector('input[name="fullname"]')?.value || '').trim();
+        const phone = (document.querySelector('input[name="phone"]')?.value || '').trim();
+        const email = (document.querySelector('input[name="email"]')?.value || '').trim();
+        const carType = document.querySelector('select[name="carType"]')?.value || '';
+        const schedule = document.querySelector('select[name="schedule"]')?.value || '';
+        const note = (document.querySelector('textarea[name="note"]')?.value || '').trim();
+
+        try {
+          const course_id = await resolveCourseId();
+
+          const noteParts = [
+            carType ? `carType=${carType}` : '',
+            schedule ? `schedule=${schedule}` : '',
+            note
+          ].filter(Boolean);
+
+          const noteText = `[${course_code}] ${noteParts.join(' | ')}`;
+
+          const payload = {
+            full_name: fullname,
+            phone,
+            email: email || null,
+            source: 'website',
+            course_class_id: null,
+            course_id,
+            registration_type: 'register',
+            note: noteText
+          };
+
+          const res = await fetch(API_BASE + '/api/customers/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.ok) throw new Error(data?.message || 'Đăng ký thất bại');
+
+          alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
+          registrationForm.reset();
+        } catch (err) {
+          alert('Có lỗi khi gửi đăng ký. Vui lòng thử lại.');
+          console.error(err);
+        }
+      });
+    })();
   </script>
 
 </body>

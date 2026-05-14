@@ -491,7 +491,7 @@
                             <p class="text-sm text-gray-600"><strong>Kích thước lớp:</strong> học viên phù hợp để đảm bảo kèm sát tiến độ</p>
                         </div>
                         <div class="border-l-4 border-orange-500 pl-4 py-2">
-                            <p class="text-sm text-gray-600"><strong>Địa điểm:</strong> Trung tâm Đào tạo & tuyến đường tập thực tế (TP.HCM)</p>
+                            <p class="text-sm text-gray-600"><strong>Địa điểm thi:</strong> Cục cảnh sát giao thông TP.HCM (đủ điều kiện)</p>
                         </div>
                     </div>
                 </div>
@@ -1082,24 +1082,6 @@
             }
         }
 
-        // Form Submission Handler
-        const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                fullname: document.querySelector('input[name="fullname"]').value,
-                phone: document.querySelector('input[name="phone"]').value,
-                email: document.querySelector('input[name="email"]').value,
-                schedule: document.querySelector('select[name="schedule"]').value,
-                note: document.querySelector('textarea[name="note"]').value
-            };
-
-            console.log('Form Submitted:', formData);
-
-            alert('Cảm ơn! Thầy Hà sẽ liên hệ bạn trong 24 giờ.\nHotline: 0941 822 239');
-            registrationForm.reset();
-        });
     </script>
 
 <script>

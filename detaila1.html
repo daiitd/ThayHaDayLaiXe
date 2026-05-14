@@ -1012,25 +1012,6 @@
             }
         }
 
-        // Form Submission Handler
-        const registrationForm = document.getElementById('registrationForm');
-        registrationForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = {
-                fullname: document.querySelector('input[name="fullname"]').value,
-                phone: document.querySelector('input[name="phone"]').value,
-                email: document.querySelector('input[name="email"]').value,
-                schedule: document.querySelector('select[name="schedule"]').value,
-                note: document.querySelector('textarea[name="note"]').value
-            };
-
-            console.log('Form Submitted:', formData);
-
-            alert('Cảm ơn! Thầy Hà sẽ liên hệ tư vấn trong 24 giờ.\nHotline: 0941 822 239');
-
-            registrationForm.reset();
-        });
     </script>
 
 <script>
