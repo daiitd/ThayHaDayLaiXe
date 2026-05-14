@@ -364,11 +364,11 @@
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Sân tập gần nhà, giờ linh hoạt</li>
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Học phí trọn gói 100%</li>
                         </ul>
-                        <button 
-                            onclick="window.location.href='tel:0941822239'" 
-                            class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
-                            Đăng ký ngay
-                        </button>
+                       <button 
+                        onclick="handleRegister()" 
+                        class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
+                        Đăng ký ngay
+                    </button>
                        <a href="detailb1.html">
                             <button class="w-full border-2 border-orange-500 mt-3 text-orange-500 py-2.5 rounded-xl font-bold hover:bg-orange-500 hover:text-white transition uppercase text-sm">
                                 Xem chi tiết
@@ -391,7 +391,7 @@
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Cam kết thi là đậu</li>
                         </ul>
                         <button 
-                            onclick="window.location.href='tel:0941822239'" 
+                            onclick="handleRegister()" 
                             class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
                             Đăng ký ngay
                         </button>
@@ -416,7 +416,7 @@
                             <li><i class="fas fa-check-circle text-green-500 mr-2"></i> Hỗ trợ trả góp học phí</li>
                         </ul>
                           <button 
-                            onclick="window.location.href='tel:0941822239'" 
+                            onclick="handleRegister()" 
                             class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
                             Đăng ký ngay
                         </button>
@@ -441,7 +441,7 @@
                             <li><i class="fas fa-infinity text-green-500 mr-2"></i> Bằng có giá trị vô thời hạn</li>
                         </ul>
                          <button 
-                            onclick="window.location.href='tel:0941822239'" 
+                            onclick="handleRegister()" 
                             class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
                             Đăng ký ngay
                         </button>
@@ -466,11 +466,11 @@
                             <li><i class="fas fa-calendar-check text-orange-500 mr-2"></i> Lịch thi liên tục hàng tuần</li>
                             <li><i class="fas fa-file-alt text-orange-500 mr-2"></i> Tặng bộ đề mẹo thi đậu 100%</li>
                         </ul>
-                        <button 
-                            onclick="window.location.href='tel:0941822239'" 
-                            class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
-                            Đăng ký ngay
-                        </button>
+                            <button 
+                                onclick="handleRegister()" 
+                                class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
+                                Đăng ký ngay
+                        </button>>
                         <a href="detaila.html">
                             <button class="w-full border-2 border-orange-500 mt-3 text-orange-500 py-2.5 rounded-xl font-bold hover:bg-orange-500 hover:text-white transition uppercase text-sm">
                                 Xem chi tiết
@@ -492,7 +492,7 @@
                             <li><i class="fas fa-clock text-green-500 mr-2"></i> Thời gian linh hoạt theo học viên</li>
                         </ul>
                         <button 
-                            onclick="window.location.href='tel:0941822239'" 
+                            onclick="handleRegister()" 
                             class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
                             Đăng ký ngay
                         </button>
@@ -740,6 +740,22 @@
             </div>
         </a>
     </div>
+
+
+    <script>
+        function handleRegister() {
+            // Kiểm tra nếu là thiết bị di động (dựa trên kích thước màn hình hoặc UserAgent)
+            const isMobile = /iPhone|Android|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+            if (isMobile) {
+                // Nếu là điện thoại: Gọi điện
+                window.location.href = 'tel:0941822239';
+            } else {
+                // Nếu là PC: Chuyển hướng đến trang đăng ký
+                window.location.href = 'registation.html';
+            }
+        }
+        </script>
 
     <!-- JavaScript for Mobile Menu -->
     <script>
