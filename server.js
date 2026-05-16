@@ -480,6 +480,34 @@ app.post('/api/admin/customers/:id/delete', authMiddleware, asyncHandler(async (
   }
 }));
 
+
+/**
+ * POST /api/admin/customers/:id/update
+ * Cập nhật thông tin khách hàng (tên, phone, email)
+ */
+app.post('/api/admin/customers/:id/update', authMiddleware, asyncHandler(async (req, res) => {
+  const customerId = Number(req.params.id);
+  if (!customerId) return sendError(res, 400, 'Invalid customer_id');
+
+  const { full_name, phone, email } = req.body || {};
+  if (!full_name || typeof full_name !== 'string') return sendError(res, 400, 'Missing full_name');
+  if (!phone || typeof phone !== 'string') return sendError(res, 400, 'Missing phone');
+
+  // Kiểm tra customer tồn tại
+  const [custRows] = await db.query(
+    'SELECT id FROM customers WHERE id = :id LIMIT 1',
+    { id: customerId }
+  );
+  if (!custRows.length) return sendError(res, 404, 'Customer not found');
+
+  await db.query(
+    'UPDATE customers SET full_name=:full_name, phone=:phone, email=:email, updated_at=CURRENT_TIMESTAMP WHERE id=:id',
+    { full_name, phone, email: email || null, id: customerId }
+  );
+
+  res.json({ ok: true });
+}));
+
 // ============================================================
 // ---- Consultations ----
 // ============================================================
@@ -512,6 +540,59 @@ app.get('/api/admin/consultations', authMiddleware, asyncHandler(async (req, res
   res.json({ ok: true, consultations: rows });
 }));
 
+
+
+// PUT /api/admin/consultations/:id — cập nhật đầy đủ
+app.put('/api/admin/consultations/:id', authMiddleware, asyncHandler(async (req, res) => {
+  const id = Number(req.params.id);
+  if (!id) return sendError(res, 400, 'Invalid id');
+
+  const { full_name, phone, email, course_code, topic, message, admin_status, admin_note } = req.body || {};
+  if (!full_name) return sendError(res, 400, 'Missing full_name');
+  if (!phone)     return sendError(res, 400, 'Missing phone');
+
+  const [conRows] = await db.query(
+    'SELECT customer_id FROM consultations WHERE id = :id LIMIT 1',
+    { id }
+  );
+  if (!conRows.length) return sendError(res, 404, 'Consultation not found');
+  const customerId = conRows[0].customer_id;
+
+  // Cập nhật thông tin khách hàng
+  await db.query(
+    'UPDATE customers SET full_name=:full_name, phone=:phone, email=:email, updated_at=CURRENT_TIMESTAMP WHERE id=:id',
+    { full_name, phone, email: email || null, id: customerId }
+  );
+
+  // Tìm course_id từ course_code
+  let newCourseId = null;
+  if (course_code) {
+    const [courseRows] = await db.query(
+      'SELECT id FROM courses WHERE course_code = :course_code LIMIT 1',
+      { course_code }
+    );
+    if (courseRows.length) newCourseId = courseRows[0].id;
+  }
+
+  // Cập nhật consultation
+  await db.query(
+    `UPDATE consultations
+     SET course_id=:course_id, topic=:topic, message=:message,
+         admin_status=:admin_status, admin_note=:admin_note,
+         updated_at=CURRENT_TIMESTAMP
+     WHERE id=:id`,
+    {
+      course_id:    newCourseId,
+      topic:        topic || 'Tư vấn khóa học',
+      message:      message || '',
+      admin_status: admin_status || 'new',
+      admin_note:   admin_note || '',
+      id
+    }
+  );
+
+  res.json({ ok: true });
+}));
 /**
  * POST /api/admin/consultations/:id/status
  */

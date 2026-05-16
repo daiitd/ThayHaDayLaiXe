@@ -138,7 +138,7 @@
                     <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                     <li><a href="registation_admin.html"><i class="fas fa-user-check"></i><span>Đăng Ký</span></a></li>
                     <li><a href="consultation.html"><i class="fas fa-comments"></i><span>Tư Vấn</span></a></li>
-                    <li><a href="#students"><i class="fas fa-users"></i><span>Học Viên</span></a></li>
+                    <li><a href="student.html"><i class="fas fa-users"></i><span>Học Viên</span></a></li>
                     <li><a href="schedule.html"><i class="fas fa-calendar-alt"></i><span>Lịch Dạy</span></a></li>
                     <li><a href="courses.html"><i class="fas fa-book"></i><span>Khóa Học</span></a></li>
                 </ul>
@@ -793,45 +793,82 @@
         }
 
         function confirmEdit() {
-            if (!editingItem) return;
-            const fullName = $('#editFullName').val().trim();
-            const phone = $('#editPhone').val().trim();
-            if (!fullName) { $('#editFullNameError').removeClass('d-none'); return; }
-            $('#editFullNameError').addClass('d-none');
-            if (!phone) { $('#editPhoneError').removeClass('d-none'); return; }
-            $('#editPhoneError').addClass('d-none');
+    if (!editingItem) return;
 
-            // Cập nhật local (chưa có API edit riêng)
-            const item = allData.find(x => String(x.id) === String(editingItem.id));
+    const fullName = $('#editFullName').val().trim();
+    const phone    = $('#editPhone').val().trim();
+    const email    = $('#editEmail').val().trim();
+    const status   = $('#editStatus').val();
+    const note     = $('#editNote').val().trim();
+    const courseVal = $('#editCourse').val();
+
+    // Validation
+    if (!fullName) { $('#editFullNameError').removeClass('d-none'); return; }
+    $('#editFullNameError').addClass('d-none');
+    if (!phone)    { $('#editPhoneError').removeClass('d-none'); return; }
+    $('#editPhoneError').addClass('d-none');
+
+    const item = allData.find(x => String(x.id) === String(editingItem.id));
+
+    // Tạo mảng các API cần gọi
+    const requests = [];
+
+    // 1) Luôn cập nhật thông tin khách hàng (tên, phone, email)
+    if (editingItem.customer_id) {
+        requests.push(
+            $.ajax({
+                url: `${API_BASE}/api/admin/customers/${editingItem.customer_id}/update`,
+                type: 'POST',
+                headers: { ...authHeader(), 'Content-Type': 'application/json' },
+                contentType: 'application/json',
+                data: JSON.stringify({ full_name: fullName, phone, email: email || null })
+            })
+        );
+    }
+
+    // 2) Nếu có registration => cập nhật status + note
+    if (editingItem.registration_id) {
+        requests.push(
+            $.ajax({
+                url: `${API_BASE}/api/admin/registrations/${editingItem.registration_id}/status`,
+                type: 'POST',
+                headers: { ...authHeader(), 'Content-Type': 'application/json' },
+                contentType: 'application/json',
+                data: JSON.stringify({ admin_status: status, admin_note: note })
+            })
+        );
+    }
+
+    // Disable nút tránh double-click
+    $('#confirmEditBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...');
+
+    $.when(...requests)
+        .done(function() {
+            // Cập nhật local state
             if (item) {
-                item.full_name = fullName;
-                item.phone = phone;
-                item.email = $('#editEmail').val().trim();
-                const courseVal = $('#editCourse').val();
-                item.course_name = courseVal ? 'Hạng ' + courseVal : item.course_name;
-                item.admin_status = $('#editStatus').val();
-                item.note = $('#editNote').val().trim();
-            }
-
-            // Nếu có registration_id => cập nhật status qua API
-            if (editingItem.registration_id) {
-                $.ajax({
-                    url: `${API_BASE}/api/admin/registrations/${editingItem.registration_id}/status`,
-                    type: 'POST',
-                    headers: authHeader(),
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        admin_status: $('#editStatus').val(),
-                        admin_note: $('#editNote').val().trim()
-                    })
-                });
+                item.full_name    = fullName;
+                item.phone        = phone;
+                item.email        = email;
+                item.course_name  = courseVal ? 'Hạng ' + courseVal : item.course_name;
+                item.admin_status = status;
+                item.note         = note;
             }
 
             performSearch();
             updateStats();
+            renderLatestStudent();
+
             bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
             showSuccessMessage('Cập nhật thông tin thành công!');
-        }
+        })
+        .fail(function(xhr) {
+            const resp = xhr.responseJSON || {};
+            showErrorMessage('Lỗi cập nhật: ' + (resp.message || 'Không thể kết nối server'));
+        })
+        .always(function() {
+            $('#confirmEditBtn').prop('disabled', false).html('<i class="fas fa-save me-2"></i>Cập Nhật');
+        });
+}
 
         // ════════════════════════════════════════
         // ADD

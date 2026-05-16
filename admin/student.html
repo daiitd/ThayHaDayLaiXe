@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Học Viên - Thầy Hà Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0b1f4a;
+            --orange: #f4782a;
+            --light: #f8f9fc;
+            --text: #2c3e50;
+            --muted: #6c7a8a;
+            --border: #e8edf5;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f7fa; color: var(--text); overflow-x: hidden; }
+
+        /* ── Header ── */
+        .admin-header {
+            background: linear-gradient(135deg, var(--navy) 0%, #163a80 100%);
+            padding: 14px 0; box-shadow: 0 4px 15px rgba(11,31,74,0.15);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .admin-header .navbar-brand {
+            font-size: 1.4rem; font-weight: 700; color: white !important;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .admin-header .navbar-brand i { font-size: 1.7rem; color: var(--orange); }
+        .admin-nav-link { color: rgba(255,255,255,0.8) !important; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .admin-nav-link:hover { color: var(--orange) !important; }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: white; border-right: 1px solid var(--border);
+            min-height: calc(100vh - 60px); padding: 16px 0;
+            position: sticky; top: 60px;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 20px; color: var(--text); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem;
+            border-left: 3px solid transparent; transition: all 0.25s;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: #fff0e5; border-left-color: var(--orange); color: var(--orange);
+        }
+        .sidebar-menu i { font-size: 1rem; width: 22px; text-align: center; }
+
+        /* ── Main ── */
+        .main-content { padding: 24px; }
+        .page-title { font-size: 1.6rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+        .page-title i { color: var(--orange); }
+
+        /* ── Stats ── */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: white; border-radius: 12px; padding: 18px;
+            box-shadow: 0 2px 8px rgba(11,31,74,0.07); border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(11,31,74,0.12); }
+        .stat-card-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; margin-bottom: 10px;
+        }
+        .stat-card-label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 6px; }
+        .stat-card-value { font-size: 1.7rem; font-weight: 700; color: var(--navy); }
+        .ic-total  { background: rgba(11,31,74,0.1);   color: var(--navy); }
+        .ic-new    { background: rgba(244,120,42,0.15); color: var(--orange); }
+        .ic-reg    { background: rgba(52,152,219,0.15); color: #3498db; }
+        .ic-con    { background: rgba(155,89,182,0.15); color: #9b59b6; }
+        .ic-enroll { background: rgba(46,204,113,0.15); color: #27ae60; }
+        .ic-done   { background: rgba(26,188,156,0.15); color: #1abc9c; }
+
+        /* ── Filter bar ── */
+        .filter-bar {
+            background: white; border-radius: 12px; padding: 18px 20px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(11,31,74,0.07);
+            border: 1px solid var(--border);
+        }
+        .filter-bar label { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+        .filter-bar input, .filter-bar select {
+            border: 1px solid var(--border); border-radius: 8px;
+            font-size: 0.88rem; padding: 8px 12px; width: 100%;
+            transition: border-color 0.25s;
+        }
+        .filter-bar input:focus, .filter-bar select:focus {
+            outline: none; border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(244,120,42,0.1);
+        }
+
+        /* ── Table ── */
+        .table-section {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(11,31,74,0.07); border: 1px solid var(--border);
+        }
+        .table-header {
+            background: #f8f9fc; border-bottom: 1px solid var(--border);
+            padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .table-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+        .table { margin-bottom: 0; font-size: 0.88rem; }
+        .table thead { background: linear-gradient(135deg, var(--navy), #163a80); }
+        .table thead th {
+            padding: 13px 14px; font-weight: 600; color: white;
+            border: none; white-space: nowrap; font-size: 0.8rem; letter-spacing: 0.02em;
+        }
+        .table tbody td { padding: 12px 14px; border-color: #f0f2f5; vertical-align: middle; }
+        .table tbody tr:hover { background: #fff8f3; }
+
+        /* ── Badges ── */
+        .source-badge {
+            display: inline-block; padding: 3px 9px; border-radius: 12px;
+            font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+        }
+        .src-registration { background: #dbeafe; color: #1e40af; }
+        .src-consultation  { background: #ede9fe; color: #6d28d9; }
+        .src-website       { background: #dcfce7; color: #166534; }
+        .src-admin         { background: #fef9c3; color: #854d0e; }
+        .src-facebook      { background: #dbeafe; color: #1d4ed8; }
+        .src-zalo          { background: #cffafe; color: #0e7490; }
+        .src-other         { background: #f3f4f6; color: #6b7280; }
+
+        .status-badge {
+            display: inline-block; padding: 4px 10px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+        }
+        .st-new         { background: #fef3cd; color: #856404; }
+        .st-contacted   { background: #cfe2ff; color: #084298; }
+        .st-in_progress { background: #d1ecf1; color: #0c5460; }
+        .st-enrolled    { background: #d1e7dd; color: #0f5132; }
+        .st-completed   { background: #a3e6cd; color: #065f46; }
+        .st-scheduled   { background: #ede9fe; color: #6d28d9; }
+        .st-closed      { background: #fee2e2; color: #991b1b; }
+        .st-rejected    { background: #f8d7da; color: #721c24; }
+
+        .course-badge {
+            display: inline-block; padding: 4px 10px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+        }
+        .cb-b1 { background: #cce8ff; color: #1a5ccd; }
+        .cb-b2 { background: #ffe8cc; color: #d8621a; }
+        .cb-c  { background: #ccf5ff; color: #1a9fb2; }
+        .cb-a  { background: #f5e6cc; color: #b2761a; }
+        .cb-a1 { background: #e6ccff; color: #7d1ab2; }
+        .cb-bt { background: #ccf5e6; color: #1ab254; }
+        .cb-na { background: #eee; color: #888; }
+
+        /* ── Action buttons ── */
+        .btn-action {
+            padding: 5px 9px; border: none; border-radius: 6px;
+            font-size: 0.78rem; cursor: pointer; font-weight: 500;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-view   { background: #dbeafe; color: #1e40af; }
+        .btn-view:hover   { background: #bfdbfe; }
+        .btn-edit   { background: #fef3c7; color: #92400e; }
+        .btn-edit:hover   { background: #fde68a; }
+        .btn-delete { background: #fee2e2; color: #991b1b; }
+        .btn-delete:hover { background: #fecaca; }
+
+        /* ── Type pill ── */
+        .type-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 9px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700;
+        }
+        .tp-reg { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .tp-con { background: #f5f3ff; color: #7c3aed; border: 1px solid #ddd6fe; }
+
+        /* ── Pagination ── */
+        .pagination-section {
+            padding: 16px 20px; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .pagination-info { color: var(--muted); font-size: 0.85rem; }
+        .pagination .page-link {
+            border-radius: 6px; margin: 0 2px; border: 1px solid var(--border);
+            color: var(--text); font-size: 0.85rem; padding: 5px 10px;
+        }
+        .pagination .page-link:hover { border-color: var(--orange); color: var(--orange); background: #fff8f3; }
+        .page-link.active-page { background: var(--orange); border-color: var(--orange); color: white; }
+
+        /* ── Loader ── */
+        .loader-wrap { display: none; text-align: center; padding: 40px; }
+        .loader-wrap.show { display: block; }
+        .spinner-border { color: var(--orange); }
+
+        /* ── Empty ── */
+        .empty-state { text-align: center; padding: 50px 20px; display: none; }
+        .empty-state.show { display: block; }
+        .empty-state i { font-size: 3.5rem; color: #d1d5db; margin-bottom: 12px; }
+
+        /* ── Modal tweaks ── */
+        .modal-header { border-bottom: 2px solid var(--orange); background: #f8f9fc; }
+        .modal-title i { color: var(--orange); }
+        .form-label { font-size: 0.83rem; font-weight: 600; color: var(--text); }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244,120,42,0.12);
+        }
+        .btn-orange { background: var(--orange); color: white; border: none; }
+        .btn-orange:hover { background: #d8621a; color: white; }
+
+        /* ── Toast ── */
+        #liveToast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; min-width: 280px; }
+
+        /* ── Sort btn ── */
+        .sort-btn {
+            padding: 5px 12px; border: 1px solid var(--border); background: white;
+            color: var(--text); border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 500;
+            transition: all 0.2s;
+        }
+        .sort-btn:hover { border-color: var(--orange); color: var(--orange); }
+        .sort-btn.active { background: var(--orange); color: white; border-color: var(--orange); }
+
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .table-responsive { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="admin-header">
+    <nav class="navbar navbar-expand-lg navbar-dark px-3">
+        <a class="navbar-brand" href="dashboard.html">
+            <i class="fas fa-graduation-cap"></i> Thầy Hà - Admin
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navTop">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navTop">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <li class="nav-item">
+                    <span id="adminNameDisplay" class="text-white-50 small me-2"></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" href="dashboard.html"><i class="fas fa-chart-line me-1"></i>Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-1"></i>Đăng Xuất</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid">
+<div class="row" style="min-height:calc(100vh - 60px)">
+
+    <!-- ══ SIDEBAR ══ -->
+    <nav class="col-md-2 d-none d-md-block sidebar px-0">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="registation_admin.html"><i class="fas fa-user-check"></i> Đơn Đăng Ký</a></li>
+            <li><a href="advice.html"><i class="fas fa-comments"></i> Tư Vấn</a></li>
+            <li><a href="student.html" class="active"><i class="fas fa-users"></i> Học Viên</a></li>
+            <li><a href="schedule.html"><i class="fas fa-calendar-alt"></i> Lịch Dạy</a></li>
+            <li><a href="courses.html"><i class="fas fa-book"></i> Khóa Học</a></li>
+        </ul>
+    </nav>
+
+    <!-- ══ MAIN ══ -->
+    <main class="col-md-10 ms-sm-auto main-content">
+
+        <!-- Page title -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h1 class="page-title"><i class="fas fa-users"></i> Quản Lý Học Viên</h1>
+                <p class="text-muted small mb-0">Tổng hợp từ đăng ký khóa học &amp; tư vấn</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-orange" id="refreshBtn">
+                    <i class="fas fa-sync-alt me-1" id="refreshIcon"></i> Làm mới
+                </button>
+                <button class="btn btn-sm btn-orange" id="exportBtn">
+                    <i class="fas fa-file-excel me-1"></i> Xuất CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-card-icon ic-total"><i class="fas fa-users"></i></div>
+                <div class="stat-card-label">Tổng học viên</div>
+                <div class="stat-card-value" id="stTotal">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-new"><i class="fas fa-star"></i></div>
+                <div class="stat-card-label">Mới</div>
+                <div class="stat-card-value" id="stNew">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-reg"><i class="fas fa-user-check"></i></div>
+                <div class="stat-card-label">Đã liên hệ</div>
+                <div class="stat-card-value" id="stContacted">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-con"><i class="fas fa-clock"></i></div>
+                <div class="stat-card-label">Đang xử lý</div>
+                <div class="stat-card-value" id="stInProgress">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-enroll"><i class="fas fa-id-card"></i></div>
+                <div class="stat-card-label">Đã ghi danh</div>
+                <div class="stat-card-value" id="stEnrolled">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-done"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-card-label">Hoàn thành</div>
+                <div class="stat-card-value" id="stCompleted">—</div>
+            </div>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-sm-6 col-md-3">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="searchInput" placeholder="Tên, SĐT, email...">
+                </div>
+                <div class="col-6 col-sm-4 col-md-2">
+                    <label>Trạng thái</label>
+                    <select id="filterStatus">
+                        <option value="">Tất cả</option>
+                        <option value="new">Mới</option>
+                        <option value="contacted">Đã liên hệ</option>
+                        <option value="in_progress">Đang xử lý</option>
+                        <option value="scheduled">Lên lịch</option>
+                        <option value="enrolled">Đã ghi danh</option>
+                        <option value="completed">Hoàn thành</option>
+                        <option value="rejected">Từ chối</option>
+                        <option value="closed">Đóng</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-md-2">
+                    <label>Khóa học</label>
+                    <select id="filterCourse">
+                        <option value="">Tất cả</option>
+                        <option value="B1">Hạng B1</option>
+                        <option value="B2">Hạng B2</option>
+                        <option value="C">Hạng C</option>
+                        <option value="A1">Hạng A1</option>
+                        <option value="A">Hạng A</option>
+                        <option value="BOTUC">Bổ túc</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-md-2">
+                    <label>Loại</label>
+                    <select id="filterType">
+                        <option value="">Tất cả</option>
+                        <option value="registration">Đăng ký</option>
+                        <option value="consultation">Tư vấn</option>
+                    </select>
+                </div>
+                <div class="col-6 col-sm-4 col-md-2">
+                    <label>Nguồn</label>
+                    <select id="filterSource">
+                        <option value="">Tất cả</option>
+                        <option value="website">Website</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="zalo">Zalo</option>
+                        <option value="admin">Admin</option>
+                        <option value="other">Khác</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-1 d-flex gap-2">
+                    <button class="btn btn-sm btn-orange w-100" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-sm btn-secondary w-100" id="resetBtn" title="Reset">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">
+                    <i class="fas fa-list me-2" style="color:var(--orange)"></i>
+                    Danh Sách Học Viên
+                    <span class="badge ms-2" style="background:var(--orange);font-size:0.75rem" id="countBadge">0</span>
+                </div>
+                <div class="d-flex gap-2 align-items-center flex-wrap">
+                    <span class="text-muted small">Sắp xếp:</span>
+                    <button class="sort-btn active" data-sort="newest">
+                        <i class="fas fa-arrow-down me-1"></i>Mới nhất
+                    </button>
+                    <button class="sort-btn" data-sort="oldest">
+                        <i class="fas fa-arrow-up me-1"></i>Cũ nhất
+                    </button>
+                    <button class="sort-btn" data-sort="name">
+                        <i class="fas fa-sort-alpha-down me-1"></i>Tên A-Z
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loader -->
+            <div class="loader-wrap" id="loader">
+                <div class="spinner-border" role="status"></div>
+                <p class="mt-2 text-muted small">Đang tải dữ liệu...</p>
+            </div>
+
+            <!-- Table body -->
+            <div class="table-responsive" id="tableWrap">
+                <table class="table" id="mainTable">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">#</th>
+                            <th>Học viên</th>
+                            <th>Liên hệ</th>
+                            <th>Khóa học</th>
+                            <th>Loại</th>
+                            <th>Nguồn</th>
+                            <th>Trạng thái</th>
+                            <th>Ghi chú</th>
+                            <th>Ngày</th>
+                            <th style="min-width:110px;text-align:center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Empty -->
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-user-slash d-block"></i>
+                <p class="text-muted">Không tìm thấy học viên nào</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-section" id="paginationSection" style="display:none">
+                <div class="pagination-info" id="paginationInfo"></div>
+                <nav><ul class="pagination mb-0" id="pagination"></ul></nav>
+            </div>
+        </div>
+
+    </main>
+</div>
+</div>
+
+<!-- ══ MODAL: XEM CHI TIẾT ══ -->
+<div class="modal fade" id="viewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-circle me-2"></i>Chi Tiết Học Viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="viewBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Đóng</button>
+                <button class="btn btn-orange btn-sm" id="viewToEditBtn">
+                    <i class="fas fa-pen me-1"></i> Chỉnh sửa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: CHỈNH SỬA ══ -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Chỉnh Sửa Học Viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editUid">
+                <input type="hidden" id="editCustomerId">
+                <input type="hidden" id="editRecordId">
+                <input type="hidden" id="editRecordType">
+
+                <div class="row g-3">
+                    <!-- Thông tin cá nhân -->
+                    <div class="col-12">
+                        <p class="fw-bold small text-uppercase text-muted mb-2" style="letter-spacing:.05em">
+                            <i class="fas fa-user me-1" style="color:var(--orange)"></i> Thông tin cá nhân
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-sm" id="editFullName">
+                        <div class="text-danger small d-none" id="errName">Vui lòng nhập họ tên</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control form-control-sm" id="editPhone">
+                        <div class="text-danger small d-none" id="errPhone">Số điện thoại không hợp lệ</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control form-control-sm" id="editEmail">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Nguồn</label>
+                        <select class="form-select form-select-sm" id="editSourceDisplay" disabled>
+                            <option value="website">Website</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="zalo">Zalo</option>
+                            <option value="admin">Admin</option>
+                            <option value="other">Khác</option>
+                        </select>
+                    </div>
+
+                    <!-- Thông tin đăng ký/tư vấn -->
+                    <div class="col-12 mt-2">
+                        <p class="fw-bold small text-uppercase text-muted mb-2" style="letter-spacing:.05em">
+                            <i class="fas fa-book me-1" style="color:var(--orange)"></i> Thông tin học tập
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select form-select-sm" id="editStatus">
+                            <option value="new">Mới</option>
+                            <option value="contacted">Đã liên hệ</option>
+                            <option value="in_progress">Đang xử lý</option>
+                            <option value="scheduled">Lên lịch</option>
+                            <option value="enrolled">Đã ghi danh</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="rejected">Từ chối</option>
+                            <option value="closed">Đóng</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Khóa học</label>
+                        <input type="text" class="form-control form-control-sm" id="editCourseName" disabled>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Ghi chú admin</label>
+                        <textarea class="form-control form-control-sm" id="editNote" rows="3" placeholder="Nhập ghi chú nội bộ..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-orange btn-sm" id="confirmEditBtn">
+                    <i class="fas fa-save me-1"></i> Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ MODAL: XÁC NHẬN XÓA ══ -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="border-color:#dc3545">
+                <h5 class="modal-title"><i class="fas fa-trash me-2" style="color:#dc3545"></i>Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px">
+                    <i class="fas fa-trash text-danger fs-4"></i>
+                </div>
+                <p class="mb-1 fw-bold" id="deleteMsg"></p>
+                <p class="text-muted small">Hành động này không thể hoàn tác.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-danger btn-sm" id="confirmDeleteBtn">
+                    <i class="fas fa-check me-1"></i> Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+    <div id="liveToast" class="toast align-items-center border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold" id="toastMsg"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+/* ════════════════════════════════════
+   CONFIG
+════════════════════════════════════ */
+const API_BASE = 'http://localhost:3000';
+
+function getToken() {
+    return localStorage.getItem('admin_token') || localStorage.getItem('token') || '';
+}
+function authHdr() {
+    return { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' };
+}
+function ensureAuth() {
+    if (!getToken()) { window.location.href = '../login.html'; return false; }
+    return true;
+}
+
+/* ════════════════════════════════════
+   STATE
+════════════════════════════════════ */
+let allStudents   = [];   // merged list
+let filtered      = [];
+let currentSort   = 'newest';
+let currentPage   = 1;
+const PER_PAGE    = 15;
+let editingItem   = null;
+let deletingItem  = null;
+
+/* ════════════════════════════════════
+   TOAST
+════════════════════════════════════ */
+function showToast(msg, type = 'success') {
+    const el = document.getElementById('liveToast');
+    const msgEl = document.getElementById('toastMsg');
+    el.className = `toast align-items-center border-0 text-white bg-${type === 'success' ? 'success' : 'danger'}`;
+    msgEl.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>${msg}`;
+    bootstrap.Toast.getOrCreateInstance(el, { delay: 3500 }).show();
+}
+
+/* ════════════════════════════════════
+   LOAD DATA  (registrations + consultations)
+════════════════════════════════════ */
+function loadAll() {
+    if (!ensureAuth()) return;
+    $('#loader').addClass('show');
+    $('#tableWrap').hide();
+    $('#emptyState').removeClass('show');
+    $('#paginationSection').hide();
+    $('#refreshIcon').addClass('fa-spin');
+
+    const regReq = $.ajax({ url: API_BASE + '/api/admin/students/registrations', headers: authHdr() });
+    const conReq = $.ajax({ url: API_BASE + '/api/admin/consultations?status=all', headers: authHdr() });
+
+    $.when(regReq, conReq)
+        .done(function(regRes, conRes) {
+            const regs  = (regRes[0].ok  ? regRes[0].registrations  : []) || [];
+            const cons  = (conRes[0].ok  ? conRes[0].consultations  : []) || [];
+
+            // Normalize registrations
+            const regNorm = regs.map(r => ({
+                uid:          'r_' + (r.registration_id || r.id),
+                record_id:    r.registration_id || r.id,
+                record_type:  'registration',
+                customer_id:  r.customer_id,
+                full_name:    r.full_name || '',
+                phone:        r.phone     || '',
+                email:        r.email     || '',
+                course_name:  r.course_name || 'N/A',
+                course_code:  extractCourseCode(r.course_name),
+                admin_status: r.admin_status || 'new',
+                admin_note:   r.admin_note || '',
+                note:         r.note || '',
+                source:       r.customer_source || 'website',
+                created_at:   r.created_at
+            }));
+
+            // Normalize consultations
+            const conNorm = cons.map(c => ({
+                uid:          'c_' + c.id,
+                record_id:    c.id,
+                record_type:  'consultation',
+                customer_id:  null,   // not directly available
+                full_name:    c.full_name || '',
+                phone:        c.phone     || '',
+                email:        c.email     || '',
+                course_name:  c.course_name || c.course_code || 'N/A',
+                course_code:  c.course_code || '',
+                admin_status: c.admin_status || 'new',
+                admin_note:   c.admin_note || '',
+                note:         c.message || c.topic || '',
+                source:       'website',
+                created_at:   c.created_at
+            }));
+
+            // Deduplicate by phone: prefer registration over consultation
+            const phoneMap = new Map();
+            [...regNorm, ...conNorm].forEach(item => {
+                const key = item.phone.trim();
+                if (!key) { allStudents.push(item); return; }
+                if (!phoneMap.has(key)) {
+                    phoneMap.set(key, item);
+                } else {
+                    // Keep registration over consultation; keep newer otherwise
+                    const existing = phoneMap.get(key);
+                    if (item.record_type === 'registration' && existing.record_type !== 'registration') {
+                        phoneMap.set(key, item);
+                    }
+                }
+            });
+
+            allStudents = Array.from(phoneMap.values());
+            applyFilters();
+            updateStats();
+        })
+        .fail(function(xhr) {
+            showToast('Lỗi kết nối server: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
+        })
+        .always(function() {
+            $('#loader').removeClass('show');
+            $('#refreshIcon').removeClass('fa-spin');
+        });
+}
+
+function extractCourseCode(courseName) {
+    if (!courseName) return '';
+    const n = (courseName || '').toUpperCase();
+    if (n.includes('B2') || n.includes('SỐ SÀN'))   return 'B2';
+    if (n.includes('B1') || n.includes('TỰ ĐỘNG'))   return 'B1';
+    if (n.includes('C'))                              return 'C';
+    if (n.includes('A1'))                             return 'A1';
+    if (n.includes('BOTUC') || n.includes('BỔ TÚC')) return 'BOTUC';
+    if (n.includes('A'))                              return 'A';
+    return '';
+}
+
+/* ════════════════════════════════════
+   STATS
+════════════════════════════════════ */
+function updateStats() {
+    const s = allStudents;
+    $('#stTotal').text(s.length);
+    $('#stNew').text(s.filter(x => x.admin_status === 'new').length);
+    $('#stContacted').text(s.filter(x => x.admin_status === 'contacted').length);
+    $('#stInProgress').text(s.filter(x => x.admin_status === 'in_progress').length);
+    $('#stEnrolled').text(s.filter(x => x.admin_status === 'enrolled').length);
+    $('#stCompleted').text(s.filter(x => x.admin_status === 'completed').length);
+}
+
+/* ════════════════════════════════════
+   FILTER + SORT + RENDER
+════════════════════════════════════ */
+function applyFilters() {
+    const q       = $('#searchInput').val().toLowerCase().trim();
+    const status  = $('#filterStatus').val();
+    const course  = $('#filterCourse').val();
+    const type    = $('#filterType').val();
+    const source  = $('#filterSource').val();
+
+    filtered = allStudents.filter(item => {
+        const mQ = !q
+            || item.full_name.toLowerCase().includes(q)
+            || item.phone.includes(q)
+            || (item.email || '').toLowerCase().includes(q);
+        const mStatus = !status || item.admin_status === status;
+        const mCourse = !course || (item.course_code || '').toUpperCase() === course;
+        const mType   = !type   || item.record_type === type;
+        const mSource = !source || (item.source || '') === source;
+        return mQ && mStatus && mCourse && mType && mSource;
+    });
+
+    sortData();
+    currentPage = 1;
+    renderTable();
+}
+
+function sortData() {
+    filtered.sort((a, b) => {
+        if (currentSort === 'newest') return new Date(b.created_at) - new Date(a.created_at);
+        if (currentSort === 'oldest') return new Date(a.created_at) - new Date(b.created_at);
+        if (currentSort === 'name')   return a.full_name.localeCompare(b.full_name, 'vi');
+        return 0;
+    });
+}
+
+function renderTable() {
+    const total      = filtered.length;
+    const totalPages = Math.ceil(total / PER_PAGE);
+    const start      = (currentPage - 1) * PER_PAGE;
+    const pageItems  = filtered.slice(start, start + PER_PAGE);
+
+    $('#countBadge').text(total);
+
+    const tbody = $('#tableBody').empty();
+    const empty = $('#emptyState');
+    const wrap  = $('#tableWrap');
+    const pgSec = $('#paginationSection');
+
+    if (!pageItems.length) {
+        wrap.hide(); empty.addClass('show'); pgSec.hide(); return;
+    }
+    empty.removeClass('show'); wrap.show();
+
+    pageItems.forEach((item, idx) => {
+        const no      = start + idx + 1;
+        const date    = new Date(item.created_at).toLocaleDateString('vi-VN');
+        const note    = (item.admin_note || item.note || '').slice(0, 40);
+        const typePil = item.record_type === 'registration'
+            ? `<span class="type-pill tp-reg"><i class="fas fa-user-check"></i> Đăng ký</span>`
+            : `<span class="type-pill tp-con"><i class="fas fa-comments"></i> Tư vấn</span>`;
+
+        tbody.append(`
+            <tr>
+                <td class="text-muted small">${no}</td>
+                <td>
+                    <div class="fw-semibold">${escHtml(item.full_name)}</div>
+                    <div class="text-muted" style="font-size:0.72rem">#${item.record_type === 'registration' ? 'R' : 'C'}${item.record_id}</div>
+                </td>
+                <td>
+                    <a href="tel:${item.phone}" class="text-primary fw-semibold d-block small">${item.phone}</a>
+                    ${item.email ? `<span class="text-muted" style="font-size:0.72rem">${escHtml(item.email)}</span>` : ''}
+                </td>
+                <td>${courseBadge(item.course_code, item.course_name)}</td>
+                <td>${typePil}</td>
+                <td>${sourceBadge(item.source)}</td>
+                <td>${statusBadge(item.admin_status)}</td>
+                <td class="text-muted small" style="max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escAttr(item.admin_note || item.note)}">${escHtml(note) || '—'}</td>
+                <td class="text-muted small">${date}</td>
+                <td style="text-align:center">
+                    <div class="d-flex gap-1 justify-content-center">
+                        <button class="btn-action btn-view" onclick="openView('${item.uid}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn-action btn-edit" onclick="openEdit('${item.uid}')"><i class="fas fa-pen"></i></button>
+                        <button class="btn-action btn-delete" onclick="openDelete('${item.uid}')"><i class="fas fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>`);
+    });
+
+    // Pagination
+    if (total > PER_PAGE) {
+        pgSec.show();
+        $('#paginationInfo').html(`Hiển thị <b>${start+1}</b>–<b>${Math.min(start+PER_PAGE,total)}</b> / <b>${total}</b>`);
+        renderPagination(totalPages);
+    } else {
+        pgSec.hide();
+    }
+}
+
+function renderPagination(totalPages) {
+    const ul = $('#pagination').empty();
+    function li(label, page, disabled = false, active = false) {
+        const cls = active ? 'page-link active-page' : 'page-link';
+        const dis = disabled ? 'pointer-events:none;opacity:.5' : '';
+        ul.append(`<li class="page-item"><a class="${cls}" style="${dis}" href="#" data-page="${page}">${label}</a></li>`);
+    }
+    if (currentPage > 1) { li('‹', currentPage - 1); }
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+        li(i, i, false, i === currentPage);
+    }
+    if (currentPage < totalPages) { li('›', currentPage + 1); }
+
+    ul.find('a').on('click', function(e) {
+        e.preventDefault();
+        currentPage = Number($(this).data('page'));
+        renderTable();
+        window.scrollTo(0, 0);
+    });
+}
+
+/* ════════════════════════════════════
+   BADGE HELPERS
+════════════════════════════════════ */
+function statusBadge(s) {
+    const map = {
+        new: ['st-new','Mới'], contacted: ['st-contacted','Đã liên hệ'],
+        in_progress: ['st-in_progress','Đang xử lý'], scheduled: ['st-scheduled','Lên lịch'],
+        enrolled: ['st-enrolled','Đã ghi danh'], completed: ['st-completed','Hoàn thành'],
+        rejected: ['st-rejected','Từ chối'], closed: ['st-closed','Đóng']
+    };
+    const [cls, lbl] = map[s] || ['st-new', s];
+    return `<span class="status-badge ${cls}">${lbl}</span>`;
+}
+
+function courseBadge(code, name) {
+    const map = { B1:'cb-b1', B2:'cb-b2', C:'cb-c', A:'cb-a', A1:'cb-a1', BOTUC:'cb-bt' };
+    const cls = map[(code || '').toUpperCase()] || 'cb-na';
+    const lbl = name || code || 'N/A';
+    return `<span class="course-badge ${cls}">${escHtml(lbl.length > 18 ? lbl.slice(0,18)+'…' : lbl)}</span>`;
+}
+
+function sourceBadge(src) {
+    const map = {
+        website:'src-website', facebook:'src-facebook', zalo:'src-zalo',
+        admin:'src-admin', registration:'src-registration', consultation:'src-consultation'
+    };
+    const lbl = { website:'🌐 Web', facebook:'📘 FB', zalo:'💬 Zalo', admin:'🔑 Admin', referral:'👤 Giới thiệu', other:'📌 Khác' };
+    const cls = map[src] || 'src-other';
+    return `<span class="source-badge ${cls}">${lbl[src] || src || 'N/A'}</span>`;
+}
+
+function escHtml(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s) { return String(s || '').replace(/"/g,'&quot;').replace(/\n/g,' '); }
+
+/* ════════════════════════════════════
+   VIEW MODAL
+════════════════════════════════════ */
+function openView(uid) {
+    const item = allStudents.find(x => x.uid === uid);
+    if (!item) return;
+    editingItem = item;   // reuse for "edit" button inside view
+
+    const date = new Date(item.created_at).toLocaleString('vi-VN');
+    const typeLbl = item.record_type === 'registration' ? 'Đơn đăng ký' : 'Tư vấn';
+
+    $('#viewBody').html(`
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-4" style="width:56px;height:56px;background:var(--orange);flex-shrink:0">
+                        ${escHtml((item.full_name || '?')[0].toUpperCase())}
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-5">${escHtml(item.full_name)}</div>
+                        <div class="text-muted small">${item.record_type === 'registration' ? '<i class="fas fa-user-check me-1"></i>' : '<i class="fas fa-comments me-1"></i>'}${typeLbl} #${item.record_id}</div>
+                    </div>
+                    <div class="ms-auto">${statusBadge(item.admin_status)}</div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                    <p class="text-muted small fw-bold text-uppercase mb-2">Liên hệ</p>
+                    <div class="mb-1"><i class="fas fa-phone text-orange me-2" style="color:var(--orange)"></i><a href="tel:${item.phone}" class="text-primary fw-semibold">${item.phone}</a></div>
+                    ${item.email ? `<div><i class="fas fa-envelope me-2" style="color:var(--orange)"></i><a href="mailto:${item.email}" class="text-primary">${escHtml(item.email)}</a></div>` : ''}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                    <p class="text-muted small fw-bold text-uppercase mb-2">Khóa học &amp; Nguồn</p>
+                    <div class="mb-2">${courseBadge(item.course_code, item.course_name)}</div>
+                    <div>${sourceBadge(item.source)}</div>
+                </div>
+            </div>
+
+            ${item.note ? `
+            <div class="col-12">
+                <div class="border rounded-3 p-3">
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Nội dung / Ghi chú khách</p>
+                    <p class="mb-0 small">${escHtml(item.note)}</p>
+                </div>
+            </div>` : ''}
+
+            ${item.admin_note ? `
+            <div class="col-12">
+                <div class="border border-warning rounded-3 p-3" style="background:#fffbeb">
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Ghi chú Admin</p>
+                    <p class="mb-0 small">${escHtml(item.admin_note)}</p>
+                </div>
+            </div>` : ''}
+
+            <div class="col-6">
+                <p class="text-muted small fw-bold text-uppercase mb-1">Ngày tạo</p>
+                <p class="small mb-0">${date}</p>
+            </div>
+            <div class="col-6">
+                <p class="text-muted small fw-bold text-uppercase mb-1">Loại hồ sơ</p>
+                <p class="small mb-0">${typeLbl}</p>
+            </div>
+        </div>`);
+
+    $('#viewToEditBtn').off('click').on('click', function() {
+        bootstrap.Modal.getInstance(document.getElementById('viewModal')).hide();
+        openEdit(uid);
+    });
+
+    new bootstrap.Modal(document.getElementById('viewModal')).show();
+}
+
+/* ════════════════════════════════════
+   EDIT MODAL
+════════════════════════════════════ */
+function openEdit(uid) {
+    const item = allStudents.find(x => x.uid === uid);
+    if (!item) return;
+    editingItem = item;
+
+    $('#editUid').val(item.uid);
+    $('#editCustomerId').val(item.customer_id || '');
+    $('#editRecordId').val(item.record_id);
+    $('#editRecordType').val(item.record_type);
+    $('#editFullName').val(item.full_name);
+    $('#editPhone').val(item.phone);
+    $('#editEmail').val(item.email);
+    $('#editStatus').val(item.admin_status);
+    $('#editNote').val(item.admin_note || '');
+    $('#editCourseName').val(item.course_name);
+    $('#editSourceDisplay').val(item.source || 'website');
+
+    // Show/hide status options depending on type
+    const $status = $('#editStatus');
+    if (item.record_type === 'registration') {
+        // registrations don't have 'scheduled' or 'closed'
+        $status.find('option[value="scheduled"], option[value="closed"]').hide();
+    } else {
+        $status.find('option[value="in_progress"], option[value="enrolled"]').hide();
+        $status.find('option[value="scheduled"], option[value="closed"]').show();
+    }
+
+    $('#errName, #errPhone').addClass('d-none');
+    new bootstrap.Modal(document.getElementById('editModal')).show();
+}
+
+$('#confirmEditBtn').on('click', function() {
+    const item = editingItem;
+    if (!item) return;
+
+    const fullName = $('#editFullName').val().trim();
+    const phone    = $('#editPhone').val().trim();
+    const email    = $('#editEmail').val().trim();
+    const status   = $('#editStatus').val();
+    const note     = $('#editNote').val().trim();
+
+    // Validate
+    let valid = true;
+    if (!fullName) { $('#errName').removeClass('d-none'); valid = false; } else { $('#errName').addClass('d-none'); }
+    if (!phone || !/^[0-9]{9,11}$/.test(phone.replace(/\s/g,''))) { $('#errPhone').removeClass('d-none'); valid = false; } else { $('#errPhone').addClass('d-none'); }
+    if (!valid) return;
+
+    const $btn = $('#confirmEditBtn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...');
+
+    const requests = [];
+
+    // 1) Update customer info (if we have customer_id or can derive from type)
+    if (item.customer_id) {
+        requests.push($.ajax({
+            url: `${API_BASE}/api/admin/customers/${item.customer_id}/update`,
+            type: 'POST', headers: authHdr(),
+            data: JSON.stringify({ full_name: fullName, phone, email: email || null })
+        }));
+    }
+
+    // 2) Update record status
+    if (item.record_type === 'registration') {
+        requests.push($.ajax({
+            url: `${API_BASE}/api/admin/registrations/${item.record_id}/status`,
+            type: 'POST', headers: authHdr(),
+            data: JSON.stringify({ admin_status: status, admin_note: note })
+        }));
+    } else {
+        // consultation — use PUT for full update
+        requests.push($.ajax({
+            url: `${API_BASE}/api/admin/consultations/${item.record_id}/status`,
+            type: 'POST', headers: authHdr(),
+            data: JSON.stringify({ admin_status: status, admin_note: note })
+        }));
+    }
+
+    $.when(...requests)
+        .done(function() {
+            // Update local state
+            const idx = allStudents.findIndex(x => x.uid === item.uid);
+            if (idx !== -1) {
+                allStudents[idx].full_name    = fullName;
+                allStudents[idx].phone        = phone;
+                allStudents[idx].email        = email;
+                allStudents[idx].admin_status = status;
+                allStudents[idx].admin_note   = note;
+            }
+            applyFilters();
+            updateStats();
+            bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+            showToast('Đã cập nhật thành công!');
+        })
+        .fail(function(xhr) {
+            showToast('Lỗi: ' + (xhr.responseJSON?.message || 'Không thể kết nối'), 'error');
+        })
+        .always(function() {
+            $btn.prop('disabled', false).html('<i class="fas fa-save me-1"></i> Lưu thay đổi');
+        });
+});
+
+/* ════════════════════════════════════
+   DELETE MODAL
+════════════════════════════════════ */
+function openDelete(uid) {
+    const item = allStudents.find(x => x.uid === uid);
+    if (!item) return;
+    deletingItem = item;
+    $('#deleteMsg').html(`Xóa hồ sơ của <b>${escHtml(item.full_name)}</b>?`);
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+$('#confirmDeleteBtn').on('click', function() {
+    const item = deletingItem;
+    if (!item) return;
+
+    const $btn = $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Đang xóa...');
+
+    let url;
+    if (item.record_type === 'registration') {
+        url = `${API_BASE}/api/admin/registrations/${item.record_id}/delete`;
+    } else {
+        // consultation: soft delete → mark closed
+        url = `${API_BASE}/api/admin/consultations/${item.record_id}/status`;
+    }
+
+    const body = item.record_type === 'registration'
+        ? '{}'
+        : JSON.stringify({ admin_status: 'closed', admin_note: '[Đã xóa bởi admin]' });
+
+    $.ajax({ url, type: 'POST', headers: authHdr(), data: body })
+        .done(function(res) {
+            if (res.ok) {
+                allStudents = allStudents.filter(x => x.uid !== item.uid);
+                applyFilters();
+                updateStats();
+                bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+                showToast('Đã xóa thành công!');
+            } else {
+                showToast('Xóa thất bại: ' + (res.message || 'Lỗi'), 'error');
+            }
+        })
+        .fail(function(xhr) {
+            showToast('Lỗi: ' + (xhr.responseJSON?.message || 'Không thể kết nối'), 'error');
+        })
+        .always(function() {
+            $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i> Xóa');
+        });
+});
+
+/* ════════════════════════════════════
+   EXPORT CSV
+════════════════════════════════════ */
+$('#exportBtn').on('click', function() {
+    if (!filtered.length) { showToast('Không có dữ liệu để xuất', 'error'); return; }
+    const rows = [['STT','Họ tên','Điện thoại','Email','Khóa học','Loại','Nguồn','Trạng thái','Ghi chú','Ngày tạo']];
+    filtered.forEach((item, i) => {
+        rows.push([
+            i + 1,
+            `"${item.full_name}"`,
+            item.phone,
+            `"${item.email || ''}"`,
+            `"${item.course_name || ''}"`,
+            item.record_type === 'registration' ? 'Đăng ký' : 'Tư vấn',
+            item.source || '',
+            item.admin_status || '',
+            `"${(item.admin_note || item.note || '').replace(/"/g, '""')}"`,
+            new Date(item.created_at).toLocaleDateString('vi-VN')
+        ]);
+    });
+    const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = `hoc_vien_${Date.now()}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    showToast('Đã xuất ' + filtered.length + ' học viên!');
+});
+
+/* ════════════════════════════════════
+   EVENTS
+════════════════════════════════════ */
+$(document).ready(function() {
+    if (!ensureAuth()) return;
+
+    // Admin name
+    try {
+        const info = JSON.parse(localStorage.getItem('admin_info') || localStorage.getItem('admin') || '{}');
+        const name = info.full_name || info.username || '';
+        if (name) $('#adminNameDisplay').text('Xin chào, ' + name);
+    } catch(e) {}
+
+    loadAll();
+
+    // Filters
+    let searchTimer;
+    $('#searchInput').on('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(applyFilters, 280);
+    });
+    $('#filterStatus, #filterCourse, #filterType, #filterSource').on('change', applyFilters);
+    $('#searchBtn').on('click', applyFilters);
+    $('#resetBtn').on('click', function() {
+        $('#searchInput').val('');
+        $('#filterStatus, #filterCourse, #filterType, #filterSource').val('');
+        applyFilters();
+    });
+
+    // Sort
+    $('.sort-btn').on('click', function() {
+        $('.sort-btn').removeClass('active');
+        $(this).addClass('active');
+        currentSort = $(this).data('sort');
+        sortData(); currentPage = 1; renderTable();
+    });
+
+    // Refresh
+    $('#refreshBtn').on('click', function() { allStudents = []; loadAll(); });
+
+    // Logout
+    $('#logoutBtn').on('click', function(e) {
+        e.preventDefault();
+        if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('token');
+        window.location.href = '../login.html';
+    });
+});
+</script>
+</body>
+</html>

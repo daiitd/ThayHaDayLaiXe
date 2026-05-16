@@ -465,7 +465,19 @@
 const API_BASE = 'http://localhost:3000';
 
 /* ── Auth ── */
-const getToken = () => localStorage.getItem('admin_token') || localStorage.getItem('token') || '';
+const getToken = () => {
+    // Prefer admin_token (login admin), fallback token (legacy)
+    const t = localStorage.getItem('admin_token') || localStorage.getItem('token') || '';
+    return t;
+};
+
+function requireNonEmptyToken() {
+    const t = getToken();
+    if (!t) {
+        toast('Chưa có token admin. Vui lòng đăng nhập lại.', 'error');
+    }
+    return !!t;
+}
 const authHdr  = () => ({ 'Content-Type':'application/json', 'Authorization':`Bearer ${getToken()}` });
 function ensureAuth() {
     if (!getToken()) { window.location.href = '../login.html'; return false; }
@@ -805,7 +817,6 @@ async function submitForm() {
     const newStatus   = document.getElementById('fStatus').value;
     const adminNote   = document.getElementById('fAdminNote').value.trim();
 
-    // Validation
     document.getElementById('formError').classList.add('hidden');
     if (!full_name) { showFormError('Vui lòng nhập họ và tên'); return; }
     if (!phone || !/^[0-9]{9,11}$/.test(phone.replace(/\s/g,''))) {
@@ -833,13 +844,33 @@ async function submitForm() {
             const data = await res.json();
             if (!data.ok) throw new Error(data.message || 'Lỗi thêm tư vấn');
             toast('Đã thêm tư vấn mới thành công!');
-        } else {
-            /* ── SỬA: cập nhật trạng thái + ghi chú ── */
-            await patchStatus(Number(id), newStatus, adminNote);
 
-            // Cập nhật local state ngay để UI phản hồi nhanh
+        } else {
+            /* ── SỬA: gửi đầy đủ tất cả trường ── */
+            const res = await fetch(`${API_BASE}/api/admin/consultations/${id}`, {
+                method: 'PUT',
+                headers: authHdr(),
+                body: JSON.stringify({
+                    full_name, phone,
+                    email:        email || null,
+                    course_code:  course_code || null,
+                    topic, message,
+                    admin_status: newStatus,
+                    admin_note:   adminNote
+                })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.message || 'Lỗi cập nhật');
+
+            // Sync local state ngay để UI phản hồi nhanh
             const idx = allConsultations.findIndex(c => c.id === Number(id));
             if (idx !== -1) {
+                allConsultations[idx].full_name    = full_name;
+                allConsultations[idx].phone        = phone;
+                allConsultations[idx].email        = email || null;
+                allConsultations[idx].course_code  = course_code || null;
+                allConsultations[idx].topic        = topic;
+                allConsultations[idx].message      = message;
                 allConsultations[idx].admin_status = newStatus;
                 allConsultations[idx].admin_note   = adminNote;
                 allConsultations[idx].updated_at   = new Date().toISOString();
@@ -856,7 +887,6 @@ async function submitForm() {
         btn.innerHTML = '<i class="fas fa-save"></i> <span id="formSubmitLabel">Lưu</span>';
     }
 }
-
 /* ══════════════════
    PATCH STATUS helper
 ══════════════════ */
