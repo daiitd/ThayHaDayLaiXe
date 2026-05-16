@@ -470,7 +470,7 @@
                                 onclick="handleRegister()" 
                                 class="w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition shadow-lg uppercase text-sm">
                                 Đăng ký ngay
-                        </button>>
+                        </button>
                         <a href="detaila.html">
                             <button class="w-full border-2 border-orange-500 mt-3 text-orange-500 py-2.5 rounded-xl font-bold hover:bg-orange-500 hover:text-white transition uppercase text-sm">
                                 Xem chi tiết
@@ -564,29 +564,34 @@
             <div class="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border border-gray-100">
                 <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center text-blue-900 uppercase">Nhận Tư Vấn</h2>
                 <p class="text-center text-gray-500 mb-8 text-sm md:text-base">Để lại thông tin, Thầy Hà sẽ gọi lại ngay!</p>
-                <form class="space-y-5">
+                <form id="consultForm" class="space-y-5">
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-user"></i></span>
-                        <input type="text" placeholder="Họ và tên *" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition">
+                        <input id="consultName" name="full_name" type="text" placeholder="Họ và tên *" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" required>
                     </div>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-phone"></i></span>
-                        <input type="tel" placeholder="Số điện thoại *" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition">
+                        <input id="consultPhone" name="phone" type="tel" placeholder="Số điện thoại *" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition" required>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-envelope"></i></span>
+                        <input id="consultEmail" name="email" type="email" placeholder="Email (tùy chọn)" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition">
                     </div>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400"><i class="fas fa-graduation-cap"></i></span>
-                        <select class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 text-gray-600 appearance-none">
-                            <option value="">Chọn khóa học lái xe</option>
+                        <select id="consultCourse" name="course_code" class="w-full pl-10 pr-3 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 text-gray-600 appearance-none" required>
+                            <option value="">Chọn khóa học lái xe *</option>
                             <option value="B1">Hạng B (Số tự động)</option>
                             <option value="B2">Hạng B (Số sàn)</option>
                             <option value="C">Hạng C1 (Xe tải)</option>
                             <option value="A1">Hạng A1 (Xe mô tô)</option>
                             <option value="A">Hạng A (Xe mô tô)</option>
-                            <option value="BoTuc">Bổ túc tay lái</option>
+                            <option value="BOTUC">Bổ túc tay lái</option>
                         </select>
                     </div>
-                    <textarea placeholder="Ghi chú (Ví dụ: khu vực muốn học, thời gian rảnh...)" rows="3" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition"></textarea>
+                    <textarea id="consultMessage" name="message" placeholder="Ghi chú (Ví dụ: khu vực muốn học, thời gian rảnh...)" rows="3" class="w-full p-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-gray-50 transition"></textarea>
                     <button type="submit" class="w-full bg-orange-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-orange-700 shadow-xl transition transform active:scale-95 uppercase tracking-wide">Gửi yêu cầu ngay</button>
+                    <div id="consultFeedback" class="hidden rounded-xl px-4 py-3 text-sm"></div>
                 </form>
             </div>
         </div>
@@ -803,7 +808,60 @@
         });
     </script>
 
-    
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        const consultForm = document.getElementById('consultForm');
+        const consultFeedback = document.getElementById('consultFeedback');
+
+        function showConsultFeedback(message, type) {
+            consultFeedback.textContent = message;
+            consultFeedback.className = `rounded-xl px-4 py-3 text-sm ${type === 'success' ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'}`;
+            consultFeedback.classList.remove('hidden');
+        }
+
+        consultForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            consultFeedback.classList.add('hidden');
+
+            const full_name = document.getElementById('consultName').value.trim();
+            const phone = document.getElementById('consultPhone').value.trim();
+            const email = document.getElementById('consultEmail').value.trim();
+            const course_code = document.getElementById('consultCourse').value;
+            const message = document.getElementById('consultMessage').value.trim();
+
+            if (!full_name || !phone || !course_code) {
+                showConsultFeedback('Vui lòng điền đầy đủ họ tên, số điện thoại và chọn khóa học.', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/customers/consult`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        full_name,
+                        phone,
+                        email: email || null,
+                        source: 'website',
+                        course_code,
+                        topic: 'Tư vấn khóa học',
+                        message
+                    })
+                });
+
+                const data = await response.json();
+                if (!response.ok || !data.ok) {
+                    throw new Error(data.message || 'Gửi yêu cầu thất bại, vui lòng thử lại.');
+                }
+
+                showConsultFeedback('Cảm ơn! Yêu cầu tư vấn đã được gửi. Thầy Hà sẽ gọi lại sớm.', 'success');
+                consultForm.reset();
+            } catch (error) {
+                console.error('Lỗi gửi tư vấn:', error);
+                showConsultFeedback(error.message || 'Có lỗi khi gửi yêu cầu.', 'error');
+            }
+        });
+    </script>
 
 </body>
 </html>

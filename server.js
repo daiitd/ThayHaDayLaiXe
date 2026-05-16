@@ -152,11 +152,19 @@ app.post('/api/customers/register', asyncHandler(async (req, res) => {
  * POST /api/customers/consult
  */
 app.post('/api/customers/consult', asyncHandler(async (req, res) => {
-  const { full_name, phone, email, source, course_id, topic, message } = req.body || {};
+  const { full_name, phone, email, source, course_id, course_code, topic, message } = req.body || {};
   if (!full_name || typeof full_name !== 'string') return sendError(res, 400, 'Missing full_name');
   if (!phone || typeof phone !== 'string') return sendError(res, 400, 'Missing phone');
 
   const src = source || 'website';
+  let selectedCourseId = null;
+
+  if (course_id) {
+    selectedCourseId = Number(course_id) || null;
+  } else if (course_code) {
+    const [courseRows] = await db.query('SELECT id FROM courses WHERE course_code = :course_code LIMIT 1', { course_code });
+    if (courseRows.length) selectedCourseId = courseRows[0].id;
+  }
 
   const [existing] = await db.query('SELECT id FROM customers WHERE phone = :phone LIMIT 1', { phone });
   let customerId;
@@ -177,7 +185,7 @@ app.post('/api/customers/consult', asyncHandler(async (req, res) => {
   const [insCon] = await db.query(
     `INSERT INTO consultations(customer_id, course_id, topic, message, admin_status, admin_note)
      VALUES(:customer_id, :course_id, :topic, :message, 'new', '')`,
-    { customer_id: customerId, course_id: course_id || null, topic: topic || '', message: message || '' }
+    { customer_id: customerId, course_id: selectedCourseId, topic: topic || 'Tư vấn khóa học', message: message || '' }
   );
 
   res.json({ ok: true, consultation_id: insCon.insertId, customer_id: customerId });
@@ -481,15 +489,25 @@ app.post('/api/admin/customers/:id/delete', authMiddleware, asyncHandler(async (
  * FIX: Route này bị thiếu "app.get" trong code gốc!
  */
 app.get('/api/admin/consultations', authMiddleware, asyncHandler(async (req, res) => {
-  const status = req.query.status || 'new';
+  const status = req.query.status || 'all';
+  const params = {};
+  let whereClause = '';
+
+  if (status !== 'all') {
+    whereClause = 'WHERE con.admin_status = :status';
+    params.status = status;
+  }
+
   const [rows] = await db.query(
-    `SELECT con.id, con.created_at, con.admin_status, con.topic, con.message,
-            con.admin_note, c.full_name, c.phone, c.email, con.course_id
+    `SELECT con.id, con.created_at, con.updated_at, con.admin_status, con.topic, con.message,
+            con.admin_note, c.full_name, c.phone, c.email, con.course_id,
+            cr.course_name, cr.course_code
      FROM consultations con
      JOIN customers c ON c.id = con.customer_id
-     WHERE con.admin_status = :status
+     LEFT JOIN courses cr ON cr.id = con.course_id
+     ${whereClause}
      ORDER BY con.created_at DESC LIMIT 200`,
-    { status }
+    params
   );
   res.json({ ok: true, consultations: rows });
 }));
