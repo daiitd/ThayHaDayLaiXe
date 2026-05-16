@@ -237,19 +237,42 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navTop">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navTop">
-            <ul class="navbar-nav ms-auto align-items-center gap-2">
-                <li class="nav-item">
-                    <span id="adminNameDisplay" class="text-white-50 small me-2"></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link admin-nav-link" href="dashboard.html"><i class="fas fa-chart-line me-1"></i>Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link admin-nav-link" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-1"></i>Đăng Xuất</a>
-                </li>
-            </ul>
-        </div>
+       <div class="collapse navbar-collapse" id="navTop">
+    <ul class="navbar-nav ms-auto align-items-center gap-2">
+        <!-- Hiển thị tên Admin -->
+        <li class="nav-item">
+            <span id="adminNameDisplay" class="text-white-50 small me-2"></span>
+        </li>
+        
+        <!-- Dashboard: Giữ nguyên chart-line là chuẩn -->
+        <li class="nav-item">
+            <a class="nav-link admin-nav-link" href="dashboard.html">
+                <i class="fas fa-th-large me-1"></i> Dashboard
+            </a>
+        </li>
+
+        <!-- Tư vấn: Dùng icon tin nhắn hoặc người tư vấn -->
+        <li class="nav-item">
+            <a class="nav-link admin-nav-link" href="consultation.html">
+                <i class="fas fa-headset me-1"></i> Tư vấn
+            </a>
+        </li>
+
+        <!-- Đăng Ký: Dùng icon danh sách hoặc bút ký -->
+        <li class="nav-item">
+            <a class="nav-link admin-nav-link" href="registation_admin.html">
+                <i class="fas fa-user-plus me-1"></i> Đăng Ký
+            </a>
+        </li>
+
+        <!-- Đăng Xuất: Giữ sign-out-alt nhưng đổi màu đỏ nếu cần nổi bật -->
+        <li class="nav-item">
+            <a class="nav-link admin-nav-link text-danger" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất
+            </a>
+        </li>
+    </ul>
+</div>
     </nav>
 </header>
 
@@ -261,10 +284,8 @@
         <ul class="sidebar-menu">
             <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
             <li><a href="registation_admin.html"><i class="fas fa-user-check"></i> Đơn Đăng Ký</a></li>
-            <li><a href="advice.html"><i class="fas fa-comments"></i> Tư Vấn</a></li>
+            <li><a href="consultation.html"><i class="fas fa-comments"></i> Tư Vấn</a></li>
             <li><a href="student.html" class="active"><i class="fas fa-users"></i> Học Viên</a></li>
-            <li><a href="schedule.html"><i class="fas fa-calendar-alt"></i> Lịch Dạy</a></li>
-            <li><a href="courses.html"><i class="fas fa-book"></i> Khóa Học</a></li>
         </ul>
     </nav>
 
