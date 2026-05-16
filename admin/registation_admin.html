@@ -1,540 +1,947 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Đơn Đăng Ký - Thầy Hà Admin</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Roboto', sans-serif; }
-        
+        :root {
+            --navy: #0b1f4a;
+            --orange: #f4782a;
+            --light: #f8f9fc;
+            --text: #2c3e50;
+            --muted: #6c7a8a;
+            --border: #e8edf5;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f7fa; color: var(--text); overflow-x: hidden; }
+
+        /* ── Header ── */
+        .admin-header {
+            background: linear-gradient(135deg, var(--navy) 0%, #163a80 100%);
+            padding: 14px 0; box-shadow: 0 4px 15px rgba(11,31,74,0.15);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .admin-header .navbar-brand {
+            font-size: 1.4rem; font-weight: 700; color: white !important;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .admin-header .navbar-brand i { font-size: 1.7rem; color: var(--orange); }
+        .admin-nav-link { color: rgba(255,255,255,0.8) !important; font-weight: 500; font-size: 0.9rem; transition: color 0.3s; }
+        .admin-nav-link:hover { color: var(--orange) !important; }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: white; border-right: 1px solid var(--border);
+            min-height: calc(100vh - 60px); padding: 16px 0;
+            position: sticky; top: 60px;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 11px 20px; color: var(--text); text-decoration: none;
+            font-weight: 500; font-size: 0.9rem;
+            border-left: 3px solid transparent; transition: all 0.25s;
+        }
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: #fff0e5; border-left-color: var(--orange); color: var(--orange);
+        }
+        .sidebar-menu i { font-size: 1rem; width: 22px; text-align: center; }
+
+        /* ── Main ── */
+        .main-content { padding: 24px; }
+        .page-title { font-size: 1.6rem; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .page-title i { color: var(--orange); }
+
+        /* ── Stats ── */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin-bottom: 24px; }
+        .stat-card {
+            background: white; border-radius: 12px; padding: 16px;
+            box-shadow: 0 2px 8px rgba(11,31,74,0.07); border: 1px solid var(--border);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(11,31,74,0.12); }
+        .stat-card-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; margin-bottom: 8px;
+        }
+        .stat-card-label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; margin-bottom: 4px; }
+        .stat-card-value { font-size: 1.6rem; font-weight: 700; color: var(--navy); }
+        .ic-total   { background: rgba(11,31,74,0.1);   color: var(--navy); }
+        .ic-new     { background: rgba(244,120,42,0.15); color: var(--orange); }
+        .ic-contact { background: rgba(52,152,219,0.15); color: #3498db; }
+        .ic-done    { background: rgba(46,204,113,0.15); color: #27ae60; }
+        .ic-reject  { background: rgba(231,76,60,0.15);  color: #e74c3c; }
+
+        /* ── Filter bar ── */
+        .filter-bar {
+            background: white; border-radius: 12px; padding: 18px 20px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(11,31,74,0.07);
+            border: 1px solid var(--border);
+        }
+        .filter-bar label { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+        .filter-bar input, .filter-bar select {
+            border: 1px solid var(--border); border-radius: 8px;
+            font-size: 0.88rem; padding: 8px 12px; width: 100%;
+            transition: border-color 0.25s;
+        }
+        .filter-bar input:focus, .filter-bar select:focus {
+            outline: none; border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(244,120,42,0.1);
+        }
+
+        /* ── Table section ── */
+        .table-section {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 2px 8px rgba(11,31,74,0.07); border: 1px solid var(--border);
+        }
+        .table-header {
+            background: #f8f9fc; border-bottom: 1px solid var(--border);
+            padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .table-title { font-size: 1rem; font-weight: 700; color: var(--navy); }
+        .table { margin-bottom: 0; font-size: 0.88rem; }
+        .table thead { background: linear-gradient(135deg, var(--navy), #163a80); }
+        .table thead th {
+            padding: 13px 14px; font-weight: 600; color: white;
+            border: none; white-space: nowrap; font-size: 0.8rem; letter-spacing: 0.02em;
+        }
+        .table tbody td { padding: 12px 14px; border-color: #f0f2f5; vertical-align: middle; }
+        .table tbody tr:hover { background: #fff8f3; }
+
+        /* ── Status badges ── */
         .status-badge {
-            padding: 0.375rem 0.75rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
+            display: inline-block; padding: 4px 10px; border-radius: 6px;
+            font-size: 0.75rem; font-weight: 700; white-space: nowrap;
         }
-        
-        .status-new { background-color: #dbeafe; color: #1e40af; }
-        .status-in_progress { background-color: #fed7aa; color: #92400e; }
-        .status-completed { background-color: #dcfce7; color: #166534; }
-        .status-rejected { background-color: #fee2e2; color: #991b1b; }
-        
-        .sidebar-active { background-color: #f97316 !important; color: white !important; }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 50;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
+        .st-new         { background: #fef3cd; color: #856404; }
+        .st-in_progress { background: #d1ecf1; color: #0c5460; }
+        .st-completed   { background: #d1e7dd; color: #0f5132; }
+        .st-rejected    { background: #f8d7da; color: #721c24; }
+
+        /* ── Action buttons ── */
+        .btn-action {
+            padding: 5px 9px; border: none; border-radius: 6px;
+            font-size: 0.78rem; cursor: pointer; font-weight: 500;
+            transition: all 0.2s; white-space: nowrap;
         }
-        
-        .modal.active { display: flex; }
-        .modal-content {
-            background-color: white;
-            margin: auto;
-            padding: 2rem;
-            border-radius: 0.75rem;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
+        .btn-view   { background: #dbeafe; color: #1e40af; }
+        .btn-view:hover   { background: #bfdbfe; }
+        .btn-edit   { background: #fef3c7; color: #92400e; }
+        .btn-edit:hover   { background: #fde68a; }
+        .btn-delete { background: #fee2e2; color: #991b1b; }
+        .btn-delete:hover { background: #fecaca; }
+
+        /* ── Loader ── */
+        .loader-wrap { display: none; text-align: center; padding: 40px; }
+        .loader-wrap.show { display: block; }
+        .spinner-border { color: var(--orange); }
+
+        /* ── Empty ── */
+        .empty-state { text-align: center; padding: 50px 20px; display: none; }
+        .empty-state.show { display: block; }
+        .empty-state i { font-size: 3.5rem; color: #d1d5db; margin-bottom: 12px; }
+
+        /* ── Pagination ── */
+        .pagination-section {
+            padding: 16px 20px; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+        .pagination-info { color: var(--muted); font-size: 0.85rem; }
+        .pagination .page-link {
+            border-radius: 6px; margin: 0 2px; border: 1px solid var(--border);
+            color: var(--text); font-size: 0.85rem; padding: 5px 10px;
+        }
+        .pagination .page-link:hover { border-color: var(--orange); color: var(--orange); background: #fff8f3; }
+        .page-link.active-page { background: var(--orange); border-color: var(--orange); color: white; }
+
+        /* ── Buttons ── */
+        .btn-orange { background: var(--orange); color: white; border: none; }
+        .btn-orange:hover { background: #d8621a; color: white; }
+
+        /* ── Modal tweaks ── */
+        .modal-header { border-bottom: 2px solid var(--orange); background: #f8f9fc; }
+        .modal-title i { color: var(--orange); }
+        .form-label { font-size: 0.83rem; font-weight: 600; color: var(--text); }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244,120,42,0.12);
+        }
+
+        /* ── Course badge ── */
+        .course-badge {
+            display: inline-block; padding: 4px 10px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+            background: #cce8ff; color: #1a5ccd;
+        }
+
+        /* ── Toast ── */
+        #liveToast { position: fixed; bottom: 24px; right: 24px; z-index: 9999; min-width: 280px; }
+
+        /* ── Mobile: card view replaces table ── */
+        .student-card {
+            background: white; border-radius: 12px; border: 1px solid var(--border);
+            padding: 16px; margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(11,31,74,0.06);
+        }
+        .student-card .card-name { font-weight: 700; font-size: 1rem; color: var(--navy); }
+        .student-card .card-sub  { font-size: 0.78rem; color: var(--muted); }
+        .student-card .card-actions { display: flex; gap: 8px; margin-top: 12px; }
+        .student-card .card-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; align-items: center; }
+
+        @media (max-width: 767px) {
+            .main-content { padding: 16px 12px; }
+            .page-title { font-size: 1.25rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            /* Hide table on mobile, show cards */
+            #tableWrap { display: none !important; }
+            #cardView  { display: block !important; }
+            .filter-bar { padding: 14px 14px; }
+            .table-header { flex-direction: column; align-items: flex-start; }
+        }
+        @media (min-width: 768px) {
+            #cardView { display: none !important; }
+            #tableWrap { display: block !important; }
         }
     </style>
 </head>
+<body>
 
-<body class="bg-gray-100">
-
-    <!-- Navigation -->
-    <nav class="bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center font-bold text-lg">TH</div>
-                <div>
-                    <h1 class="text-xl font-bold">Thầy Hà Admin</h1>
-                    <p class="text-xs text-gray-300">Quản lý đơn đăng ký</p>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                </button>
-            </div>
+<!-- ══ HEADER ══ -->
+<header class="admin-header">
+    <nav class="navbar navbar-expand-lg navbar-dark px-3">
+        <a class="navbar-brand" href="dashboard.html">
+            <i class="fas fa-graduation-cap"></i> Thầy Hà - Admin
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navTop">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navTop">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <li class="nav-item">
+                    <span id="adminNameDisplay" class="text-white-50 small me-2"></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" href="dashboard.html">
+                        <i class="fas fa-th-large me-1"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" href="consultation.html">
+                        <i class="fas fa-headset me-1"></i> Tư vấn
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link" href="student.html">
+                        <i class="fas fa-users me-1"></i> Học Viên
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link admin-nav-link text-danger" href="#" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt me-1"></i> Đăng Xuất
+                    </a>
+                </li>
+            </ul>
         </div>
     </nav>
+</header>
 
-    <!-- Main Container -->
-    <div class="flex h-screen" style="margin-top: -4rem; padding-top: 4rem;">
-        
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gray-900 text-white shadow-lg">
-            <div class="p-6 space-y-6">
-                <div>
-                    <a href="dashboard.html" class="block px-4 py-3 rounded-lg hover:bg-orange-500 transition text-sm font-semibold">
-                        <i class="fas fa-chart-line mr-2"></i> Dashboard
-                    </a>
-                </div>
-                <div>
-                    <a href="registation_admin.html" class="block px-4 py-3 rounded-lg sidebar-active text-sm font-semibold">
-                        <i class="fas fa-user-check mr-2"></i> Đơn Đăng Ký
-                    </a>
-                </div>
-                <div>
-                    <a href="consultation.html" class="block px-4 py-3 rounded-lg hover:bg-orange-500 transition text-sm font-semibold">
-                        <i class="fas fa-comments mr-2"></i> Tư Vấn
-                    </a>
-                </div>
-                <div>
-                    <a href="student.html" class="block px-4 py-3 rounded-lg hover:bg-orange-500 transition text-sm font-semibold">
-                        <i class="fas fa-graduation-cap mr-2"></i> Học Viên
-                    </a>
-                </div>
-               
+<div class="container-fluid">
+<div class="row" style="min-height:calc(100vh - 60px)">
+
+    <!-- ══ SIDEBAR ══ -->
+    <nav class="col-md-2 d-none d-md-block sidebar px-0">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="registation_admin.html" class="active"><i class="fas fa-user-check"></i> Đơn Đăng Ký</a></li>
+            <li><a href="consultation.html"><i class="fas fa-comments"></i> Tư Vấn</a></li>
+            <li><a href="student.html"><i class="fas fa-users"></i> Học Viên</a></li>
+        </ul>
+    </nav>
+
+    <!-- ══ MAIN ══ -->
+    <main class="col-md-10 ms-sm-auto main-content">
+
+        <!-- Page title -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h1 class="page-title"><i class="fas fa-user-check"></i> Quản Lý Đơn Đăng Ký</h1>
+                <p class="text-muted small mb-0">Danh sách các đơn đăng ký khóa học từ khách hàng</p>
             </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="flex-1 overflow-auto">
-            <div class="p-6">
-                <!-- Header -->
-                <div class="mb-6">
-                    <h2 class="text-3xl font-bold text-gray-800 mb-2">
-                        <i class="fas fa-user-check text-orange-500 mr-2"></i> Quản Lý Đơn Đăng Ký
-                    </h2>
-                    <p class="text-gray-600">Danh sách các đơn đăng ký khóa học từ khách hàng</p>
-                </div>
-
-                <!-- Filters -->
-                <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Lọc theo trạng thái:</label>
-                            <select id="filterStatus" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                                <option value="all">Tất cả</option>
-                                <option value="new">Mới</option>
-                                <option value="in_progress">Đã liên hệ </option>
-                                <option value="completed">Hoàn tất </option>
-                                <option value="rejected">Từ chối </option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">Tìm kiếm:</label>
-                            <input type="text" id="searchInput" placeholder="Tên hoặc số điện thoại..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">&nbsp;</label>
-                            <button onclick="loadRegistrations()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition">
-                                <i class="fas fa-search mr-2"></i> Tìm kiếm
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Loading Spinner -->
-                <div id="loadingSpinner" class="hidden text-center py-8">
-                    <div class="inline-block animate-spin">
-                        <i class="fas fa-spinner text-orange-500 text-3xl"></i>
-                    </div>
-                    <p class="text-gray-600 mt-2">Đang tải dữ liệu...</p>
-                </div>
-
-                <!-- Registrations Table -->
-                <div id="tableContainer" class="bg-white rounded-lg shadow-md overflow-hidden hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gradient-to-r from-blue-900 to-blue-800 text-white">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">ID</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Tên Khách Hàng</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Số Điện Thoại</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Email</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Khóa Học</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Trạng Thái</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold">Ngày Đăng Ký</th>
-                                    <th class="px-4 py-3 text-center text-sm font-semibold">Hành Động</th>
-                                </tr>
-                            </thead>
-                            <tbody id="registrationsList" class="divide-y divide-gray-200">
-                                <!-- Dữ liệu sẽ được tải bằng JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Empty State -->
-                <div id="emptyState" class="bg-white rounded-lg shadow-md p-8 text-center">
-                    <i class="fas fa-inbox text-gray-300 text-5xl mb-4 block"></i>
-                    <p class="text-gray-500 text-lg">Không có đơn đăng ký nào</p>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Detail Modal -->
-    <div id="detailModal" class="modal items-center justify-center">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4 border-b pb-4">
-                <h3 class="text-2xl font-bold text-gray-800">Chi Tiết Đơn Đăng Ký</h3>
-                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
-            </div>
-
-            <div id="detailContent" class="space-y-4">
-                <!-- Nội dung chi tiết sẽ được tải bằng JavaScript -->
-            </div>
-
-            <div class="mt-6 flex gap-3">
-                <button onclick="closeModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition">
-                    Đóng
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-orange" id="refreshBtn">
+                    <i class="fas fa-sync-alt me-1" id="refreshIcon"></i> Làm mới
+                </button>
+                <button class="btn btn-sm btn-orange" id="exportBtn">
+                    <i class="fas fa-file-excel me-1"></i> Xuất CSV
                 </button>
             </div>
         </div>
-    </div>
 
-    <!-- Status Update Modal -->
-    <div id="statusModal" class="modal items-center justify-center">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-4 border-b pb-4">
-                <h3 class="text-2xl font-bold text-gray-800">Cập Nhật Trạng Thái</h3>
-                <button onclick="closeStatusModal()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+        <!-- Stats -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-card-icon ic-total"><i class="fas fa-list-alt"></i></div>
+                <div class="stat-card-label">Tổng đơn</div>
+                <div class="stat-card-value" id="stTotal">—</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-new"><i class="fas fa-star"></i></div>
+                <div class="stat-card-label">Mới</div>
+                <div class="stat-card-value" id="stNew">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-contact"><i class="fas fa-phone-alt"></i></div>
+                <div class="stat-card-label">Đã liên hệ</div>
+                <div class="stat-card-value" id="stInProgress">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-done"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-card-label">Hoàn tất</div>
+                <div class="stat-card-value" id="stCompleted">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon ic-reject"><i class="fas fa-times-circle"></i></div>
+                <div class="stat-card-label">Từ chối</div>
+                <div class="stat-card-value" id="stRejected">—</div>
+            </div>
+        </div>
 
-            <div class="space-y-4">
-                <input type="hidden" id="updateRegistrationId">
-                
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Trạng Thái:</label>
-                    <select id="updateStatusSelect" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-sm-6 col-md-4">
+                    <label>Tìm kiếm</label>
+                    <input type="text" id="searchInput" placeholder="Tên hoặc số điện thoại...">
+                </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <label>Trạng thái</label>
+                    <select id="filterStatus">
+                        <option value="">Tất cả</option>
                         <option value="new">Mới</option>
                         <option value="in_progress">Đã liên hệ</option>
-                        <option value="completed">Hoàn tất </option>
+                        <option value="completed">Hoàn tất</option>
                         <option value="rejected">Từ chối</option>
                     </select>
                 </div>
+                <div class="col-6 col-sm-4 col-md-3">
+                    <label>Khóa học</label>
+                    <select id="filterCourse">
+                        <option value="">Tất cả</option>
+                        <option value="B1">Hạng B1</option>
+                        <option value="B2">Hạng B2</option>
+                        <option value="C">Hạng C</option>
+                        <option value="A1">Hạng A1</option>
+                        <option value="A">Hạng A</option>
+                        <option value="BOTUC">Bổ túc</option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-4 col-md-2 d-flex gap-2">
+                    <button class="btn btn-sm btn-orange w-100" id="searchBtn">
+                        <i class="fas fa-search me-1"></i> Tìm
+                    </button>
+                    <button class="btn btn-sm btn-secondary w-100" id="resetBtn" title="Reset">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Ghi chú admin:</label>
-                    <textarea id="updateNoteTextarea" rows="4" placeholder="Nhập ghi chú..." class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"></textarea>
+        <!-- Table Section -->
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">
+                    <i class="fas fa-list me-2" style="color:var(--orange)"></i>
+                    Danh Sách Đơn Đăng Ký
+                    <span class="badge ms-2" style="background:var(--orange);font-size:0.75rem" id="countBadge">0</span>
                 </div>
             </div>
 
-            <div class="mt-6 flex gap-3">
-                <button onclick="closeStatusModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition">
-                    Hủy
-                </button>
-                <button onclick="updateStatus()" class="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg transition">
-                    <i class="fas fa-save mr-2"></i> Lưu
+            <!-- Loader -->
+            <div class="loader-wrap" id="loader">
+                <div class="spinner-border" role="status"></div>
+                <p class="mt-2 text-muted small">Đang tải dữ liệu...</p>
+            </div>
+
+            <!-- Desktop Table -->
+            <div class="table-responsive" id="tableWrap">
+                <table class="table" id="mainTable">
+                    <thead>
+                        <tr>
+                            <th style="width:40px">#</th>
+                            <th>Khách Hàng</th>
+                            <th>Liên Hệ</th>
+                            <th>Khóa Học</th>
+                            <th>Trạng Thái</th>
+                            <th>Ghi Chú</th>
+                            <th>Ngày</th>
+                            <th style="min-width:110px;text-align:center">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Mobile Cards -->
+            <div id="cardView" style="padding:12px">
+                <!-- filled by JS -->
+            </div>
+
+            <!-- Empty -->
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-inbox d-block"></i>
+                <p class="text-muted">Không có đơn đăng ký nào</p>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination-section" id="paginationSection" style="display:none">
+                <div class="pagination-info" id="paginationInfo"></div>
+                <nav><ul class="pagination mb-0" id="pagination"></ul></nav>
+            </div>
+        </div>
+
+    </main>
+</div>
+</div>
+
+<!-- ══ MODAL: XEM CHI TIẾT ══ -->
+<div class="modal fade" id="viewModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-circle me-2"></i>Chi Tiết Đơn Đăng Ký</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="viewBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Đóng</button>
+                <button class="btn btn-orange btn-sm" id="viewToEditBtn">
+                    <i class="fas fa-pen me-1"></i> Chỉnh sửa
                 </button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        const API_BASE = 'http://localhost:3000';
-        let allRegistrations = [];
-        let filteredRegistrations = [];
-
-        // Check token
-        function checkAuth() {
-            const token = localStorage.getItem('admin_token');
-            if (!token) {
-                window.location.href = 'dashboard.html';
-            }
-        }
-
-        // Load registrations
-        async function loadRegistrations() {
-            const token = localStorage.getItem('admin_token');
-            if (!token) {
-                alert('Vui lòng đăng nhập');
-                window.location.href = 'dashboard.html';
-                return;
-            }
-
-            document.getElementById('loadingSpinner').classList.remove('hidden');
-            document.getElementById('tableContainer').classList.add('hidden');
-            document.getElementById('emptyState').classList.add('hidden');
-
-            try {
-                const res = await fetch(`${API_BASE}/api/admin/students/registrations`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (!res.ok) throw new Error('Không tải được dữ liệu');
-
-                const data = await res.json();
-                if (!data.ok) throw new Error(data.message || 'Lỗi từ server');
-
-                allRegistrations = data.registrations || [];
-                applyFilters();
-
-            } catch (err) {
-                console.error(err);
-                alert('Lỗi: ' + err.message);
-            } finally {
-                document.getElementById('loadingSpinner').classList.add('hidden');
-            }
-        }
-
-        // Apply filters
-        function applyFilters() {
-            const status = document.getElementById('filterStatus').value;
-            const search = document.getElementById('searchInput').value.toLowerCase();
-
-            filteredRegistrations = allRegistrations.filter(reg => {
-                const matchStatus = status === 'all' || reg.admin_status === status;
-                const matchSearch = !search || 
-                    reg.full_name.toLowerCase().includes(search) ||
-                    reg.phone.includes(search);
-                return matchStatus && matchSearch;
-            });
-
-            renderTable();
-        }
-
-        // Render table
-        function renderTable() {
-            const tableContainer = document.getElementById('tableContainer');
-            const emptyState = document.getElementById('emptyState');
-            const registrationsList = document.getElementById('registrationsList');
-
-            if (filteredRegistrations.length === 0) {
-                tableContainer.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            tableContainer.classList.remove('hidden');
-            emptyState.classList.add('hidden');
-
-            registrationsList.innerHTML = filteredRegistrations.map(reg => `
-                <tr class="hover:bg-gray-50 transition">
-                    <td class="px-4 py-3 text-sm text-gray-800 font-semibold">#${reg.registration_id}</td>
-                    <td class="px-4 py-3 text-sm text-gray-800">${reg.full_name}</td>
-                    <td class="px-4 py-3 text-sm text-gray-800">
-                        <a href="tel:${reg.phone}" class="text-blue-600 hover:underline">${reg.phone}</a>
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-800">
-                        <a href="mailto:${reg.email}" class="text-blue-600 hover:underline">${reg.email || 'N/A'}</a>
-                    </td>
-                    <td class="px-4 py-3 text-sm">
-                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
-                            ${reg.course_name || 'N/A'}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-sm">
-                        <span class="status-badge status-${reg.admin_status}">
-                            ${getStatusLabel(reg.admin_status)}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-600">
-                        ${new Date(reg.created_at).toLocaleDateString('vi-VN')}
-                    </td>
-                    <td class="px-4 py-3 text-center text-sm">
-                        <button onclick="viewDetail(${reg.registration_id})" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-3 rounded-lg mr-2 transition" title="Xem chi tiết">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                        <button onclick="openStatusModal(${reg.registration_id})" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-semibold py-1 px-3 rounded-lg mr-2 transition" title="Cập nhật trạng thái">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteRegistration(${reg.registration_id})" class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded-lg transition" title="Xóa">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Get status label
-        function getStatusLabel(status) {
-            const labels = {
-                'new': '🆕 Mới',
-                'in_progress': '⏳ Đã liên hệ',
-                'completed': '✅ Hoàn tất',
-                'rejected': '❌ Từ chối'
-            };
-            return labels[status] || status;
-        }
-
-        // View detail
-        function viewDetail(registrationId) {
-            const reg = allRegistrations.find(r => r.registration_id === registrationId);
-            if (!reg) return;
-
-            const detailContent = document.getElementById('detailContent');
-            detailContent.innerHTML = `
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Mã Đơn:</p>
-                        <p class="text-lg text-gray-800">#${reg.registration_id}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Trạng Thái:</p>
-                        <p><span class="status-badge status-${reg.admin_status}">${getStatusLabel(reg.admin_status)}</span></p>
-                    </div>
-                    <div class="col-span-2">
-                        <p class="text-sm text-gray-600 font-semibold">Họ Tên:</p>
-                        <p class="text-lg text-gray-800">${reg.full_name}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Số Điện Thoại:</p>
-                        <p class="text-gray-800"><a href="tel:${reg.phone}" class="text-blue-600 hover:underline">${reg.phone}</a></p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Email:</p>
-                        <p class="text-gray-800"><a href="mailto:${reg.email || ''}" class="text-blue-600 hover:underline">${reg.email || 'N/A'}</a></p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Khóa Học:</p>
-                        <p class="text-gray-800">${reg.course_name}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Nguồn:</p>
-                        <p class="text-gray-800">${reg.customer_source || 'website'}</p>
-                    </div>
-                    <div class="col-span-2">
-                        <p class="text-sm text-gray-600 font-semibold">Ghi Chú:</p>
-                        <p class="text-gray-800 bg-gray-50 p-2 rounded">${reg.note || 'Không có'}</p>
-                    </div>
-                    <div class="col-span-2">
-                        <p class="text-sm text-gray-600 font-semibold">Ghi Chú Admin:</p>
-                        <p class="text-gray-800 bg-gray-50 p-2 rounded">${reg.admin_note || 'Không có'}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-semibold">Ngày Đăng Ký:</p>
-                        <p class="text-gray-800">${new Date(reg.created_at).toLocaleString('vi-VN')}</p>
-                    </div>
+<!-- ══ MODAL: CẬP NHẬT TRẠNG THÁI ══ -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Cập Nhật Trạng Thái</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editRegId">
+                <div class="mb-3">
+                    <label class="form-label">Trạng thái</label>
+                    <select class="form-select form-select-sm" id="editStatus">
+                        <option value="new">🆕 Mới</option>
+                        <option value="in_progress">⏳ Đã liên hệ</option>
+                        <option value="completed">✅ Hoàn tất</option>
+                        <option value="rejected">❌ Từ chối</option>
+                    </select>
                 </div>
-            `;
+                <div class="mb-3">
+                    <label class="form-label">Ghi chú admin</label>
+                    <textarea class="form-control form-control-sm" id="editNote" rows="4" placeholder="Nhập ghi chú nội bộ..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-orange btn-sm" id="confirmStatusBtn">
+                    <i class="fas fa-save me-1"></i> Lưu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-            document.getElementById('detailModal').classList.add('active');
+<!-- ══ MODAL: XÁC NHẬN XÓA ══ -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="border-color:#dc3545">
+                <h5 class="modal-title"><i class="fas fa-trash me-2" style="color:#dc3545"></i>Xác Nhận Xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width:60px;height:60px">
+                    <i class="fas fa-trash text-danger fs-4"></i>
+                </div>
+                <p class="mb-1 fw-bold" id="deleteMsg"></p>
+                <p class="text-muted small">Hành động này không thể hoàn tác.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+                <button class="btn btn-danger btn-sm" id="confirmDeleteBtn">
+                    <i class="fas fa-check me-1"></i> Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+    <div id="liveToast" class="toast align-items-center border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body fw-semibold" id="toastMsg"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+/* ════════════════════════════
+   CONFIG
+════════════════════════════ */
+const API_BASE = 'http://localhost:3000';
+
+function getToken() { return localStorage.getItem('admin_token') || localStorage.getItem('token') || ''; }
+function authHdr()  { return { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' }; }
+function ensureAuth() { if (!getToken()) { window.location.href = '../login.html'; return false; } return true; }
+
+/* ════════════════════════════
+   STATE
+════════════════════════════ */
+let allRegs     = [];
+let filtered    = [];
+let currentPage = 1;
+const PER_PAGE  = 15;
+let editingItem = null;
+let deletingItem = null;
+
+/* ════════════════════════════
+   TOAST
+════════════════════════════ */
+function showToast(msg, type = 'success') {
+    const el = document.getElementById('liveToast');
+    el.className = `toast align-items-center border-0 text-white bg-${type === 'success' ? 'success' : 'danger'}`;
+    document.getElementById('toastMsg').innerHTML =
+        `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i>${msg}`;
+    bootstrap.Toast.getOrCreateInstance(el, { delay: 3500 }).show();
+}
+
+/* ════════════════════════════
+   LOAD DATA
+════════════════════════════ */
+function loadAll() {
+    if (!ensureAuth()) return;
+    $('#loader').addClass('show');
+    $('#tableWrap').hide();
+    $('#cardView').hide();
+    $('#emptyState').removeClass('show');
+    $('#paginationSection').hide();
+    $('#refreshIcon').addClass('fa-spin');
+
+    $.ajax({
+        url: API_BASE + '/api/admin/students/registrations',
+        headers: authHdr()
+    })
+    .done(function(data) {
+        if (!data.ok) { showToast(data.message || 'Lỗi từ server', 'error'); return; }
+        allRegs = (data.registrations || []).map(r => ({
+            id:           r.registration_id || r.id,
+            full_name:    r.full_name || '',
+            phone:        r.phone || '',
+            email:        r.email || '',
+            course_name:  r.course_name || 'N/A',
+            course_code:  extractCourseCode(r.course_name),
+            admin_status: r.admin_status || 'new',
+            admin_note:   r.admin_note || '',
+            note:         r.note || '',
+            source:       r.customer_source || 'website',
+            created_at:   r.created_at
+        }));
+        applyFilters();
+        updateStats();
+    })
+    .fail(function(xhr) {
+        showToast('Lỗi kết nối: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
+    })
+    .always(function() {
+        $('#loader').removeClass('show');
+        $('#refreshIcon').removeClass('fa-spin');
+    });
+}
+
+function extractCourseCode(n) {
+    if (!n) return '';
+    const u = n.toUpperCase();
+    if (u.includes('B2') || u.includes('SỐ SÀN')) return 'B2';
+    if (u.includes('B1') || u.includes('TỰ ĐỘNG')) return 'B1';
+    if (u.includes('BOTUC') || u.includes('BỔ TÚC')) return 'BOTUC';
+    if (u.includes('A1')) return 'A1';
+    if (u.includes('C'))  return 'C';
+    if (u.includes('A'))  return 'A';
+    return '';
+}
+
+/* ════════════════════════════
+   STATS
+════════════════════════════ */
+function updateStats() {
+    $('#stTotal').text(allRegs.length);
+    $('#stNew').text(allRegs.filter(x => x.admin_status === 'new').length);
+    $('#stInProgress').text(allRegs.filter(x => x.admin_status === 'in_progress').length);
+    $('#stCompleted').text(allRegs.filter(x => x.admin_status === 'completed').length);
+    $('#stRejected').text(allRegs.filter(x => x.admin_status === 'rejected').length);
+}
+
+/* ════════════════════════════
+   FILTER + RENDER
+════════════════════════════ */
+function applyFilters() {
+    const q      = $('#searchInput').val().toLowerCase().trim();
+    const status = $('#filterStatus').val();
+    const course = $('#filterCourse').val();
+
+    filtered = allRegs.filter(item => {
+        const mQ = !q || item.full_name.toLowerCase().includes(q) || item.phone.includes(q) || (item.email||'').toLowerCase().includes(q);
+        const mS = !status || item.admin_status === status;
+        const mC = !course || (item.course_code||'').toUpperCase() === course;
+        return mQ && mS && mC;
+    });
+
+    // newest first
+    filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    currentPage = 1;
+    renderTable();
+}
+
+function renderTable() {
+    const total      = filtered.length;
+    const totalPages = Math.ceil(total / PER_PAGE);
+    const start      = (currentPage - 1) * PER_PAGE;
+    const pageItems  = filtered.slice(start, start + PER_PAGE);
+
+    $('#countBadge').text(total);
+
+    const tbody    = $('#tableBody').empty();
+    const cardView = $('#cardView').empty();
+    const empty    = $('#emptyState');
+    const pgSec    = $('#paginationSection');
+
+    if (!pageItems.length) {
+        $('#tableWrap').hide(); cardView.hide();
+        empty.addClass('show'); pgSec.hide(); return;
+    }
+    empty.removeClass('show');
+    $('#tableWrap').show(); cardView.show();
+
+    pageItems.forEach((item, idx) => {
+        const no   = start + idx + 1;
+        const date = new Date(item.created_at).toLocaleDateString('vi-VN');
+        const note = (item.admin_note || '').slice(0, 50);
+
+        // Desktop row
+        tbody.append(`
+            <tr>
+                <td class="text-muted small">${no}</td>
+                <td>
+                    <div class="fw-semibold">${escHtml(item.full_name)}</div>
+                    <div class="text-muted" style="font-size:0.72rem">#R${item.id}</div>
+                </td>
+                <td>
+                    <a href="tel:${item.phone}" class="text-primary fw-semibold d-block small">${item.phone}</a>
+                    ${item.email ? `<span class="text-muted" style="font-size:0.72rem">${escHtml(item.email)}</span>` : ''}
+                </td>
+                <td><span class="course-badge">${escHtml(item.course_name.length > 16 ? item.course_name.slice(0,16)+'…' : item.course_name)}</span></td>
+                <td>${statusBadge(item.admin_status)}</td>
+                <td class="text-muted small" style="max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${escAttr(item.admin_note)}">${escHtml(note) || '—'}</td>
+                <td class="text-muted small">${date}</td>
+                <td style="text-align:center">
+                    <div class="d-flex gap-1 justify-content-center">
+                        <button class="btn-action btn-view" onclick="openView(${item.id})"><i class="fas fa-eye"></i></button>
+                        <button class="btn-action btn-edit" onclick="openEdit(${item.id})"><i class="fas fa-pen"></i></button>
+                        <button class="btn-action btn-delete" onclick="openDelete(${item.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>`);
+
+        // Mobile card
+        cardView.append(`
+            <div class="student-card">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="card-name">${escHtml(item.full_name)}</div>
+                        <div class="card-sub">#R${item.id} · ${date}</div>
+                    </div>
+                    ${statusBadge(item.admin_status)}
+                </div>
+                <div class="card-row mt-2">
+                    <a href="tel:${item.phone}" class="text-primary fw-semibold small"><i class="fas fa-phone me-1"></i>${item.phone}</a>
+                    ${item.email ? `<span class="text-muted small"><i class="fas fa-envelope me-1"></i>${escHtml(item.email)}</span>` : ''}
+                </div>
+                <div class="card-row">
+                    <span class="course-badge">${escHtml(item.course_name)}</span>
+                </div>
+                ${item.admin_note ? `<div class="text-muted small mt-2" style="border-left:3px solid var(--orange);padding-left:8px">${escHtml(item.admin_note.slice(0,80))}</div>` : ''}
+                <div class="card-actions">
+                    <button class="btn-action btn-view flex-fill" onclick="openView(${item.id})"><i class="fas fa-eye me-1"></i>Xem</button>
+                    <button class="btn-action btn-edit flex-fill" onclick="openEdit(${item.id})"><i class="fas fa-pen me-1"></i>Sửa</button>
+                    <button class="btn-action btn-delete flex-fill" onclick="openDelete(${item.id})"><i class="fas fa-trash me-1"></i>Xóa</button>
+                </div>
+            </div>`);
+    });
+
+    // Pagination
+    if (total > PER_PAGE) {
+        pgSec.show();
+        $('#paginationInfo').html(`Hiển thị <b>${start+1}</b>–<b>${Math.min(start+PER_PAGE,total)}</b> / <b>${total}</b>`);
+        renderPagination(totalPages);
+    } else {
+        pgSec.hide();
+    }
+}
+
+function renderPagination(totalPages) {
+    const ul = $('#pagination').empty();
+    function li(label, page, disabled=false, active=false) {
+        const cls = active ? 'page-link active-page' : 'page-link';
+        const dis = disabled ? 'pointer-events:none;opacity:.5' : '';
+        ul.append(`<li class="page-item"><a class="${cls}" style="${dis}" href="#" data-page="${page}">${label}</a></li>`);
+    }
+    if (currentPage > 1) li('‹', currentPage - 1);
+    for (let i = Math.max(1, currentPage-2); i <= Math.min(totalPages, currentPage+2); i++) li(i, i, false, i===currentPage);
+    if (currentPage < totalPages) li('›', currentPage + 1);
+    ul.find('a').on('click', function(e) {
+        e.preventDefault();
+        currentPage = Number($(this).data('page'));
+        renderTable();
+        window.scrollTo(0,0);
+    });
+}
+
+/* ════════════════════════════
+   BADGE HELPERS
+════════════════════════════ */
+function statusBadge(s) {
+    const map = {
+        new:         ['st-new',         '🆕 Mới'],
+        in_progress: ['st-in_progress', '⏳ Đã liên hệ'],
+        completed:   ['st-completed',   '✅ Hoàn tất'],
+        rejected:    ['st-rejected',    '❌ Từ chối']
+    };
+    const [cls, lbl] = map[s] || ['st-new', s];
+    return `<span class="status-badge ${cls}">${lbl}</span>`;
+}
+
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escAttr(s) { return String(s||'').replace(/"/g,'&quot;').replace(/\n/g,' '); }
+
+function findReg(id) { return allRegs.find(x => x.id == id); }
+
+/* ════════════════════════════
+   VIEW MODAL
+════════════════════════════ */
+function openView(id) {
+    const item = findReg(id);
+    if (!item) return;
+
+    const date = new Date(item.created_at).toLocaleString('vi-VN');
+    $('#viewBody').html(`
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold fs-4"
+                         style="width:56px;height:56px;background:var(--orange);flex-shrink:0">
+                        ${escHtml((item.full_name||'?')[0].toUpperCase())}
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-5">${escHtml(item.full_name)}</div>
+                        <div class="text-muted small"><i class="fas fa-user-check me-1"></i>Đơn đăng ký #R${item.id}</div>
+                    </div>
+                    <div class="ms-auto">${statusBadge(item.admin_status)}</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                    <p class="text-muted small fw-bold text-uppercase mb-2">Liên hệ</p>
+                    <div class="mb-1"><i class="fas fa-phone me-2" style="color:var(--orange)"></i><a href="tel:${item.phone}" class="text-primary fw-semibold">${item.phone}</a></div>
+                    ${item.email ? `<div><i class="fas fa-envelope me-2" style="color:var(--orange)"></i><a href="mailto:${item.email}" class="text-primary">${escHtml(item.email)}</a></div>` : ''}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100">
+                    <p class="text-muted small fw-bold text-uppercase mb-2">Khóa học & Nguồn</p>
+                    <div class="mb-2"><span class="course-badge">${escHtml(item.course_name)}</span></div>
+                    <div class="text-muted small"><i class="fas fa-globe me-1"></i>${item.source || 'website'}</div>
+                </div>
+            </div>
+            ${item.note ? `
+            <div class="col-12">
+                <div class="border rounded-3 p-3">
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Ghi chú khách</p>
+                    <p class="mb-0 small">${escHtml(item.note)}</p>
+                </div>
+            </div>` : ''}
+            ${item.admin_note ? `
+            <div class="col-12">
+                <div class="border border-warning rounded-3 p-3" style="background:#fffbeb">
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Ghi chú Admin</p>
+                    <p class="mb-0 small">${escHtml(item.admin_note)}</p>
+                </div>
+            </div>` : ''}
+            <div class="col-6">
+                <p class="text-muted small fw-bold text-uppercase mb-1">Ngày đăng ký</p>
+                <p class="small mb-0">${date}</p>
+            </div>
+        </div>`);
+
+    $('#viewToEditBtn').off('click').on('click', function() {
+        bootstrap.Modal.getInstance(document.getElementById('viewModal')).hide();
+        openEdit(id);
+    });
+    new bootstrap.Modal(document.getElementById('viewModal')).show();
+}
+
+/* ════════════════════════════
+   EDIT / STATUS MODAL
+════════════════════════════ */
+function openEdit(id) {
+    const item = findReg(id);
+    if (!item) return;
+    editingItem = item;
+    $('#editRegId').val(item.id);
+    $('#editStatus').val(item.admin_status);
+    $('#editNote').val(item.admin_note || '');
+    new bootstrap.Modal(document.getElementById('statusModal')).show();
+}
+
+$('#confirmStatusBtn').on('click', function() {
+    const item   = editingItem;
+    if (!item) return;
+    const status = $('#editStatus').val();
+    const note   = $('#editNote').val().trim();
+    const $btn   = $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Đang lưu...');
+
+    $.ajax({
+        url:  `${API_BASE}/api/admin/registrations/${item.id}/status`,
+        type: 'POST', headers: authHdr(),
+        data: JSON.stringify({ admin_status: status, admin_note: note })
+    })
+    .done(function(res) {
+        if (res.ok) {
+            const idx = allRegs.findIndex(x => x.id == item.id);
+            if (idx !== -1) { allRegs[idx].admin_status = status; allRegs[idx].admin_note = note; }
+            applyFilters(); updateStats();
+            bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
+            showToast('Đã cập nhật thành công!');
+        } else {
+            showToast(res.message || 'Lỗi', 'error');
         }
+    })
+    .fail(function(xhr) { showToast('Lỗi: ' + (xhr.responseJSON?.message || 'Kết nối thất bại'), 'error'); })
+    .always(function() { $btn.prop('disabled', false).html('<i class="fas fa-save me-1"></i> Lưu'); });
+});
 
-        // Close modal
-        function closeModal() {
-            document.getElementById('detailModal').classList.remove('active');
+/* ════════════════════════════
+   DELETE MODAL
+════════════════════════════ */
+function openDelete(id) {
+    const item = findReg(id);
+    if (!item) return;
+    deletingItem = item;
+    $('#deleteMsg').html(`Xóa đơn đăng ký của <b>${escHtml(item.full_name)}</b>?`);
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+$('#confirmDeleteBtn').on('click', function() {
+    const item = deletingItem;
+    if (!item) return;
+    const $btn = $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-1"></i>Đang xóa...');
+
+    $.ajax({
+        url: `${API_BASE}/api/admin/registrations/${item.id}/delete`,
+        type: 'POST', headers: authHdr(), data: '{}'
+    })
+    .done(function(res) {
+        if (res.ok) {
+            allRegs = allRegs.filter(x => x.id != item.id);
+            applyFilters(); updateStats();
+            bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
+            showToast('Đã xóa thành công!');
+        } else {
+            showToast(res.message || 'Xóa thất bại', 'error');
         }
+    })
+    .fail(function(xhr) { showToast('Lỗi: ' + (xhr.responseJSON?.message || 'Kết nối thất bại'), 'error'); })
+    .always(function() { $btn.prop('disabled', false).html('<i class="fas fa-check me-1"></i> Xóa'); });
+});
 
-        // Open status modal
-        function openStatusModal(registrationId) {
-            const reg = allRegistrations.find(r => r.registration_id === registrationId);
-            if (!reg) return;
+/* ════════════════════════════
+   EXPORT CSV
+════════════════════════════ */
+$('#exportBtn').on('click', function() {
+    if (!filtered.length) { showToast('Không có dữ liệu để xuất', 'error'); return; }
+    const rows = [['STT','Họ tên','Điện thoại','Email','Khóa học','Trạng thái','Ghi chú','Ngày tạo']];
+    filtered.forEach((item, i) => {
+        rows.push([
+            i + 1,
+            `"${item.full_name}"`,
+            item.phone,
+            `"${item.email || ''}"`,
+            `"${item.course_name || ''}"`,
+            item.admin_status,
+            `"${(item.admin_note || '').replace(/"/g,'""')}"`,
+            new Date(item.created_at).toLocaleDateString('vi-VN')
+        ]);
+    });
+    const csv  = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a'); a.href = url; a.download = `dang_ky_${Date.now()}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    showToast('Đã xuất ' + filtered.length + ' đơn đăng ký!');
+});
 
-            document.getElementById('updateRegistrationId').value = registrationId;
-            document.getElementById('updateStatusSelect').value = reg.admin_status;
-            document.getElementById('updateNoteTextarea').value = reg.admin_note || '';
+/* ════════════════════════════
+   EVENTS
+════════════════════════════ */
+$(document).ready(function() {
+    if (!ensureAuth()) return;
 
-            document.getElementById('statusModal').classList.add('active');
-        }
+    // Admin name
+    try {
+        const info = JSON.parse(localStorage.getItem('admin_info') || localStorage.getItem('admin') || '{}');
+        const name = info.full_name || info.username || '';
+        if (name) $('#adminNameDisplay').text('Xin chào, ' + name);
+    } catch(e) {}
 
-        // Close status modal
-        function closeStatusModal() {
-            document.getElementById('statusModal').classList.remove('active');
-        }
+    loadAll();
 
-        // Update status
-        async function updateStatus() {
-            const registrationId = document.getElementById('updateRegistrationId').value;
-            const status = document.getElementById('updateStatusSelect').value;
-            const note = document.getElementById('updateNoteTextarea').value;
-            const token = localStorage.getItem('admin_token');
+    // Filters
+    let searchTimer;
+    $('#searchInput').on('input', function() { clearTimeout(searchTimer); searchTimer = setTimeout(applyFilters, 280); });
+    $('#filterStatus, #filterCourse').on('change', applyFilters);
+    $('#searchBtn').on('click', applyFilters);
+    $('#resetBtn').on('click', function() {
+        $('#searchInput').val('');
+        $('#filterStatus, #filterCourse').val('');
+        applyFilters();
+    });
 
-            if (!token) {
-                alert('Vui lòng đăng nhập');
-                return;
-            }
+    // Refresh
+    $('#refreshBtn').on('click', function() { allRegs = []; loadAll(); });
 
-            try {
-                const res = await fetch(`${API_BASE}/api/admin/registrations/${registrationId}/status`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        admin_status: status,
-                        admin_note: note
-                    })
-                });
-
-                if (!res.ok) throw new Error('Cập nhật thất bại');
-
-                const data = await res.json();
-                if (!data.ok) throw new Error(data.message || 'Lỗi từ server');
-
-                alert('Cập nhật thành công!');
-                closeStatusModal();
-                loadRegistrations();
-
-            } catch (err) {
-                console.error(err);
-                alert('Lỗi: ' + err.message);
-            }
-        }
-
-        // Delete registration
-        async function deleteRegistration(registrationId) {
-            if (!confirm('Bạn chắc chắn muốn xóa đơn đăng ký này?')) return;
-
-            const token = localStorage.getItem('admin_token');
-            if (!token) {
-                alert('Vui lòng đăng nhập');
-                return;
-            }
-
-            try {
-                const res = await fetch(`${API_BASE}/api/admin/registrations/${registrationId}/delete`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!res.ok) throw new Error('Xóa thất bại');
-
-                const data = await res.json();
-                if (!data.ok) throw new Error(data.message || 'Lỗi từ server');
-
-                alert('Xóa thành công!');
-                loadRegistrations();
-
-            } catch (err) {
-                console.error(err);
-                alert('Lỗi: ' + err.message);
-            }
-        }
-
-       /* ── Logout ── */
-    function logout() {
+    // Logout
+    $('#logoutBtn').on('click', function(e) {
+        e.preventDefault();
         if (!confirm('Bạn có chắc muốn đăng xuất?')) return;
         localStorage.removeItem('admin_token');
         localStorage.removeItem('token');
         window.location.href = '../login.html';
-    }
-
-        // Event listeners
-        document.getElementById('filterStatus').addEventListener('change', applyFilters);
-        document.getElementById('searchInput').addEventListener('keyup', applyFilters);
-
-        // Close modals on outside click
-        window.addEventListener('click', function(event) {
-            const detailModal = document.getElementById('detailModal');
-            const statusModal = document.getElementById('statusModal');
-            if (event.target === detailModal) closeModal();
-            if (event.target === statusModal) closeStatusModal();
-        });
-
-        // Initialize
-        checkAuth();
-        loadRegistrations();
-    </script>
-
+    });
+});
+</script>
 </body>
 </html>
