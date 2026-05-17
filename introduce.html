@@ -806,7 +806,9 @@
                     </li>
                 </ul>
 
-                <a href="tel:0941822239" class="btn-register d-none d-lg-inline-flex align-items-center gap-2">
+                <a href="javascript:void(0);" 
+                    onclick="handleRegister()" 
+                    class="btn-register d-inline-flex align-items-center gap-2">
                     <i class="fas fa-phone-alt fa-sm"></i> Đăng Ký Ngay
                 </a>
             </div>
@@ -969,7 +971,7 @@
                             <div class="cert-badge"><i class="fas fa-id-card"></i> Giấy phép hành nghề</div>
                         </div>
                         <div class="col-6 col-xl-4">
-                            <div class="cert-badge"><i class="fas fa-certificate"></i> Chứng chỉ Bộ GTVT</div>
+                            <div class="cert-badge"><i class="fas fa-certificate"></i> Chứng Chỉ Cục Cảnh Sát Giao Thông</div>
                         </div>
                         <div class="col-6 col-xl-4">
                             <div class="cert-badge"><i class="fas fa-shield-alt"></i> Cam kết không phát sinh</div>
@@ -1156,10 +1158,10 @@
                     <div class="mb-3"><span class="star">★★★★★</span></div>
                     <p class="review-text">"Đậu thực hành ngay lần đầu nhờ Thầy Hà hướng dẫn bí quyết sa hình. Chi phí hợp lý, không phát sinh. Giới thiệu cho cả gia đình đăng ký!"</p>
                     <div class="d-flex align-items-center gap-3 mt-4">
-                        <div class="reviewer-av" style="background:#0e5c42">M</div>
+                        <img src="./assets/quan.png" alt="Nguyễn Phương Đại" class="reviewer-av rounded-circle object-fit-cover">
                         <div>
-                            <div class="reviewer-name">Trần Minh</div>
-                            <div class="reviewer-meta">Học viên bằng B1 · Bình Dương</div>
+                            <div class="reviewer-name">Dương Đức Quân</div>
+                            <div class="reviewer-meta">Học viên bằng A1 xe mô tô - Quận 9</div>
                         </div>
                     </div>
                 </div>
@@ -1172,7 +1174,7 @@
                         <div class="reviewer-av" style="background:#7b2d8b">P</div>
                         <div>
                             <div class="reviewer-name">Lê Hoàng Phúc</div>
-                            <div class="reviewer-meta">Học viên bằng C · TP.HCM</div>
+                            <div class="reviewer-meta">Học viên bằng C1 - TP.HCM</div>
                         </div>
                     </div>
                 </div>
@@ -1297,6 +1299,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+
+<script>
+        function handleRegister() {
+            // Kiểm tra nếu là thiết bị di động (dựa trên kích thước màn hình hoặc UserAgent)
+            const isMobile = /iPhone|Android|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768;
+
+            if (isMobile) {
+                // Nếu là điện thoại: Gọi điện
+                window.location.href = 'tel:0941822239';
+            } else {
+                // Nếu là PC: Chuyển hướng đến trang đăng ký
+                window.location.href = 'registation.html';
+            }
+        }
+</script>
 
 <script>
 $(function () {
