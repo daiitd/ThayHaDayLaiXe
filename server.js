@@ -20,6 +20,10 @@ const cors = require('cors');
 
 require('dotenv').config();
 
+// Fallback nếu .env không đọc được
+if (!process.env.GMAIL_USER) process.env.GMAIL_USER = 'phuongnguyendai240@gmail.com';
+if (!process.env.GMAIL_APP_PASSWORD) process.env.GMAIL_APP_PASSWORD = 'eqkqorwosrpodmbc';
+
 const app = express();
 
 // ---- Config ----
@@ -683,6 +687,274 @@ process.on('SIGINT', async () => {
     process.exit(0);
   });
 });
+
+
+
+
+// ============================================================
+// FORGOT PASSWORD - Thêm vào server.js
+// ============================================================
+// Cài đặt thêm: npm i nodemailer
+//
+// Thêm vào file .env:
+//   GMAIL_USER=your_gmail@gmail.com
+//   GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
+//   (App Password: myaccount.google.com > Security > 2FA > App passwords)
+//   FRONTEND_URL=https://daylaixethayha.com
+//
+// Dán toàn bộ đoạn này vào server.js TRƯỚC dòng app.listen(...)
+// ============================================================
+
+const nodemailer = require('nodemailer');
+
+// ── OTP Store (in-memory) ──────────────────────────────────
+// Map: email => { otp, username, expires, adminId }
+const otpStore = new Map();
+
+// Xóa OTP hết hạn mỗi 5 phút
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, val] of otpStore.entries()) {
+    if (val.expires < now) otpStore.delete(key);
+  }
+}, 5 * 60 * 1000);
+
+// ── Nodemailer transporter ─────────────────────────────────
+function createTransporter() {
+  return nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_APP_PASSWORD // App Password (không phải mật khẩu Gmail thường)
+    }
+  });
+}
+
+// ── Tạo OTP 6 chữ số ──────────────────────────────────────
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// ── HTML Email Template ────────────────────────────────────
+function buildEmailHTML(otp, adminName) {
+  return `
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Xác nhận OTP - Thầy Hà</title>
+</head>
+<body style="margin:0;padding:0;background:#f5f7fa;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:30px 0;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(11,31,74,0.10);">
+        
+        <!-- Header -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#0b1f4a,#163a80);padding:32px 40px;text-align:center;">
+            <div style="font-size:2rem;font-weight:800;color:#fff;letter-spacing:1px;">🚗 Thầy Hà</div>
+            <div style="color:rgba(255,255,255,0.75);font-size:0.85rem;margin-top:6px;text-transform:uppercase;letter-spacing:2px;">Trung tâm Đào tạo lái xe</div>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:36px 40px;">
+            <h2 style="margin:0 0 8px;color:#0b1f4a;font-size:1.4rem;">Đặt lại mật khẩu</h2>
+            <p style="color:#6c7a8a;margin:0 0 28px;font-size:0.95rem;">
+              Xin chào <strong style="color:#0b1f4a;">${adminName}</strong>,<br>
+              Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản admin của bạn.
+            </p>
+
+            <!-- OTP Box -->
+            <div style="background:#f0f4ff;border:2px dashed #3a6bd4;border-radius:12px;padding:28px;text-align:center;margin-bottom:28px;">
+              <div style="color:#6c7a8a;font-size:0.85rem;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Mã xác nhận OTP</div>
+              <div style="font-size:2.8rem;font-weight:800;letter-spacing:12px;color:#0b1f4a;font-family:'Courier New',monospace;">${otp}</div>
+              <div style="color:#e84040;font-size:0.82rem;margin-top:12px;">⏱ Mã có hiệu lực trong <strong>10 phút</strong></div>
+            </div>
+
+            <div style="background:#fff8f0;border-left:4px solid #f4782a;border-radius:6px;padding:14px 16px;margin-bottom:24px;">
+              <div style="color:#856404;font-size:0.85rem;">
+                ⚠️ <strong>Lưu ý bảo mật:</strong> Không chia sẻ mã OTP này với bất kỳ ai. 
+                Nếu bạn không yêu cầu đặt lại mật khẩu, hãy bỏ qua email này.
+              </div>
+            </div>
+
+            <p style="color:#aab4c0;font-size:0.82rem;margin:0;">
+              Email này được gửi tự động từ hệ thống Thầy Hà. Vui lòng không trả lời email này.
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f8f9fc;padding:18px 40px;border-top:1px solid #e8edf5;text-align:center;">
+            <div style="color:#aab4c0;font-size:0.78rem;">
+              © 2026 Thầy Hà - Đào tạo lái xe ĐH An Ninh TP.HCM<br>
+              km18 Song Hành Xa Lộ Hà Nội · 0941 822 239
+            </div>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+
+// ============================================================
+// ROUTE 1: POST /api/admin/forgot-password
+// Body: { email }  → Gửi OTP về email nếu tồn tại
+// ============================================================
+app.post('/api/admin/forgot-password', asyncHandler(async (req, res) => {
+  const { email } = req.body || {};
+  if (!email || typeof email !== 'string') return sendError(res, 400, 'Missing email');
+
+  const normalizedEmail = email.trim().toLowerCase();
+
+  // Kiểm tra rate limit: không cho spam (1 lần / 60 giây mỗi email)
+  if (otpStore.has(normalizedEmail)) {
+    const existing = otpStore.get(normalizedEmail);
+    const secondsAgo = (Date.now() - (existing.expires - 10 * 60 * 1000)) / 1000;
+    if (secondsAgo < 60) {
+      return sendError(res, 429, `Vui lòng chờ ${Math.ceil(60 - secondsAgo)} giây trước khi gửi lại`);
+    }
+  }
+
+  // Tìm admin theo email
+  const [rows] = await db.query(
+    'SELECT id, username, full_name, email, is_active FROM admin_users WHERE LOWER(email) = :email LIMIT 1',
+    { email: normalizedEmail }
+  );
+
+  // Luôn trả về ok=true để tránh lộ thông tin (không cho biết email có tồn tại không)
+  if (!rows.length || rows[0].is_active !== 1) {
+    return res.json({ ok: true, message: 'Nếu email tồn tại, mã OTP sẽ được gửi trong vài giây.' });
+  }
+
+  const admin = rows[0];
+  const otp   = generateOTP();
+
+  // Lưu OTP (10 phút)
+  otpStore.set(normalizedEmail, {
+    otp,
+    adminId:  admin.id,
+    username: admin.username,
+    fullName: admin.full_name,
+    expires:  Date.now() + 10 * 60 * 1000
+  });
+
+  // Gửi email
+  try {
+    const transporter = createTransporter();
+    await transporter.sendMail({
+      from:    `"Thầy Hà - Admin System" <${process.env.GMAIL_USER}>`,
+      to:      admin.email,
+      subject: `[Thầy Hà] Mã OTP đặt lại mật khẩu: ${otp}`,
+      html:    buildEmailHTML(otp, admin.full_name)
+    });
+  } catch (mailErr) {
+    console.error('Send email error:', mailErr);
+    otpStore.delete(normalizedEmail);
+    return sendError(res, 500, 'Không thể gửi email. Kiểm tra cấu hình GMAIL_USER và GMAIL_APP_PASSWORD trong .env');
+  }
+
+  console.log(`[OTP] Sent to ${admin.email} for admin ${admin.username} - OTP: ${otp}`);
+  res.json({ ok: true, message: 'Nếu email tồn tại, mã OTP sẽ được gửi trong vài giây.' });
+}));
+
+// ============================================================
+// ROUTE 2: POST /api/admin/verify-otp
+// Body: { email, otp }  → Xác minh OTP, trả về resetToken
+// ============================================================
+app.post('/api/admin/verify-otp', asyncHandler(async (req, res) => {
+  const { email, otp } = req.body || {};
+  if (!email) return sendError(res, 400, 'Missing email');
+  if (!otp)   return sendError(res, 400, 'Missing otp');
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const record = otpStore.get(normalizedEmail);
+
+  if (!record)                         return sendError(res, 400, 'Mã OTP không hợp lệ hoặc đã hết hạn');
+  if (Date.now() > record.expires)     { otpStore.delete(normalizedEmail); return sendError(res, 400, 'Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới'); }
+  if (String(otp).trim() !== record.otp) return sendError(res, 400, 'Mã OTP không đúng');
+
+  // Tạo một reset token ngắn hạn (5 phút) để bước 3 dùng
+  const resetToken = jwt.sign(
+    { adminId: record.adminId, email: normalizedEmail, purpose: 'reset_password' },
+    JWT_SECRET,
+    { expiresIn: '5m' }
+  );
+
+  // Đánh dấu OTP đã dùng (xóa để không dùng lại)
+  otpStore.delete(normalizedEmail);
+
+  res.json({
+    ok:          true,
+    resetToken,
+    username:    record.username,
+    fullName:    record.fullName,
+    message:     'OTP hợp lệ. Bạn có 5 phút để đặt lại mật khẩu.'
+  });
+}));
+
+// ============================================================
+// ROUTE 3: POST /api/admin/reset-password
+// Body: { resetToken, newUsername, newPassword }
+// ============================================================
+app.post('/api/admin/reset-password', asyncHandler(async (req, res) => {
+  const { resetToken, newUsername, newPassword } = req.body || {};
+  if (!resetToken)  return sendError(res, 400, 'Missing resetToken');
+  if (!newUsername) return sendError(res, 400, 'Missing newUsername');
+  if (!newPassword) return sendError(res, 400, 'Missing newPassword');
+
+  // Kiểm tra độ mạnh mật khẩu
+  if (newPassword.length < 6) return sendError(res, 400, 'Mật khẩu phải có ít nhất 6 ký tự');
+  if (newUsername.length < 3) return sendError(res, 400, 'Tên tài khoản phải có ít nhất 3 ký tự');
+  if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) return sendError(res, 400, 'Tên tài khoản chỉ được chứa chữ cái, số và dấu gạch dưới');
+
+  // Xác minh reset token
+  let payload;
+  try {
+    payload = jwt.verify(resetToken, JWT_SECRET);
+  } catch (e) {
+    return sendError(res, 401, 'Token hết hạn hoặc không hợp lệ. Vui lòng bắt đầu lại');
+  }
+
+  if (payload.purpose !== 'reset_password') return sendError(res, 401, 'Token không hợp lệ');
+
+  const adminId = payload.adminId;
+
+  // Kiểm tra username mới có bị trùng không (trừ chính admin này)
+  const [dupRows] = await db.query(
+    'SELECT id FROM admin_users WHERE username = :username AND id != :id LIMIT 1',
+    { username: newUsername, id: adminId }
+  );
+  if (dupRows.length) return sendError(res, 409, 'Tên tài khoản đã tồn tại. Vui lòng chọn tên khác');
+
+  // Hash mật khẩu mới
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+
+  // Cập nhật DB
+  await db.query(
+    'UPDATE admin_users SET username = :username, password_hash = :hash, updated_at = CURRENT_TIMESTAMP WHERE id = :id',
+    { username: newUsername, hash: passwordHash, id: adminId }
+  );
+
+  console.log(`[RESET] Admin ID ${adminId} changed username to "${newUsername}"`);
+  res.json({ ok: true, message: 'Đặt lại mật khẩu thành công! Bạn có thể đăng nhập với tài khoản mới.' });
+}));
+
+
+
+
+// ============================================================
+// END FORGOT PASSWORD ROUTES
+// ============================================================
+
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
