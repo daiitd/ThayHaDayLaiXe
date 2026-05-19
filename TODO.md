@@ -1,12 +1,12 @@
-# TODO - Fix admin consultation không hiện / không chỉnh sửa được
+# TODO
 
-- [ ] Đọc kỹ luồng auth/token và UI trong `admin/consultation.html`.
-- [ ] Sửa `admin/consultation.html`:
-  - [ ] Cải thiện hàm lấy token (thử thêm key khác + đảm bảo không rỗng).
-  - [ ] Khi `loadAll()` / `patchStatus()` thất bại, hiện toast + console log rõ `status`/`data.message`.
-  - [ ] Trong `openEditModal(id)`, nếu không tìm thấy bản ghi thì show toast hướng dẫn bấm "Làm mới".
-- [ ] (Nếu cần) Sửa `server.js` để đảm bảo route/status field khớp UI (chỉ khi debug cho thấy mismatch).
-- [ ] Chạy `node server.js` và test:
-  - [ ] Login admin -> vào trang consultation -> bấm Làm mới.
-  - [ ] Mở modal xem -> bấm Chỉnh sửa -> sửa trạng thái/ghi chú -> Lưu.
+- [x] Sửa `botuc.html` để form “bổ túc/BOTUC” gửi đúng payload khớp backend `/api/customers/register`.
+- [x] Trong `botuc.html`: dùng `API_BASE = location.origin`.
+- [x] Trong `botuc.html`: xóa `registration_type` khỏi payload (backend tự set).
+- [x] Trong `botuc.html`: nếu không tìm thấy `course_code='BOTUC'` thì alert chi tiết.
+- [ ] Chạy test: mở `botuc.html`, submit form, kiểm tra response ok=true và bản ghi vào CSDL (registrations/customers).
+- [ ] (Nếu còn lỗi) kiểm tra log server và đối chiếu schema `thayha_admin.sql`.
+
+
+
 
